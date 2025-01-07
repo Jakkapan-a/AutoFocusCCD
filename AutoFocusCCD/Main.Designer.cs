@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageModelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,12 +37,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnReload = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbBaud = new System.Windows.Forms.ComboBox();
+            this.cmbCOMPort = new System.Windows.Forms.ComboBox();
+            this.cmbFormats = new System.Windows.Forms.ComboBox();
+            this.cmbDevices = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -57,11 +57,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modelsCCDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.btnReload = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -152,10 +153,10 @@
             // 
             this.groupBox2.Controls.Add(this.btnReload);
             this.groupBox2.Controls.Add(this.btnConnect);
-            this.groupBox2.Controls.Add(this.comboBox4);
-            this.groupBox2.Controls.Add(this.comboBox3);
-            this.groupBox2.Controls.Add(this.comboBox2);
-            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Controls.Add(this.cmbBaud);
+            this.groupBox2.Controls.Add(this.cmbCOMPort);
+            this.groupBox2.Controls.Add(this.cmbFormats);
+            this.groupBox2.Controls.Add(this.cmbDevices);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
@@ -167,17 +168,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Communication";
             // 
-            // btnReload
-            // 
-            this.btnReload.BackgroundImage = global::AutoFocusCCD.Properties.Resources._refresh_32;
-            this.btnReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnReload.Location = new System.Drawing.Point(9, 220);
-            this.btnReload.Name = "btnReload";
-            this.btnReload.Size = new System.Drawing.Size(23, 23);
-            this.btnReload.TabIndex = 4;
-            this.btnReload.Text = "-";
-            this.btnReload.UseVisualStyleBackColor = true;
-            // 
             // btnConnect
             // 
             this.btnConnect.Location = new System.Drawing.Point(154, 220);
@@ -186,38 +176,40 @@
             this.btnConnect.TabIndex = 5;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // comboBox4
+            // cmbBaud
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(9, 185);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(214, 21);
-            this.comboBox4.TabIndex = 3;
+            this.cmbBaud.FormattingEnabled = true;
+            this.cmbBaud.Location = new System.Drawing.Point(9, 185);
+            this.cmbBaud.Name = "cmbBaud";
+            this.cmbBaud.Size = new System.Drawing.Size(214, 21);
+            this.cmbBaud.TabIndex = 3;
             // 
-            // comboBox3
+            // cmbCOMPort
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(9, 139);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(214, 21);
-            this.comboBox3.TabIndex = 2;
+            this.cmbCOMPort.FormattingEnabled = true;
+            this.cmbCOMPort.Location = new System.Drawing.Point(9, 139);
+            this.cmbCOMPort.Name = "cmbCOMPort";
+            this.cmbCOMPort.Size = new System.Drawing.Size(214, 21);
+            this.cmbCOMPort.TabIndex = 2;
             // 
-            // comboBox2
+            // cmbFormats
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(9, 95);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(214, 21);
-            this.comboBox2.TabIndex = 1;
+            this.cmbFormats.FormattingEnabled = true;
+            this.cmbFormats.Location = new System.Drawing.Point(9, 95);
+            this.cmbFormats.Name = "cmbFormats";
+            this.cmbFormats.Size = new System.Drawing.Size(214, 21);
+            this.cmbFormats.TabIndex = 1;
             // 
-            // comboBox1
+            // cmbDevices
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(9, 45);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(214, 21);
-            this.comboBox1.TabIndex = 0;
+            this.cmbDevices.FormattingEnabled = true;
+            this.cmbDevices.Location = new System.Drawing.Point(9, 45);
+            this.cmbDevices.Name = "cmbDevices";
+            this.cmbDevices.Size = new System.Drawing.Size(214, 21);
+            this.cmbDevices.TabIndex = 0;
+            this.cmbDevices.SelectedIndexChanged += new System.EventHandler(this.cmbDevices_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -242,9 +234,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 79);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(44, 13);
+            this.label6.Size = new System.Drawing.Size(42, 13);
             this.label6.TabIndex = 1;
-            this.label6.Text = "Device:";
+            this.label6.Text = "Format:";
             // 
             // label5
             // 
@@ -372,19 +364,6 @@
             this.panel2.Size = new System.Drawing.Size(1075, 701);
             this.panel2.TabIndex = 3;
             // 
-            // pictureBox
-            // 
-            this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox.BackColor = System.Drawing.Color.Black;
-            this.pictureBox.Location = new System.Drawing.Point(3, 55);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(1069, 643);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox.TabIndex = 2;
-            this.pictureBox.TabStop = false;
-            // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
@@ -401,13 +380,38 @@
             // 
             this.modelsCCDToolStripMenuItem.Name = "modelsCCDToolStripMenuItem";
             this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.modelsCCDToolStripMenuItem.Text = "Models CCD";
+            this.modelsCCDToolStripMenuItem.Text = "CCD PVM";
+            this.modelsCCDToolStripMenuItem.Click += new System.EventHandler(this.modelsCCDToolStripMenuItem_Click);
             // 
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.hasToolStripMenuItem.Text = "Has";
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox.BackColor = System.Drawing.Color.Black;
+            this.pictureBox.Location = new System.Drawing.Point(3, 55);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(1069, 643);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox.TabIndex = 2;
+            this.pictureBox.TabStop = false;
+            // 
+            // btnReload
+            // 
+            this.btnReload.BackgroundImage = global::AutoFocusCCD.Properties.Resources._refresh_32;
+            this.btnReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnReload.Location = new System.Drawing.Point(9, 220);
+            this.btnReload.Name = "btnReload";
+            this.btnReload.Size = new System.Drawing.Size(23, 23);
+            this.btnReload.TabIndex = 4;
+            this.btnReload.Text = "-";
+            this.btnReload.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -418,11 +422,13 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto Focus ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -461,10 +467,10 @@
         private System.Windows.Forms.Button btnClearMes;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbBaud;
+        private System.Windows.Forms.ComboBox cmbCOMPort;
+        private System.Windows.Forms.ComboBox cmbFormats;
+        private System.Windows.Forms.ComboBox cmbDevices;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;

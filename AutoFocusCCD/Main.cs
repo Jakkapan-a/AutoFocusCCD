@@ -1,10 +1,12 @@
 ﻿using AutoFocusCCD.SQLite;
+using GitHub.secile.Video;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Deployment.Application;
 using System.Drawing;
+using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,6 +22,7 @@ namespace AutoFocusCCD
             InitializeComponent();
             ShowAppVersion();
         }
+        public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
 
         private void Main_Load(object sender, EventArgs e)
         {
@@ -40,6 +43,40 @@ namespace AutoFocusCCD
 #else
                 db.CreateTable();
 #endif
+            }
+
+
+            /**
+             * init Device
+             */
+            LoadDevices();
+        }
+
+
+        private void LoadDevices()
+        {
+            string[] devices = UsbCamera.FindDevices();
+            if (devices.Length == 0) return;
+
+            this.RefreshComboBoxWithList(cmbDevices, devices);
+            this.RefreshComboBoxWithList(cmbCOMPort, SerialPort.GetPortNames(), true);
+            this.RefreshComboBoxWithList(cmbBaud, baudList);
+        }
+
+        private void RefreshComboBoxWithList(System.Windows.Forms.ComboBox comboBox, IList<string> items, bool selectLast = false)
+        {
+            int oldSelectedIndex = comboBox.SelectedIndex;
+            comboBox.Items.Clear();
+            comboBox.Items.AddRange(items.ToArray());
+            if (comboBox.Items.Count <= 0) return;
+
+            if (oldSelectedIndex > 0 && oldSelectedIndex < comboBox.Items.Count)
+            {
+                comboBox.SelectedIndex = oldSelectedIndex;
+            }
+            else
+            {
+                comboBox.SelectedIndex = selectLast ? comboBox.Items.Count - 1 : 0;
             }
         }
 
@@ -83,6 +120,71 @@ namespace AutoFocusCCD
                     return;
                 }
 
+            }
+        }
+
+
+        private void modelsCCDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(btnConnect.Text == "Disconnect")
+            {
+                btnConnect.PerformClick();
+            }
+
+            var product = new Forms.Setting.Product();
+            product.ShowDialog();
+
+        }
+
+        private void cmbDevices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cmb = (ComboBox)sender;
+            int cameraIndex = 0;
+
+            if (cmb.SelectedIndex >= 0)
+            {
+                cameraIndex = cmb.SelectedIndex;
+            }
+
+            var formats = UsbCamera.GetVideoFormat(cameraIndex);
+
+            string[] formatList = new string[formats.Length];
+
+            for (int i = 0; i < formats.Length; i++)
+            {
+                formatList[i] = formats[i].ToString();
+            }
+
+            RefreshComboBoxWithList(cmbFormats, formatList);
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Stop();
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            try
+            {
+                if(btn.Text == "Connect")
+                {
+
+                    this.ConnectCamera();
+                    btn.Text = "Disconnect";
+                }
+                else
+                {
+                    this.Stop();
+                    btn.Text = "Connect";
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Stop();
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btn.Text = "Connect";
             }
         }
     }

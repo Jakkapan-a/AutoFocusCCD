@@ -23,7 +23,6 @@ namespace AutoFocusCCD.SQLite
         public string UpdatedAt { get; set; }
 
         public string TableName => "Boxes";
-
         public Boxes()
         {
             Columns = new DynamicParameters();
@@ -43,6 +42,7 @@ namespace AutoFocusCCD.SQLite
         }
 
         public DynamicParameters Columns {get; private set; }
+
         public DynamicParameters CreateParameters()
         {
             var parameters = new DynamicParameters();
