@@ -1,15 +1,18 @@
 ﻿using AutoFocusCCD.SQLite;
 using GitHub.secile.Video;
+using Ookii.Dialogs.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Deployment.Application;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -45,11 +48,35 @@ namespace AutoFocusCCD
 #endif
             }
 
-
             /**
              * init Device
              */
             LoadDevices();
+            CheckCreateFolder();
+        }
+
+
+        private void CheckCreateFolder()
+        {
+
+            // Path history log and test
+            string path = Properties.Settings.Default.PATH == "" ? Properties.Settings.Default.PATH : "./";
+
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            if(!Directory.Exists(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE)))
+            {
+                Directory.CreateDirectory(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE));
+            }
+
+            if (!Directory.Exists(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE)))
+            {
+                Directory.CreateDirectory(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE));
+            }
         }
 
 
@@ -83,15 +110,15 @@ namespace AutoFocusCCD
         private void ShowAppVersion()
         {
             string version;
+#if DEBUG
+            version = "debug";
+#else
+            // version = ApplicationDeployment.CurrentDeployment.CurrentVersion == null ? "debug" : ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            
+            // version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
 
-            if (ApplicationDeployment.IsNetworkDeployed)
-            {
-                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-            }
-            else
-            {
-                version = "debug";
-            }
+            version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#endif
             this.Text += $" - {version}";
         }
 
@@ -186,6 +213,14 @@ namespace AutoFocusCCD
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btn.Text = "Connect";
             }
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new Forms.Setting.Preferences();
+
+            form.ShowDialog();
+
         }
     }
 }

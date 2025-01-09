@@ -113,7 +113,7 @@ namespace AutoFocusCCD.Forms.Setting
                     // Update
                     if(productSeleted == null)
                     {
-                        MessageBox.Show("Product not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("CCD PVM not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -142,6 +142,7 @@ namespace AutoFocusCCD.Forms.Setting
             {
                 productSeleted = null;
                 btnSave.Text = "Save";
+                btnNew.PerformClick();
                 RenderDGV();
             }
         }
@@ -149,13 +150,12 @@ namespace AutoFocusCCD.Forms.Setting
         private void btnNew_Click(object sender, EventArgs e)
         {
             txtName.Text = "";
-            cmbType.SelectedIndex = 0;
+            // cmbType.SelectedIndex = 0;
             nmuMinVoltage.Value = 0;
             nmuMaxVoltage.Value = 0;
             nmuMinCurrent.Value = 0;
             nmuMaxCurrent.Value = 0;
             productSeleted = null;
-
 
             dgvProduct.ClearSelection();
             btnSave.Text = "Save";
@@ -166,7 +166,7 @@ namespace AutoFocusCCD.Forms.Setting
 
             if(dgvProduct.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Product not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("CCD PVM not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try{
@@ -204,14 +204,14 @@ namespace AutoFocusCCD.Forms.Setting
 
             if (id == null)
             {
-                toolStripStatusMessage.Text = "Product not selected.";
+                toolStripStatusMessage.Text = "CCD PVM not selected.";
                 return;
             }
 
             productSeleted = SQLite.Product.Get(Convert.ToInt32(id));
             if (productSeleted == null)
             {
-                toolStripStatusMessage.Text = "Product not found.";
+                toolStripStatusMessage.Text = "CCD PVM not found.";
                 return;
             }
 
@@ -232,15 +232,73 @@ namespace AutoFocusCCD.Forms.Setting
             if(dgvProduct.SelectedRows.Count == 0)
             {
                 btnDelete.Enabled = false;
-            }else{
-                btnDelete.Enabled = true;
+                btnImage.Enabled = false;
             }
+            else{
+                btnDelete.Enabled = true;
+                btnImage.Enabled = true;
+            }
+
+            if (dgvProduct.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var id = dgvProduct.SelectedRows[0].Cells["Id"].Value;
+
+            if (id == null)
+            {
+                toolStripStatusMessage.Text = "CCD PVM not selected.";
+                return;
+            }
+
+            productSeleted = SQLite.Product.Get(Convert.ToInt32(id));
+
+            dgvProduct_DoubleClick(sender, e);
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.ProductType = cmbType.SelectedIndex;
             Properties.Settings.Default.Save();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(btnNew.Enabled == true)
+            {
+                btnNew.PerformClick();
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(dgvProduct.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("CCD PVM not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            this.dgvProduct_DoubleClick(sender, e);
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(btnDelete.Enabled == true)
+            {
+                btnDelete.PerformClick();
+            }
+        }
+
+        private void btnImage_Click(object sender, EventArgs e)
+        {
+            if(productSeleted == null)
+            {
+                MessageBox.Show("CCD PVM not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            } 
+
+            var boxImage = new BoxImage(productSeleted.Id);
+            boxImage.ShowDialog();
         }
     }
 }

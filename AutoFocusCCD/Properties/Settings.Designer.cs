@@ -34,5 +34,89 @@ namespace AutoFocusCCD.Properties {
                 this["ProductType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Vmin {
+            get {
+                return ((int)(this["Vmin"]));
+            }
+            set {
+                this["Vmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int Vmax {
+            get {
+                return ((int)(this["Vmax"]));
+            }
+            set {
+                this["Vmax"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Cmin {
+            get {
+                return ((int)(this["Cmin"]));
+            }
+            set {
+                this["Cmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int Cmax {
+            get {
+                return ((int)(this["Cmax"]));
+            }
+            set {
+                this["Cmax"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PATH_DATA_APP {
+            get {
+                return ((string)(this["PATH_DATA_APP"]));
+            }
+            set {
+                this["PATH_DATA_APP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("./")]
+        public string PATH {
+            get {
+                return ((string)(this["PATH"]));
+            }
+            set {
+                this["PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("./predict")]
+        public string PATH_IMAGE_TSET {
+            get {
+                return ((string)(this["PATH_IMAGE_TSET"]));
+            }
+            set {
+                this["PATH_IMAGE_TSET"] = value;
+            }
+        }
     }
 }

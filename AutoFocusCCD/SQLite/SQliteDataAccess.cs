@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AutoFocusCCD.SQLite
@@ -17,17 +19,22 @@ namespace AutoFocusCCD.SQLite
         /// <returns></returns>
         private static string LoadConnectionString()
         {
+            //string appName = Environment.GetFolderPat
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "Database");
+
             // Create file if not exist
-            if (!System.IO.File.Exists(System.IO.Directory.GetCurrentDirectory() + "\\" + "Database/ApplicationDB.db"))
+            if (!System.IO.File.Exists(Path.Combine(path, "ApplicationDB.db")))
             {
-                if(!System.IO.Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "\\" + "Database"))
+                if (!System.IO.Directory.Exists(path))
                 {
-                    System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "\\" + "Database");
+                    System.IO.Directory.CreateDirectory(path);
                 }
-                
-                SQLiteConnection.CreateFile(System.IO.Directory.GetCurrentDirectory() + "\\" + "Database/ApplicationDB.db");
+                SQLiteConnection.CreateFile(Path.Combine(path, "ApplicationDB.db"));
+
             }
-            return "Data Source=" + System.IO.Directory.GetCurrentDirectory() + "\\" + "Database/ApplicationDB.db;Version=3;";            
+
+            string connectionString = "Data Source=" + Path.Combine(path, "ApplicationDB.db") + ";Version=3;";
+            return connectionString;       
         }
 
         /// <summary>

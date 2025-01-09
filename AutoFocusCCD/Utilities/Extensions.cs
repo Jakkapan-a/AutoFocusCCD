@@ -250,6 +250,23 @@ namespace Multi_Camera_MINI_AOI_V3.Utilities
             return bmp;
 
         }
+
+        public static void RefreshComboBoxWithList(System.Windows.Forms.ComboBox comboBox, IList<string> items, bool selectLast = false)
+        {
+            int oldSelectedIndex = comboBox.SelectedIndex;
+            comboBox.Items.Clear();
+            comboBox.Items.AddRange(items.ToArray());
+            if (comboBox.Items.Count <= 0) return;
+
+            if (oldSelectedIndex > 0 && oldSelectedIndex < comboBox.Items.Count)
+            {
+                comboBox.SelectedIndex = oldSelectedIndex;
+            }
+            else
+            {
+                comboBox.SelectedIndex = selectLast ? comboBox.Items.Count - 1 : 0;
+            }
+        }
     }
 
 }
