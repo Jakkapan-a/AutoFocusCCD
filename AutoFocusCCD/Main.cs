@@ -47,8 +47,9 @@ namespace AutoFocusCCD
 
         public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
 
-        public PreferencesConfig preferences = null;
-        
+        public static PreferencesConfig preferences = null;
+        public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
+
         private void Main_Load(object sender, EventArgs e)
         {
 
@@ -76,18 +77,14 @@ namespace AutoFocusCCD
             LoadDevices();
             CheckCreateFolder();
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
-            this.preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
+            preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
             Logger.Info("Application started");
+
         }
 
         private void CheckCreateFolder()
         {
-            // Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name
-
-            // Path history log and test
-            if (this.preferences == null) return;
-           
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
+            if (preferences == null) return;
             
             if (!Directory.Exists(path))
             {
@@ -227,8 +224,10 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 btnConnect.PerformClick();
             }
 
-            var product = new Forms.Setting.Product();
-            product.ShowDialog();
+            using (var product = new Forms.Setting.Product())
+            {
+                product.ShowDialog();
+            }
 
         }
 
@@ -290,6 +289,44 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
             form.ShowDialog();
 
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            string version = "";
+            string company = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyCompanyAttribute>().Company;
+            string description = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+            string product = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product;
+            string title = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
+            string copyright = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright;
+
+#if DEBUG
+            version = Assembly.GetExecutingAssembly().GetName().Version.ToString() + " (Debug)";
+#else
+             version = ApplicationDeployment.CurrentDeployment.CurrentVersion == null ? Assembly.GetExecutingAssembly().GetName().Version.ToString() : ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            // version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            // version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#endif
+
+            var taskDialog = new TaskDialog
+            {
+                WindowTitle = $"{title} - About",
+                MainInstruction = $"{product}",
+                Content =
+                $"Version: {version}\n" +
+                $"Company: {company}" +
+                $"\n {description}" +
+                $"\n© " +
+                $"{DateTime.Now.Year}" +
+                $" All rights reserved.",
+                MainIcon = TaskDialogIcon.Information,
+            };
+
+            taskDialog.AllowDialogCancellation = true;
+            taskDialog.Buttons.Add(new TaskDialogButton("Close"));
+
+            taskDialog.ShowDialog();
         }
     }
 }

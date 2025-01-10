@@ -1,4 +1,6 @@
-﻿using Multi_Camera_MINI_AOI_V3.Utilities;
+﻿using AutoFocusCCD.Components;
+using Multi_Camera_MINI_AOI_V3.Utilities;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +15,8 @@ namespace AutoFocusCCD.Forms.Setting
 {
     public partial class Product : Form
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public Product()
         {
             InitializeComponent();
@@ -24,6 +28,9 @@ namespace AutoFocusCCD.Forms.Setting
             RenderDGV();
 
             cmbType.SelectedIndex = Properties.Settings.Default.ProductType;
+
+            Logger.Info("Product form loaded.");
+            btnNew.PerformClick();
         }
 
         private DataTable dt;
@@ -67,14 +74,15 @@ namespace AutoFocusCCD.Forms.Setting
 
             foreach (var item in product)
             {
-                dt.Rows.Add(item.Id, noDt, item.Name, item.Type == 1 ? "PVM" : "NONE", item.Voltage_min, item.Voltage_max, item.Current_min, item.Current_max, item.ImageFile, item.CreatedAt, item.UpdatedAt);
+                dt.Rows.Add(item.Id, noDt, item.Name, item.Type == 1 ? "PVM(4.6V)" : "NONE(6V)", item.Voltage_min, item.Voltage_max, item.Current_min, item.Current_max, item.ImageFile, item.CreatedAt, item.UpdatedAt);
                 noDt++;
             }
 
             Extensions.SetDataSourceAndUpdateSelection(dgvProduct,dt, visibleColumns: new string[] { "Id", "CreatedAt", "Image" } );
             Extensions.SelectedRow(dgvProduct, selectedRow);
-
             lblTotalData.Text = $"Total Data : {totalData} | Page : {currentPage}/{totalPage}";
+            toolStripStatusMessage.Text = "Data loaded.";
+            btnProvice.Enabled = currentPage > 1;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -136,14 +144,17 @@ namespace AutoFocusCCD.Forms.Setting
 
             }catch(Exception ex)
             {
+                Logger.Error(ex.Message);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
                 productSeleted = null;
+                dgvProduct.ClearSelection();
+
+                RenderDGV();
                 btnSave.Text = "Save";
                 btnNew.PerformClick();
-                RenderDGV();
             }
         }
 
@@ -152,9 +163,9 @@ namespace AutoFocusCCD.Forms.Setting
             txtName.Text = "";
             // cmbType.SelectedIndex = 0;
             nmuMinVoltage.Value = 0;
-            nmuMaxVoltage.Value = 0;
+            nmuMaxVoltage.Value = 8;
             nmuMinCurrent.Value = 0;
-            nmuMaxCurrent.Value = 0;
+            nmuMaxCurrent.Value = 3;
             productSeleted = null;
 
             dgvProduct.ClearSelection();
@@ -174,10 +185,24 @@ namespace AutoFocusCCD.Forms.Setting
             var id = dgvProduct.SelectedRows[0].Cells["Id"].Value;
             using (var p = SQLite.Product.Get(Convert.ToInt32(id)))
             {
+                try
+                {
+                    string path = System.IO.Path.Combine(Main.path, "images", p.ImageFile);
+                    if(System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex.Message);
+                }
+
                 p.Delete();
             }
             }catch(Exception ex)
             {
+                Logger.Error(ex.Message);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -197,6 +222,8 @@ namespace AutoFocusCCD.Forms.Setting
             // check if header clicked and selected row
             if(dgvProduct.SelectedRows.Count == 0)
             {
+                btnSave.Text = "Save";
+                this.productSeleted = null;
                 return;
             }
 
@@ -229,7 +256,10 @@ namespace AutoFocusCCD.Forms.Setting
         private void dgvProduct_SelectionChanged(object sender, EventArgs e)
         {
             toolStripStatusMessage.Text = "";
-            if(dgvProduct.SelectedRows.Count == 0)
+            pictureBox1.Image?.Dispose();
+            pictureBox1.Image = null;
+
+            if (dgvProduct.SelectedRows.Count == 0)
             {
                 btnDelete.Enabled = false;
                 btnImage.Enabled = false;
@@ -253,6 +283,8 @@ namespace AutoFocusCCD.Forms.Setting
             }
 
             productSeleted = SQLite.Product.Get(Convert.ToInt32(id));
+
+            LoadImage(productSeleted.ImageFile);
 
             dgvProduct_DoubleClick(sender, e);
         }
@@ -295,10 +327,79 @@ namespace AutoFocusCCD.Forms.Setting
             {
                 MessageBox.Show("CCD PVM not selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            } 
+            }
 
-            var boxImage = new BoxImage(productSeleted.Id);
-            boxImage.ShowDialog();
+            using (var boxImage = new BoxImage(productSeleted.Id))
+            {
+                boxImage.ShowDialog();
+            }
+
+
+            productSeleted = SQLite.Product.Get(productSeleted.Id);
+
+            LoadImage(productSeleted.ImageFile);
         }
+
+
+
+        private void LoadImage(string _path)
+        {
+            pictureBox1.Image?.Dispose();
+            pictureBox1.Image = null;
+
+            try
+            {
+                string path = System.IO.Path.Combine(Main.path, "images", _path);
+                if (!string.IsNullOrEmpty(_path) && _path != "" && _path != null)
+                {
+                    if (System.IO.File.Exists(path))
+                    {
+                        using (var bmpTemp = new Bitmap(path))
+                        {
+                            pictureBox1.Image = new Bitmap(bmpTemp);
+                        }
+
+                    }
+                }
+            }catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+
+            if (currentPage < totalPage)
+            {
+                currentPage++;
+                RenderDGV();
+            }
+        }
+
+        private void btnProvice_Click(object sender, EventArgs e)
+        {
+            if(currentPage > 1)
+            {
+                currentPage--;
+                RenderDGV();
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            this.toolStripStatusMessage.Text = "Searching...";
+            this.currentPage = 1;
+            
+            timerSearch.Stop();
+            timerSearch.Start();
+        }
+
+        private void timerSearch_Tick(object sender, EventArgs e)
+        {
+            timerSearch.Stop();
+            RenderDGV();
+        }
+
     }
 }

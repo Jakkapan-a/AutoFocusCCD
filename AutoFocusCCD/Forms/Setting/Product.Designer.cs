@@ -57,10 +57,11 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTotalData = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnProvice = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerSearch = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmuMaxCurrent)).BeginInit();
@@ -110,6 +111,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(6, 380);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(239, 202);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
@@ -284,8 +286,8 @@
             this.groupBox2.Controls.Add(this.txtSearch);
             this.groupBox2.Controls.Add(this.dgvProduct);
             this.groupBox2.Controls.Add(this.lblTotalData);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.btnProvice);
+            this.groupBox2.Controls.Add(this.btnNext);
             this.groupBox2.Location = new System.Drawing.Point(278, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(940, 679);
@@ -300,6 +302,7 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(156, 20);
             this.txtSearch.TabIndex = 3;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // dgvProduct
             // 
@@ -361,25 +364,27 @@
             this.lblTotalData.TabIndex = 0;
             this.lblTotalData.Text = "------";
             // 
-            // button5
+            // btnProvice
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(778, 652);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "<<";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnProvice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnProvice.Location = new System.Drawing.Point(778, 652);
+            this.btnProvice.Name = "btnProvice";
+            this.btnProvice.Size = new System.Drawing.Size(75, 23);
+            this.btnProvice.TabIndex = 2;
+            this.btnProvice.Text = "<<";
+            this.btnProvice.UseVisualStyleBackColor = true;
+            this.btnProvice.Click += new System.EventHandler(this.btnProvice_Click);
             // 
-            // button4
+            // btnNext
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(859, 652);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = ">>";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNext.Location = new System.Drawing.Point(859, 652);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.TabIndex = 2;
+            this.btnNext.Text = ">>";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // statusStrip1
             // 
@@ -396,6 +401,11 @@
             this.toolStripStatusMessage.Name = "toolStripStatusMessage";
             this.toolStripStatusMessage.Size = new System.Drawing.Size(12, 17);
             this.toolStripStatusMessage.Text = "-";
+            // 
+            // timerSearch
+            // 
+            this.timerSearch.Interval = 1000;
+            this.timerSearch.Tick += new System.EventHandler(this.timerSearch_Tick);
             // 
             // Product
             // 
@@ -453,8 +463,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.DataGridView dgvProduct;
         private System.Windows.Forms.Label lblTotalData;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnProvice;
+        private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusMessage;
@@ -462,5 +472,6 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Timer timerSearch;
     }
 }

@@ -45,7 +45,7 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtX = new System.Windows.Forms.TextBox();
             this.dgvBoxes = new System.Windows.Forms.DataGridView();
-            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSelectModel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -90,7 +90,7 @@
             this.groupBox1.Controls.Add(this.txtName);
             this.groupBox1.Controls.Add(this.txtX);
             this.groupBox1.Controls.Add(this.dgvBoxes);
-            this.groupBox1.Controls.Add(this.btnRemove);
+            this.groupBox1.Controls.Add(this.btnDelete);
             this.groupBox1.Controls.Add(this.btnNew);
             this.groupBox1.Controls.Add(this.btnSelectModel);
             this.groupBox1.Controls.Add(this.btnSave);
@@ -217,26 +217,29 @@
             this.dgvBoxes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBoxes.Size = new System.Drawing.Size(228, 318);
             this.dgvBoxes.TabIndex = 7;
+            this.dgvBoxes.SelectionChanged += new System.EventHandler(this.dgvBoxes_SelectionChanged);
             // 
-            // btnRemove
+            // btnDelete
             // 
-            this.btnRemove.BackgroundImage = global::AutoFocusCCD.Properties.Resources.delete_32;
-            this.btnRemove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnRemove.Location = new System.Drawing.Point(6, 132);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(26, 23);
-            this.btnRemove.TabIndex = 4;
-            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnDelete.BackgroundImage = global::AutoFocusCCD.Properties.Resources.delete_32;
+            this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnDelete.Location = new System.Drawing.Point(6, 132);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(26, 23);
+            this.btnDelete.TabIndex = 4;
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(75, 132);
+            this.btnNew.Location = new System.Drawing.Point(78, 132);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 5;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnSelectModel
             // 
@@ -257,6 +260,7 @@
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // groupBox2
             // 
@@ -357,6 +361,7 @@
             this.scrollablePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.scrollablePictureBox1.TabIndex = 0;
             this.scrollablePictureBox1.TabStop = false;
+            this.scrollablePictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.scrollablePictureBox1_Paint);
             // 
             // BoxImage
             // 
@@ -402,7 +407,7 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtX;
         private System.Windows.Forms.DataGridView dgvBoxes;
-        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnSelectModel;
         private System.Windows.Forms.Button btnSave;

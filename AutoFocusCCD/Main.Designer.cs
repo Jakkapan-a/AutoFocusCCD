@@ -103,33 +103,33 @@
             // modelsCCDToolStripMenuItem
             // 
             this.modelsCCDToolStripMenuItem.Name = "modelsCCDToolStripMenuItem";
-            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.modelsCCDToolStripMenuItem.Text = "CCD PVM";
             this.modelsCCDToolStripMenuItem.Click += new System.EventHandler(this.modelsCCDToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.historyToolStripMenuItem.Text = "History";
             // 
             // manageModelToolStripMenuItem
             // 
             this.manageModelToolStripMenuItem.Name = "manageModelToolStripMenuItem";
-            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.manageModelToolStripMenuItem.Text = "Manage Model";
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // toolsToolStripMenuItem
@@ -157,8 +157,9 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // lbTitle
             // 
