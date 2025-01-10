@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,14 +55,19 @@ namespace AutoFocusCCD.Config
     {
         public static PreferencesConfig Load(string path)
         {
-            //return JsonConvert.DeserializeObject<PreferencesConfig>(File.ReadAllText(path));
             try
             {
+                if(!File.Exists(path))
+                {
+                    // load default config and save to file
+                    PreferencesConfig config = LoadDefault();
+                    Save(path, config);
+                }
                 return JsonConvert.DeserializeObject<PreferencesConfig>(File.ReadAllText(path));
             }
             catch (Exception ex)
             {
-                return new PreferencesConfig();
+                return null;
             }
         }
 
@@ -78,7 +84,7 @@ namespace AutoFocusCCD.Config
             {
                 Network = new PreferencesConfig.NetworkConfig
                 {
-                    URL = "http://localhost:8080"
+                    URL = "http://127.0.0.1:11001"
                 },
                 Processing = new PreferencesConfig.ProcessingConfig
                 {
@@ -86,20 +92,20 @@ namespace AutoFocusCCD.Config
                 },
                 ClearMes = new PreferencesConfig.ClearMesConfig
                 {
-                    Message1 = "Clearing MES...",
-                    Delay = 1000,
-                    Message2 = "MES Cleared."
+                    Message1 = "clear",
+                    Delay = 500,
+                    Message2 = "test"
                 },
                 FileSystem = new PreferencesConfig.FileSystemConfig
                 {
                     DeleteFileAfterDays = 10,
-                    Path = "C:\\AutoFocusCCD"
+                    Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name)
                 },
                 OptionNG = new PreferencesConfig.OptionNGConfig
                 {
                     AllowSendNG = true,
-                    Key = "F1",
-                    Delay = 1000,
+                    Key = "006D",
+                    Delay = 500,
                     Message = "NG",
                     Description = "Send NG to MES"
                 }

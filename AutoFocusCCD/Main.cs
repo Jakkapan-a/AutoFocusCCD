@@ -1,5 +1,9 @@
-﻿using AutoFocusCCD.SQLite;
+﻿using AutoFocusCCD.Config;
+using AutoFocusCCD.SQLite;
 using GitHub.secile.Video;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using Ookii.Dialogs.WinForms;
 using System;
 using System.Collections.Generic;
@@ -20,13 +24,31 @@ namespace AutoFocusCCD
 {
     public partial class Main : Form
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public Main()
         {
             InitializeComponent();
             ShowAppVersion();
+
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "NLog.config");
+            if (File.Exists(path))
+            {
+                // Load NLog configuration from file
+                LogManager.Configuration = new XmlLoggingConfiguration(path);
+                Logger.Info("Load configuration from file: " + path);
+            }
+            else
+            {
+                SetDefaultNLogConfiguration(path);
+                Logger.Error("Not found configuration file, set default configuration");
+            }
         }
+
         public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
 
+        public PreferencesConfig preferences = null;
+        
         private void Main_Load(object sender, EventArgs e)
         {
 
@@ -38,7 +60,6 @@ namespace AutoFocusCCD
                 db.CreateTable();
 #endif
             }
-
             using (Boxes db = new Boxes())
             {
 #if DEBUG
@@ -46,23 +67,28 @@ namespace AutoFocusCCD
 #else
                 db.CreateTable();
 #endif
-            }
 
+            }
+           
             /**
              * init Device
              */
             LoadDevices();
             CheckCreateFolder();
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
+            this.preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
+            Logger.Info("Application started");
         }
-
 
         private void CheckCreateFolder()
         {
+            // Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name
 
             // Path history log and test
-            string path = Properties.Settings.Default.PATH == "" ? Properties.Settings.Default.PATH : "./";
-
-
+            if (this.preferences == null) return;
+           
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
+            
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -72,10 +98,53 @@ namespace AutoFocusCCD
             {
                 Directory.CreateDirectory(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE));
             }
+        }
 
-            if (!Directory.Exists(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE)))
+        private void SetDefaultNLogConfiguration(string path)
+        {
+            // Step 1. Create configuration object
+            var config = new LoggingConfiguration();
+
+            // Step 2. Create targets and add them to the configuration
+            var fileTarget = new FileTarget("logfile")
             {
-                Directory.CreateDirectory(Path.Combine(path, Properties.Resources.PATH_IMAGE_CAPTURE));
+                FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "logs", "${shortdate}.log"),
+                ArchiveEvery = FileArchivePeriod.Day,
+                MaxArchiveFiles = 10,
+                Layout = "${longdate} | ${level:uppercase=true} | ${message}",
+            };
+
+            // Step 3. Define rules
+            config.AddTarget(fileTarget);
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, fileTarget);
+            // Step 4. Activate the configuration
+            LogManager.Configuration = config;
+            LogManager.Setup();
+
+            try
+            {
+                // Step 5. Save the configuration to a file
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                string xmlContent = $@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<nlog xmlns=""http://www.nlog-project.org/schemas/NLog.xsd""
+xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+    <targets>
+        <target xsi:type=""File"" name=""logfile"" fileName=""{fileTarget.FileName}""
+        archiveEvery=""Day"" maxArchiveFiles=""10""
+        layout=""${{longdate}} | ${{level:uppercase=true}} | ${{message}}"" />
+    </targets>
+    <rules>
+        <logger name=""*"" minlevel=""Info"" writeTo=""logfile"" />
+    </rules>
+</nlog>";
+
+                File.WriteAllText(path, xmlContent);
+
+                Logger.Info("Save default NLog configuration to file: " + path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Can't save default NLog configuration to file: " + path);
             }
         }
 
