@@ -1,4 +1,5 @@
 ﻿using AutoFocusCCD.Config;
+using AutoFocusCCD.Forms.Setting;
 using AutoFocusCCD.SQLite;
 using GitHub.secile.Video;
 using NLog;
@@ -24,7 +25,7 @@ namespace AutoFocusCCD
 {
     public partial class Main : Form
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public Main()
         {
@@ -53,7 +54,7 @@ namespace AutoFocusCCD
         private void Main_Load(object sender, EventArgs e)
         {
 
-            using (Product db = new Product())
+            using (SQLite.Product db = new SQLite.Product())
             {
 #if DEBUG
                 db.SyncTable();
@@ -289,6 +290,9 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
             form.ShowDialog();
 
+            // Reload preferences
+
+            preferences = PreferencesConfigLoader.Load(path);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -327,6 +331,13 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             taskDialog.Buttons.Add(new TaskDialogButton("Close"));
 
             taskDialog.ShowDialog();
+        }
+
+        private void manageModelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileManagement fileManagement = new FileManagement();
+
+            fileManagement.ShowDialog();
         }
     }
 }

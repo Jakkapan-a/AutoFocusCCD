@@ -17,7 +17,7 @@ namespace AutoFocusCCD.Forms.Setting
 {
     public partial class BoxImage : Form
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = Main.Logger;
 
         private int ProductId = -1;
         private SQLite.Product product = null;
