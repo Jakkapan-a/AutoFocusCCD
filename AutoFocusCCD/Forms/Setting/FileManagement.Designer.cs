@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileManagement));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
@@ -46,17 +48,29 @@
             this.dgvFile = new System.Windows.Forms.DataGridView();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
+            this.progressDialog = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
+            this.vistaOpenFileDialog1 = new Ookii.Dialogs.WinForms.VistaOpenFileDialog();
+            this.timerValidName = new System.Windows.Forms.Timer(this.components);
+            this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFile)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 678);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(395, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(12, 17);
+            this.toolStripStatusLabel.Text = "-";
             // 
             // groupBox1
             // 
@@ -114,6 +128,7 @@
             this.txtDescription.Size = new System.Drawing.Size(296, 63);
             this.txtDescription.TabIndex = 7;
             this.txtDescription.Text = "";
+            this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
             // 
             // btnDelete
             // 
@@ -124,6 +139,7 @@
             this.btnDelete.Size = new System.Drawing.Size(25, 23);
             this.btnDelete.TabIndex = 6;
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
             // 
@@ -134,6 +150,7 @@
             this.btnNew.TabIndex = 5;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnBrowse
             // 
@@ -144,6 +161,7 @@
             this.btnBrowse.TabIndex = 5;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // btnSave
             // 
@@ -154,6 +172,7 @@
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // label2
             // 
@@ -200,6 +219,7 @@
             this.txtPath.ReadOnly = true;
             this.txtPath.Size = new System.Drawing.Size(249, 20);
             this.txtPath.TabIndex = 2;
+            this.txtPath.TextChanged += new System.EventHandler(this.txtPath_TextChanged);
             // 
             // dgvFile
             // 
@@ -217,6 +237,7 @@
             this.dgvFile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvFile.Size = new System.Drawing.Size(359, 409);
             this.dgvFile.TabIndex = 1;
+            this.dgvFile.SelectionChanged += new System.EventHandler(this.dgvFile_SelectionChanged);
             // 
             // txtSearch
             // 
@@ -233,6 +254,22 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(292, 20);
             this.txtName.TabIndex = 0;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            // 
+            // progressDialog
+            // 
+            this.progressDialog.Text = "progressDialog1";
+            this.progressDialog.DoWork += new System.ComponentModel.DoWorkEventHandler(this.progressDialog1_DoWork);
+            this.progressDialog.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.progressDialog1_RunWorkerCompleted);
+            // 
+            // vistaOpenFileDialog1
+            // 
+            this.vistaOpenFileDialog1.Filter = "pt files (*.pt)|*.pt|All files (*.*)|*.*";
+            // 
+            // timerValidName
+            // 
+            this.timerValidName.Interval = 500;
+            this.timerValidName.Tick += new System.EventHandler(this.timerValidName_Tick);
             // 
             // FileManagement
             // 
@@ -242,10 +279,13 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(411, 739);
             this.Name = "FileManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "File Management";
             this.Load += new System.EventHandler(this.FileManagement_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFile)).EndInit();
@@ -273,5 +313,9 @@
         private System.Windows.Forms.DataGridView dgvFile;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private Ookii.Dialogs.WinForms.ProgressDialog progressDialog;
+        private Ookii.Dialogs.WinForms.VistaOpenFileDialog vistaOpenFileDialog1;
+        private System.Windows.Forms.Timer timerValidName;
     }
 }

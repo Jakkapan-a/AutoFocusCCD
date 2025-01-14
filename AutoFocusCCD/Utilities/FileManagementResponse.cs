@@ -40,5 +40,10 @@ namespace AutoFocusCCD.Utilities
         public int total_pages { get; set; }
     }
 
-    
+    public class FileValidApiResponse
+    {
+        public bool is_valid { get; set; }
+        public string message { get; set; }
+        public string status { get; set; }
+    }
 }
