@@ -90,6 +90,15 @@ namespace AutoFocusCCD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to preferences.json.
+        /// </summary>
+        internal static string Preferences {
+            get {
+                return ResourceManager.GetString("Preferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Spinner_0_4s_800px {

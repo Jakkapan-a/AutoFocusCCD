@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Preferences));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnTestNetwork = new System.Windows.Forms.Button();
@@ -37,17 +38,17 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nClearDelay = new System.Windows.Forms.NumericUpDown();
             this.btnMesTest = new System.Windows.Forms.Button();
-            this.txtMesTest = new System.Windows.Forms.TextBox();
+            this.txtClearMessage2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtClearMessage1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txtKeySendDescription = new System.Windows.Forms.RichTextBox();
-            this.cbIsAllowNG = new System.Windows.Forms.CheckBox();
+            this.cbAllowNG = new System.Windows.Forms.CheckBox();
             this.nKeySendDelay = new System.Windows.Forms.NumericUpDown();
             this.btnTestNG = new System.Windows.Forms.Button();
-            this.txtMesMessagetest = new System.Windows.Forms.TextBox();
+            this.txtMessageSendNG = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -57,15 +58,21 @@
             this.nThreshold = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.nDay = new System.Windows.Forms.NumericUpDown();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.nDeleteFileAfterDays = new System.Windows.Forms.NumericUpDown();
+            this.btnResetFilePath = new System.Windows.Forms.Button();
+            this.btnOpen = new System.Windows.Forms.Button();
+            this.btnBrowse = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtPath = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.factoryResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.taskDialog1 = new Ookii.Dialogs.WinForms.TaskDialog(this.components);
+            this._taskDialogButtonOK = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
+            this._taskDialogButtonCancel = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
+            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nClearDelay)).BeginInit();
@@ -74,7 +81,8 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).BeginInit();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nDay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).BeginInit();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -97,6 +105,7 @@
             this.btnTestNetwork.TabIndex = 4;
             this.btnTestNetwork.Text = "Test";
             this.btnTestNetwork.UseVisualStyleBackColor = true;
+            this.btnTestNetwork.Click += new System.EventHandler(this.btnTestNetwork_Click);
             // 
             // txtURL
             // 
@@ -105,6 +114,7 @@
             this.txtURL.Size = new System.Drawing.Size(273, 20);
             this.txtURL.TabIndex = 2;
             this.txtURL.Text = "http://127.0.0.1:10010";
+            this.txtURL.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // label1
             // 
@@ -127,7 +137,7 @@
             // 
             this.groupBox2.Controls.Add(this.nClearDelay);
             this.groupBox2.Controls.Add(this.btnMesTest);
-            this.groupBox2.Controls.Add(this.txtMesTest);
+            this.groupBox2.Controls.Add(this.txtClearMessage2);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txtClearMessage1);
@@ -155,6 +165,7 @@
             0,
             0,
             0});
+            this.nClearDelay.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
             // 
             // btnMesTest
             // 
@@ -164,14 +175,16 @@
             this.btnMesTest.TabIndex = 4;
             this.btnMesTest.Text = "Test";
             this.btnMesTest.UseVisualStyleBackColor = true;
+            this.btnMesTest.Click += new System.EventHandler(this.btnMesTest_Click);
             // 
-            // txtMesTest
+            // txtClearMessage2
             // 
-            this.txtMesTest.Location = new System.Drawing.Point(71, 93);
-            this.txtMesTest.Name = "txtMesTest";
-            this.txtMesTest.Size = new System.Drawing.Size(244, 20);
-            this.txtMesTest.TabIndex = 2;
-            this.txtMesTest.Text = "test";
+            this.txtClearMessage2.Location = new System.Drawing.Point(71, 93);
+            this.txtClearMessage2.Name = "txtClearMessage2";
+            this.txtClearMessage2.Size = new System.Drawing.Size(244, 20);
+            this.txtClearMessage2.TabIndex = 2;
+            this.txtClearMessage2.Text = "test";
+            this.txtClearMessage2.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // label4
             // 
@@ -198,6 +211,7 @@
             this.txtClearMessage1.Size = new System.Drawing.Size(244, 20);
             this.txtClearMessage1.TabIndex = 2;
             this.txtClearMessage1.Text = "clear";
+            this.txtClearMessage1.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // label2
             // 
@@ -211,10 +225,10 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.txtKeySendDescription);
-            this.groupBox3.Controls.Add(this.cbIsAllowNG);
+            this.groupBox3.Controls.Add(this.cbAllowNG);
             this.groupBox3.Controls.Add(this.nKeySendDelay);
             this.groupBox3.Controls.Add(this.btnTestNG);
-            this.groupBox3.Controls.Add(this.txtMesMessagetest);
+            this.groupBox3.Controls.Add(this.txtMessageSendNG);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label6);
@@ -234,19 +248,21 @@
             this.txtKeySendDescription.Size = new System.Drawing.Size(244, 51);
             this.txtKeySendDescription.TabIndex = 7;
             this.txtKeySendDescription.Text = "";
+            this.txtKeySendDescription.TextChanged += new System.EventHandler(this.txtKeySendDescription_TextChanged);
             // 
-            // cbIsAllowNG
+            // cbAllowNG
             // 
-            this.cbIsAllowNG.AutoSize = true;
-            this.cbIsAllowNG.Checked = true;
-            this.cbIsAllowNG.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIsAllowNG.ForeColor = System.Drawing.Color.Red;
-            this.cbIsAllowNG.Location = new System.Drawing.Point(9, 20);
-            this.cbIsAllowNG.Name = "cbIsAllowNG";
-            this.cbIsAllowNG.Size = new System.Drawing.Size(96, 17);
-            this.cbIsAllowNG.TabIndex = 6;
-            this.cbIsAllowNG.Text = "Allow send NG";
-            this.cbIsAllowNG.UseVisualStyleBackColor = true;
+            this.cbAllowNG.AutoSize = true;
+            this.cbAllowNG.Checked = true;
+            this.cbAllowNG.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAllowNG.ForeColor = System.Drawing.Color.Red;
+            this.cbAllowNG.Location = new System.Drawing.Point(9, 20);
+            this.cbAllowNG.Name = "cbAllowNG";
+            this.cbAllowNG.Size = new System.Drawing.Size(96, 17);
+            this.cbAllowNG.TabIndex = 6;
+            this.cbAllowNG.Text = "Allow send NG";
+            this.cbAllowNG.UseVisualStyleBackColor = true;
+            this.cbAllowNG.CheckedChanged += new System.EventHandler(this.cbAllowNG_CheckedChanged);
             // 
             // nKeySendDelay
             // 
@@ -264,6 +280,7 @@
             0,
             0,
             0});
+            this.nKeySendDelay.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
             // 
             // btnTestNG
             // 
@@ -273,14 +290,16 @@
             this.btnTestNG.TabIndex = 4;
             this.btnTestNG.Text = "Test";
             this.btnTestNG.UseVisualStyleBackColor = true;
+            this.btnTestNG.Click += new System.EventHandler(this.btnTestNG_Click);
             // 
-            // txtMesMessagetest
+            // txtMessageSendNG
             // 
-            this.txtMesMessagetest.Location = new System.Drawing.Point(71, 93);
-            this.txtMesMessagetest.Name = "txtMesMessagetest";
-            this.txtMesMessagetest.Size = new System.Drawing.Size(244, 20);
-            this.txtMesMessagetest.TabIndex = 2;
-            this.txtMesMessagetest.Text = "test";
+            this.txtMessageSendNG.Location = new System.Drawing.Point(71, 93);
+            this.txtMessageSendNG.Name = "txtMessageSendNG";
+            this.txtMessageSendNG.Size = new System.Drawing.Size(244, 20);
+            this.txtMessageSendNG.TabIndex = 2;
+            this.txtMessageSendNG.Text = "test";
+            this.txtMessageSendNG.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // label5
             // 
@@ -316,6 +335,7 @@
             this.txtKeySendNG.Size = new System.Drawing.Size(244, 20);
             this.txtKeySendNG.TabIndex = 2;
             this.txtKeySendNG.Text = "006D";
+            this.txtKeySendNG.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // label7
             // 
@@ -348,6 +368,7 @@
             0,
             0,
             0});
+            this.nThreshold.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
             // 
             // label9
             // 
@@ -360,14 +381,14 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.nDay);
-            this.groupBox5.Controls.Add(this.button5);
-            this.groupBox5.Controls.Add(this.button2);
-            this.groupBox5.Controls.Add(this.button1);
+            this.groupBox5.Controls.Add(this.nDeleteFileAfterDays);
+            this.groupBox5.Controls.Add(this.btnResetFilePath);
+            this.groupBox5.Controls.Add(this.btnOpen);
+            this.groupBox5.Controls.Add(this.btnBrowse);
             this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.label12);
             this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Controls.Add(this.textBox1);
+            this.groupBox5.Controls.Add(this.txtPath);
             this.groupBox5.Location = new System.Drawing.Point(349, 124);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(327, 154);
@@ -375,44 +396,48 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "File System";
             // 
-            // nDay
+            // nDeleteFileAfterDays
             // 
-            this.nDay.Location = new System.Drawing.Point(75, 31);
-            this.nDay.Name = "nDay";
-            this.nDay.Size = new System.Drawing.Size(198, 20);
-            this.nDay.TabIndex = 5;
-            this.nDay.Value = new decimal(new int[] {
+            this.nDeleteFileAfterDays.Location = new System.Drawing.Point(75, 31);
+            this.nDeleteFileAfterDays.Name = "nDeleteFileAfterDays";
+            this.nDeleteFileAfterDays.Size = new System.Drawing.Size(198, 20);
+            this.nDeleteFileAfterDays.TabIndex = 5;
+            this.nDeleteFileAfterDays.Value = new decimal(new int[] {
             5,
             0,
             0,
             0});
+            this.nDeleteFileAfterDays.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
             // 
-            // button5
+            // btnResetFilePath
             // 
-            this.button5.Location = new System.Drawing.Point(71, 107);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(69, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Reset";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnResetFilePath.Location = new System.Drawing.Point(71, 107);
+            this.btnResetFilePath.Name = "btnResetFilePath";
+            this.btnResetFilePath.Size = new System.Drawing.Size(69, 23);
+            this.btnResetFilePath.TabIndex = 4;
+            this.btnResetFilePath.Text = "Reset";
+            this.btnResetFilePath.UseVisualStyleBackColor = true;
+            this.btnResetFilePath.Click += new System.EventHandler(this.btnResetFilePath_Click);
             // 
-            // button2
+            // btnOpen
             // 
-            this.button2.Location = new System.Drawing.Point(171, 107);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(69, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Open";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnOpen.Location = new System.Drawing.Point(171, 107);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(69, 23);
+            this.btnOpen.TabIndex = 4;
+            this.btnOpen.Text = "Open";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
-            // button1
+            // btnBrowse
             // 
-            this.button1.Location = new System.Drawing.Point(246, 107);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(69, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Browse";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnBrowse.Location = new System.Drawing.Point(246, 107);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(69, 23);
+            this.btnBrowse.TabIndex = 4;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // label11
             // 
@@ -441,12 +466,14 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Delete file";
             // 
-            // textBox1
+            // txtPath
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 81);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(244, 20);
-            this.textBox1.TabIndex = 2;
+            this.txtPath.Location = new System.Drawing.Point(71, 81);
+            this.txtPath.Name = "txtPath";
+            this.txtPath.ReadOnly = true;
+            this.txtPath.Size = new System.Drawing.Size(244, 20);
+            this.txtPath.TabIndex = 2;
+            this.txtPath.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // groupBox6
             // 
@@ -457,12 +484,48 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "----";
             // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.factoryResetToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(142, 26);
+            // 
+            // factoryResetToolStripMenuItem
+            // 
+            this.factoryResetToolStripMenuItem.Name = "factoryResetToolStripMenuItem";
+            this.factoryResetToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.factoryResetToolStripMenuItem.Text = "Factory reset";
+            this.factoryResetToolStripMenuItem.Click += new System.EventHandler(this.factoryResetToolStripMenuItem_Click);
+            // 
+            // taskDialog1
+            // 
+            this.taskDialog1.Buttons.Add(this._taskDialogButtonOK);
+            this.taskDialog1.Buttons.Add(this._taskDialogButtonCancel);
+            this.taskDialog1.MainInstruction = "taskDialog1";
+            // 
+            // _taskDialogButtonOK
+            // 
+            this._taskDialogButtonOK.ButtonType = Ookii.Dialogs.WinForms.ButtonType.Ok;
+            this._taskDialogButtonOK.Text = "taskDialogButton1OK";
+            // 
+            // _taskDialogButtonCancel
+            // 
+            this._taskDialogButtonCancel.ButtonType = Ookii.Dialogs.WinForms.ButtonType.Cancel;
+            this._taskDialogButtonCancel.Text = "taskDialogButton2";
+            // 
+            // timerUpdate
+            // 
+            this.timerUpdate.Interval = 200;
+            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(694, 545);
+            this.ContextMenuStrip = this.contextMenuStrip;
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -488,7 +551,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nDay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).EndInit();
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -504,17 +568,17 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.NumericUpDown nClearDelay;
         private System.Windows.Forms.Button btnMesTest;
-        private System.Windows.Forms.TextBox txtMesTest;
+        private System.Windows.Forms.TextBox txtClearMessage2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtClearMessage1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RichTextBox txtKeySendDescription;
-        private System.Windows.Forms.CheckBox cbIsAllowNG;
+        private System.Windows.Forms.CheckBox cbAllowNG;
         private System.Windows.Forms.NumericUpDown nKeySendDelay;
         private System.Windows.Forms.Button btnTestNG;
-        private System.Windows.Forms.TextBox txtMesMessagetest;
+        private System.Windows.Forms.TextBox txtMessageSendNG;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
@@ -524,14 +588,20 @@
         private System.Windows.Forms.NumericUpDown nThreshold;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.NumericUpDown nDay;
+        private System.Windows.Forms.NumericUpDown nDeleteFileAfterDays;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox txtPath;
+        private System.Windows.Forms.Button btnOpen;
+        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Button btnResetFilePath;
         private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem factoryResetToolStripMenuItem;
+        private Ookii.Dialogs.WinForms.TaskDialog taskDialog1;
+        private Ookii.Dialogs.WinForms.TaskDialogButton _taskDialogButtonOK;
+        private Ookii.Dialogs.WinForms.TaskDialogButton _taskDialogButtonCancel;
+        private System.Windows.Forms.Timer timerUpdate;
     }
 }

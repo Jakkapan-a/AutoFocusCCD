@@ -28,7 +28,7 @@ namespace AutoFocusCCD.Forms.Setting
         public FileManagement()
         {
             InitializeComponent();
-            string server_url = Main.preferences.Network.URL;
+            string server_url = Main.Preferences().Network.URL;
             // check last character of url = '/' or not
             if (server_url[server_url.Length - 1] == '/')
             {
@@ -43,6 +43,7 @@ namespace AutoFocusCCD.Forms.Setting
         private int total_pages = 0;
         private int total_data = 0;
         private int fileId = 0;
+
         private DataTable dtFiles;
 
         private void FileManagement_Load(object sender, EventArgs e)
@@ -58,9 +59,7 @@ namespace AutoFocusCCD.Forms.Setting
             dtFiles.Columns.Add("updated_at", typeof(string));
 
             _ = RenderDGVFile();
-
-            //progressDialog.ShowDialog();
-     
+            
         }
 
         private async Task RenderDGVFile()
@@ -151,6 +150,7 @@ namespace AutoFocusCCD.Forms.Setting
                 }
 
                 btnSave.Text = "Saving...";
+                progressDialog.WindowTitle = $"Uploading file {txtName.Text}";
                 progressDialog.ShowDialog(this);
             }
             else if (btnSave.Text == "Update")
@@ -170,6 +170,7 @@ namespace AutoFocusCCD.Forms.Setting
                 }
 
                 btnSave.Text = "Updating...";
+                progressDialog.WindowTitle = $"Updating file {txtName.Text}";
                 progressDialog.ShowDialog(this);
 
             }

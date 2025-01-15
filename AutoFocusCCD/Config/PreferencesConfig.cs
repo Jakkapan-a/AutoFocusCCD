@@ -67,6 +67,7 @@ namespace AutoFocusCCD.Config
             }
             catch (Exception ex)
             {
+                Main.Logger.Error("Error loading preferences: " + ex.Message);
                 return null;
             }
         }
@@ -84,11 +85,11 @@ namespace AutoFocusCCD.Config
             {
                 Network = new PreferencesConfig.NetworkConfig
                 {
-                    URL = "http://127.0.0.1:11001"
+                    URL = "http://127.0.0.1:10010"
                 },
                 Processing = new PreferencesConfig.ProcessingConfig
                 {
-                    Threshold = 100
+                    Threshold = 50
                 },
                 ClearMes = new PreferencesConfig.ClearMesConfig
                 {

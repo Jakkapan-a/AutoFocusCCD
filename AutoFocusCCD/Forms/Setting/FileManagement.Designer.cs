@@ -258,7 +258,11 @@
             // 
             // progressDialog
             // 
+            this.progressDialog.CancellationText = "ex";
+            this.progressDialog.Description = "des";
+            this.progressDialog.ProgressBarStyle = Ookii.Dialogs.WinForms.ProgressBarStyle.MarqueeProgressBar;
             this.progressDialog.Text = "progressDialog1";
+            this.progressDialog.WindowTitle = "Upload File";
             this.progressDialog.DoWork += new System.ComponentModel.DoWorkEventHandler(this.progressDialog1_DoWork);
             this.progressDialog.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.progressDialog1_RunWorkerCompleted);
             // 

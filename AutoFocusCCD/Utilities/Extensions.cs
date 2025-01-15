@@ -90,6 +90,15 @@ namespace Multi_Camera_MINI_AOI_V3.Utilities
             return Regex.IsMatch(ip, pattern);
         }
 
+        /**
+         *  
+         */
+        public static bool IsValidURL(string url)
+        {
+            Uri uriResult;
+            return Uri.TryCreate(url, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp; // true: valid URL, false: invalid URL
+        }
+
         public static bool IsValidPort(string port)
         {
             int portNumber;

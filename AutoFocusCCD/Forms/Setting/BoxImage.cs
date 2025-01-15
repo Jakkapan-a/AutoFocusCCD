@@ -33,10 +33,10 @@ namespace AutoFocusCCD.Forms.Setting
 
         private DataTable dt;
         private int noDt = 1;
-        private int pageSize = 100;
-        private int currentPage = 1;
-        private int totalPage = 0;
-        private int totalData = 0;
+        //private int pageSize = 100;
+        //private int currentPage = 1;
+        //private int totalPage = 0;
+        //private int totalData = 0;
 
         private GitHub.secile.Video.UsbCamera camera = null;
 

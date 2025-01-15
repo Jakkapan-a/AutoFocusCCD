@@ -62,12 +62,15 @@
             this.txtQr = new System.Windows.Forms.TextBox();
             this.txtEmp = new System.Windows.Forms.TextBox();
             this.lbDateTime = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbCurrent = new System.Windows.Forms.Label();
+            this.lbVoltage = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workspecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -91,6 +94,7 @@
             // settingToolStripMenuItem
             // 
             this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
             this.modelsCCDToolStripMenuItem,
             this.historyToolStripMenuItem,
             this.manageModelToolStripMenuItem,
@@ -132,6 +136,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -144,7 +149,7 @@
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hasToolStripMenuItem.Text = "Has";
             // 
             // helpToolStripMenuItem
@@ -186,8 +191,8 @@
             this.panel1.Controls.Add(this.btnClearMes);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.lbDateTime);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.lbCurrent);
+            this.panel1.Controls.Add(this.lbVoltage);
             this.panel1.Location = new System.Drawing.Point(1093, 27);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(248, 701);
@@ -384,31 +389,31 @@
             this.lbDateTime.Text = "------------------";
             this.lbDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label2
+            // lbCurrent
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.White;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 11.25F);
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(9, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 20);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "--mA";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbCurrent.AutoSize = true;
+            this.lbCurrent.BackColor = System.Drawing.Color.White;
+            this.lbCurrent.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lbCurrent.ForeColor = System.Drawing.Color.Red;
+            this.lbCurrent.Location = new System.Drawing.Point(9, 37);
+            this.lbCurrent.Name = "lbCurrent";
+            this.lbCurrent.Size = new System.Drawing.Size(44, 20);
+            this.lbCurrent.TabIndex = 0;
+            this.lbCurrent.Text = "--mA";
+            this.lbCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label1
+            // lbVoltage
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 11.25F);
-            this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(9, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "--V";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbVoltage.AutoSize = true;
+            this.lbVoltage.BackColor = System.Drawing.Color.White;
+            this.lbVoltage.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lbVoltage.ForeColor = System.Drawing.Color.Blue;
+            this.lbVoltage.Location = new System.Drawing.Point(9, 9);
+            this.lbVoltage.Name = "lbVoltage";
+            this.lbVoltage.Size = new System.Drawing.Size(30, 20);
+            this.lbVoltage.TabIndex = 0;
+            this.lbVoltage.Text = "--V";
+            this.lbVoltage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // statusStrip1
             // 
@@ -446,6 +451,27 @@
             // progressDialog1
             // 
             this.progressDialog1.Text = "progressDialog1";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem,
+            this.workspecToolStripMenuItem});
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            // 
+            // configToolStripMenuItem
+            // 
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configToolStripMenuItem.Text = "Config";
+            // 
+            // workspecToolStripMenuItem
+            // 
+            this.workspecToolStripMenuItem.Name = "workspecToolStripMenuItem";
+            this.workspecToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.workspecToolStripMenuItem.Text = "History File";
             // 
             // Main
             // 
@@ -490,8 +516,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbCurrent;
+        private System.Windows.Forms.Label lbVoltage;
         private System.Windows.Forms.Label lbDateTime;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
@@ -519,6 +545,9 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private Ookii.Dialogs.WinForms.ProgressDialog progressDialog1;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workspecToolStripMenuItem;
     }
 }
 

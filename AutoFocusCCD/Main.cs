@@ -48,8 +48,11 @@ namespace AutoFocusCCD
 
         public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
 
-        public static PreferencesConfig preferences = null;
+
         public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
+        public static string PreferencesPath() => Path.Combine(path, Properties.Resources.Preferences);
+
+        public static PreferencesConfig Preferences() => PreferencesConfigLoader.Load(PreferencesPath());
 
         private void Main_Load(object sender, EventArgs e)
         {
@@ -78,14 +81,13 @@ namespace AutoFocusCCD
             LoadDevices();
             CheckCreateFolder();
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
-            preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
+            //preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
             Logger.Info("Application started");
-
         }
 
         private void CheckCreateFolder()
         {
-            if (preferences == null) return;
+            //if (preferences == null) return;
             
             if (!Directory.Exists(path))
             {
@@ -289,10 +291,8 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             var form = new Forms.Setting.Preferences();
 
             form.ShowDialog();
-
             // Reload preferences
-
-            preferences = PreferencesConfigLoader.Load(path);
+            // preferences = PreferencesConfigLoader.Load(path);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -338,6 +338,11 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             FileManagement fileManagement = new FileManagement();
 
             fileManagement.ShowDialog();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
