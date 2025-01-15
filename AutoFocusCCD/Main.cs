@@ -30,6 +30,7 @@ namespace AutoFocusCCD
         public Main()
         {
             InitializeComponent();
+            InitializeSerial();
             ShowAppVersion();
 
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "NLog.config");
@@ -344,5 +345,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
         {
             this.Close();
         }
+
+       
     }
 }

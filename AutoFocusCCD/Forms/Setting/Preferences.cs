@@ -29,9 +29,8 @@ namespace AutoFocusCCD.Forms.Setting
         private void loadPreferences()
         {
             this.preferencesConfig = Main.Preferences();
-
             if (preferencesConfig == null) return;
-
+            
             txtURL.Text = preferencesConfig.Network.URL;
             txtClearMessage1.Text = preferencesConfig.ClearMes.Message1;
             nClearDelay.Value = preferencesConfig.ClearMes.Delay;

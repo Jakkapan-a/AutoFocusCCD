@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workspecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modelsCCDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageModelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,15 +71,15 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.workspecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
+            this.serialPort = new System.IO.Ports.SerialPort(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -104,37 +107,58 @@
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.settingToolStripMenuItem.Text = "Setting";
             // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem,
+            this.workspecToolStripMenuItem});
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            // 
+            // configToolStripMenuItem
+            // 
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.configToolStripMenuItem.Text = "Config";
+            // 
+            // workspecToolStripMenuItem
+            // 
+            this.workspecToolStripMenuItem.Name = "workspecToolStripMenuItem";
+            this.workspecToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.workspecToolStripMenuItem.Text = "History File";
+            // 
             // modelsCCDToolStripMenuItem
             // 
             this.modelsCCDToolStripMenuItem.Name = "modelsCCDToolStripMenuItem";
-            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.modelsCCDToolStripMenuItem.Text = "CCD PVM";
             this.modelsCCDToolStripMenuItem.Click += new System.EventHandler(this.modelsCCDToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.historyToolStripMenuItem.Text = "History";
             // 
             // manageModelToolStripMenuItem
             // 
             this.manageModelToolStripMenuItem.Name = "manageModelToolStripMenuItem";
-            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.manageModelToolStripMenuItem.Text = "File Management";
             this.manageModelToolStripMenuItem.Click += new System.EventHandler(this.manageModelToolStripMenuItem_Click);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -149,7 +173,7 @@
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.hasToolStripMenuItem.Text = "Has";
             // 
             // helpToolStripMenuItem
@@ -428,6 +452,7 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.pictureBoxPredict);
             this.panel2.Controls.Add(this.pictureBox);
             this.panel2.Controls.Add(this.lbTitle);
             this.panel2.Location = new System.Drawing.Point(12, 27);
@@ -452,26 +477,25 @@
             // 
             this.progressDialog1.Text = "progressDialog1";
             // 
-            // openToolStripMenuItem
+            // pictureBoxPredict
             // 
-            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configToolStripMenuItem,
-            this.workspecToolStripMenuItem});
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Open";
+            this.pictureBoxPredict.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxPredict.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxPredict.Location = new System.Drawing.Point(3, 55);
+            this.pictureBoxPredict.Name = "pictureBoxPredict";
+            this.pictureBoxPredict.Size = new System.Drawing.Size(1069, 643);
+            this.pictureBoxPredict.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPredict.TabIndex = 3;
+            this.pictureBoxPredict.TabStop = false;
+            this.pictureBoxPredict.Visible = false;
             // 
-            // configToolStripMenuItem
+            // serialPort
             // 
-            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.configToolStripMenuItem.Text = "Config";
-            // 
-            // workspecToolStripMenuItem
-            // 
-            this.workspecToolStripMenuItem.Name = "workspecToolStripMenuItem";
-            this.workspecToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.workspecToolStripMenuItem.Text = "History File";
+            this.serialPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.serialPort_ErrorReceived);
+            this.serialPort.PinChanged += new System.IO.Ports.SerialPinChangedEventHandler(this.serialPort_PinChanged);
+            this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
             // Main
             // 
@@ -500,6 +524,7 @@
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -548,6 +573,8 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem workspecToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBoxPredict;
+        private System.IO.Ports.SerialPort serialPort;
     }
 }
 
