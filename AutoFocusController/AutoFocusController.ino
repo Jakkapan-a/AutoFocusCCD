@@ -27,8 +27,6 @@
  */
 Adafruit_INA219 ina219(0x40);
 
-
-
 /*
  * Enhanced Packet Protocol Structure:
  * -----------------------------------------------------
@@ -48,39 +46,9 @@ Adafruit_INA219 ina219(0x40);
  */
 EnhancedPacketHandler packetHandler;
 
-void handlePacket(EnhancedPacketHandler::PacketData& packet) {
-  // Process received packet based on command type
-  switch (packet.command) {
-    case CMD_DATA:
-      // Handle data command
-      Serial.println("Data packet received");
-      // Process packet.value with length packet.valueSize
-      break;
-
-    case CMD_REQUEST:
-      // Handle request command
-      Serial.println("Request received");
-      // Send response packet
-      uint8_t responseData[] = { 0x01, 0x02, 0x03 };
-      EnhancedPacketHandler::PacketData response = {
-        .mode1 = packet.mode1,
-        .mode2 = packet.mode2,
-        .command = CMD_RESPONSE,
-        .sequence = 0,  // Will be auto-incremented
-        .value = responseData,
-        .valueSize = sizeof(responseData)
-      };
-      packetHandler.sendPacket(response);
-      break;
-
-    default:
-      Serial.println("Unknown command received");
-      break;
-  }
-}
 
 
-#define BUFFER_SIZE_DATA 128
+#define BUFFER_SIZE_DATA 50
 // -------------------- INPUT ----------------------- //
 #define SENSOR_PIN 10
 void sensorEvent(bool state);
@@ -107,7 +75,6 @@ TcPINOUT RELAY2_PVM(RELAY2_PVM_PIN, false);  // 4.6v control for out of ECU
 
 #define RELAY3_PVM_PIN 9  //
 TcPINOUT RELAY3_PVM(RELAY3_PVM_PIN, false);
-
 
 uint8_t RESULT = 0;
 // -------------------- SERIAL 0 -------------------- //
@@ -174,7 +141,7 @@ void setup() {
   // Serial1.begin(9600);
   Serial.println("$START:OK#");
   // Serial1.println("$START:OK#");
-    packetHandler.begin(Serial1, 9600);
+  packetHandler.begin(Serial1, 9600);
   packetHandler.setCallback(handlePacket);
 
   // Sensor
@@ -210,7 +177,7 @@ void setup() {
     };
     while (!ina219.begin()) {
       // Serial1.println("$INA219:FAIL#");
-      if(packetHandler.sendPacket(sendPacket)) {
+      if (packetHandler.sendPacket(sendPacket)) {
         Serial.println("Packet sent");
       }
       delay(1000);
@@ -226,45 +193,65 @@ void loop() {
   // manageSerial1();
 
   uint32_t currentTime = millis();
-  
+
   if (currentTime - lastTime > 1000) {
     secondTick();
-
-    // uint8_t data[] = { 0x01, 0x02, 0x03, 0x04 };
-    // EnhancedPacketHandler::PacketData sendPacket = {
-    //   .mode1 = 0x01,
-    //   .mode2 = 0x02,
-    //   .command = CMD_DATA,
-    //   .sequence = 0,  // Will be auto-incremented
-    //   .value = data,
-    //   .valueSize = sizeof(data)
-    // };
-
-    // if(packetHandler.sendPacket(sendPacket)) {
-    //   Serial.println("Packet sent loop");
-    // }
-
     lastTime = currentTime;
   } else if (currentTime < lastTime) {
     lastTime = currentTime;  // Overflow
   }
 
-    EnhancedPacketHandler::PacketData receivedPacket;
-    if(packetHandler.receivePacket(receivedPacket)) {
-        // Packet will be handled in callback function
-        Serial.println("Packet received");
-    }
-
-
-
-  if (RESULT == 2) {
-    buzzerPass.total = 4;
+  EnhancedPacketHandler::PacketData receivedPacket;
+  if (packetHandler.receivePacket(receivedPacket)) {
+    // handlePacket(receivedPacket);
   }
+  // if (RESULT == 2) {
+  //   buzzerPass.total = 4;
+  // }
 }
 
+void handlePacket(EnhancedPacketHandler::PacketData& packet) {
+  // Process received packet based on command type
+  switch (packet.command) {
+    case CMD_DATA:
+      // Handle data command
+      Serial.println("Data packet received");
+      if(packet.mode1 == 0x01 && packet.mode2 == 0x05) {
+        char textBuffer[256];
+        memset(textBuffer, 0, sizeof(textBuffer));
+        memcpy(textBuffer, packet.value, packet.valueSize);
+        Serial.print("Received Text: ");
+        Serial.println(textBuffer);      
+        // Keyboard.print(textBuffer);
+        for(int i = 0; i < textBuffer[i] != '\0'; i++) {
+          Keyboard.print(textBuffer[i]);
+        }
+        Keyboard.press(KEY_RETURN);
+        Keyboard.releaseAll();
+      }
+      else if(packet.mode1 == 0x01 && packet.mode2 == 0x06) {
+        
+      }
+
+
+
+
+
+      break;
+
+    case CMD_REQUEST:
+      // Handle request command
+      Serial.println("Request received");
+      break;
+
+    default:
+      Serial.println("Unknown command received");
+      break;
+  }
+}
 struct SensorData {
-    float busvoltage;
-    float current_mA;
+  float busvoltage;
+  float current_mA;
 } __attribute__((packed));
 
 
@@ -277,38 +264,24 @@ void secondTick() {
     .current_mA = current_mA
   };
 
-    EnhancedPacketHandler::PacketData sendPacket = {
-      .mode1 = 0x01,
-      .mode2 = 0x02,
-      .command = CMD_DATA,
-      .sequence = 0,  // Will be auto-incremented
-      .value = (uint8_t*)&data, // Cast to uint8_t pointer to send raw data
-      .valueSize = sizeof(data)
-    };
+  EnhancedPacketHandler::PacketData sendPacket = {
+    .mode1 = 0x01,
+    .mode2 = 0x02,
+    .command = CMD_DATA,
+    .sequence = 0,             // Will be auto-incremented
+    .value = (uint8_t*)&data,  // Cast to uint8_t pointer to send raw data
+    .valueSize = sizeof(data)
+  };
 
-    if(packetHandler.sendPacket(sendPacket)) {
-      Serial.print("==> ");
-      Serial.print("Bus Voltage: "); 
-      Serial.print(busvoltage); 
-      Serial.print(" V");
-      Serial.print("Current: "); 
-      Serial.print(current_mA); 
-      Serial.println(" mA");
-    }
-
-
-  // Serial.print("Bus Voltage:   ");
-  // Serial.print(busvoltage);
-  // Serial.println(" V");
-  // Serial.print("Current:       ");
-  // Serial.print(current_mA);
-  // Serial.println(" mA");
-
-  // Serial1.print("$INA_DATA:");
-  // Serial1.print(busvoltage);
-  // Serial1.print(",");
-  // Serial1.print(current_mA);
-  // Serial1.println("#");
+  if (packetHandler.sendPacket(sendPacket)) {
+    Serial.print("==> ");
+    Serial.print("Bus Voltage: ");
+    Serial.print(busvoltage);
+    Serial.print(" V");
+    Serial.print("Current: ");
+    Serial.print(current_mA);
+    Serial.println(" mA");
+  }
 }
 
 void manageSerial0() {
@@ -449,12 +422,34 @@ String extractData(String dataInput, String key) {
   String valueStr = dataInput.substring(startIndex, endIndex);  // Extract the substring
   return valueStr;                                              // Return the extracted string
 }
+
 void sensorEvent(bool state) {
+  uint8_t data[] = { 0x00 };
+  // if (state) {
+  //   Serial.println("SENSOR1:ON");
+  //   Serial1.println("$SENSOR1:ON#");
+  // } else {
+  //   Serial.println("SENSOR1:OFF");
+  //   Serial1.println("$SENSOR1:OFF#");
+  // }
   if (state) {
-    Serial.println("SENSOR1:ON");
-    Serial1.println("$SENSOR1:ON#");
+    data[0] = 0x01;
   } else {
-    Serial.println("SENSOR1:OFF");
-    Serial1.println("$SENSOR1:OFF#");
+    data[0] = 0x00;
+  }
+  // mode 1 = 0x01 , mode 2 = 0x06
+
+  EnhancedPacketHandler::PacketData sendPacket = {
+    .mode1 = 0x01,
+    .mode2 = 0x06,
+    .command = CMD_DATA,
+    .sequence = 0,  // Will be auto-incremented
+    .value = data,
+    .valueSize = sizeof(data)
+  };
+
+  if (packetHandler.sendPacket(sendPacket)) {
+    Serial.print("Packet sent: ");
+    Serial.println(state ? "ON" : "OFF");
   }
 }

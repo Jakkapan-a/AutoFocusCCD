@@ -79,6 +79,12 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
@@ -190,6 +196,12 @@
     <Compile Include="Forms\Setting\Product.Designer.cs">
       <DependentUpon>Product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tools\IOSimulate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\IOSimulate.Designer.cs">
+      <DependentUpon>IOSimulate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.Capture.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +237,9 @@
     <EmbeddedResource Include="Forms\Setting\Product.resx">
       <DependentUpon>Product.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\IOSimulate.resx">
+      <DependentUpon>IOSimulate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,7 +271,6 @@
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="Forms\Help\" />
-    <Folder Include="Forms\Tools\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\_refresh_32.png" />

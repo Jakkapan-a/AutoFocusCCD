@@ -1,5 +1,6 @@
 ﻿using AutoFocusCCD.Config;
 using AutoFocusCCD.Forms.Setting;
+using AutoFocusCCD.Forms.Tools;
 using AutoFocusCCD.SQLite;
 using GitHub.secile.Video;
 using NLog;
@@ -156,7 +157,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             if (devices.Length == 0) return;
 
             this.RefreshComboBoxWithList(cmbDevices, devices);
-            this.RefreshComboBoxWithList(cmbCOMPort, SerialPort.GetPortNames(), true);
+            this.RefreshComboBoxWithList(cmbCOMPort, SerialPort.GetPortNames(), false);
             this.RefreshComboBoxWithList(cmbBaud, baudList);
         }
 
@@ -375,6 +376,18 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             this.Close();
         }
 
-
+        IOSimulate io = null;
+        private void iToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (io == null || io.IsDisposed)
+            {
+                io = new IOSimulate(this);
+                io.Show();
+            }
+            else
+            {
+                io.BringToFront();
+            }
+        }
     }
 }

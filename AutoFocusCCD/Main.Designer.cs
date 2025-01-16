@@ -72,6 +72,7 @@
             this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
+            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -164,7 +165,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hasToolStripMenuItem});
+            this.hasToolStripMenuItem,
+            this.iToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -172,7 +174,7 @@
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hasToolStripMenuItem.Text = "Has";
             // 
             // helpToolStripMenuItem
@@ -490,6 +492,13 @@
             // 
             this.progressDialog1.Text = "progressDialog1";
             // 
+            // iToolStripMenuItem
+            // 
+            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Text = "I/O";
+            this.iToolStripMenuItem.Click += new System.EventHandler(this.iToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -567,6 +576,7 @@
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem workspecToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBoxPredict;
+        private System.Windows.Forms.ToolStripMenuItem iToolStripMenuItem;
     }
 }
 
