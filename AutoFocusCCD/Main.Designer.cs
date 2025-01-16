@@ -69,17 +69,16 @@
             this.lbVoltage = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
-            this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
-            this.serialPort = new System.IO.Ports.SerialPort(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -460,6 +459,20 @@
             this.panel2.Size = new System.Drawing.Size(1075, 701);
             this.panel2.TabIndex = 3;
             // 
+            // pictureBoxPredict
+            // 
+            this.pictureBoxPredict.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxPredict.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxPredict.Location = new System.Drawing.Point(3, 55);
+            this.pictureBoxPredict.Name = "pictureBoxPredict";
+            this.pictureBoxPredict.Size = new System.Drawing.Size(1069, 643);
+            this.pictureBoxPredict.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPredict.TabIndex = 3;
+            this.pictureBoxPredict.TabStop = false;
+            this.pictureBoxPredict.Visible = false;
+            // 
             // pictureBox
             // 
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -476,26 +489,6 @@
             // progressDialog1
             // 
             this.progressDialog1.Text = "progressDialog1";
-            // 
-            // pictureBoxPredict
-            // 
-            this.pictureBoxPredict.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxPredict.BackColor = System.Drawing.Color.Black;
-            this.pictureBoxPredict.Location = new System.Drawing.Point(3, 55);
-            this.pictureBoxPredict.Name = "pictureBoxPredict";
-            this.pictureBoxPredict.Size = new System.Drawing.Size(1069, 643);
-            this.pictureBoxPredict.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPredict.TabIndex = 3;
-            this.pictureBoxPredict.TabStop = false;
-            this.pictureBoxPredict.Visible = false;
-            // 
-            // serialPort
-            // 
-            this.serialPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.serialPort_ErrorReceived);
-            this.serialPort.PinChanged += new System.IO.Ports.SerialPinChangedEventHandler(this.serialPort_PinChanged);
-            this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
             // Main
             // 
@@ -523,8 +516,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -574,7 +567,6 @@
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem workspecToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBoxPredict;
-        private System.IO.Ports.SerialPort serialPort;
     }
 }
 

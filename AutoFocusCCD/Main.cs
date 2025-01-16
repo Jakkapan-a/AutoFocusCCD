@@ -267,21 +267,50 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             Button btn = (Button)sender;
             try
             {
+                if(cmbDevices.SelectedIndex < 0)
+                {
+                    throw new Exception("Please select a device first.");
+                }
+
+                if(cmbFormats.SelectedIndex < 0)
+                {
+                    throw new Exception("Please select a format first.");
+                }
+
+                if (cmbCOMPort.SelectedIndex < 0)
+                {
+                    throw new Exception("Please select COM port.");
+                }
+
+                if (cmbBaud.SelectedIndex < 0)
+                {
+                    throw new Exception("Please select baud rate.");
+                }
+
                 if(btn.Text == "Connect")
                 {
 
                     this.ConnectCamera();
                     btn.Text = "Disconnect";
+                    
+
+
+                    string port = cmbCOMPort.SelectedItem.ToString();
+                    int baud = int.Parse(cmbBaud.SelectedItem.ToString());
+
+                    this.enhancedPacketHandler?.Begin(port, baud);
                 }
                 else
                 {
                     this.Stop();
+                    this.enhancedPacketHandler.Close();
                     btn.Text = "Connect";
                 }
             }
             catch (Exception ex)
             {
                 this.Stop();
+                Logger.Error(ex, "Error connecting camera: " + ex.Message);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btn.Text = "Connect";
             }
@@ -346,6 +375,6 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             this.Close();
         }
 
-       
+
     }
 }

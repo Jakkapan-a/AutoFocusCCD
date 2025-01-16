@@ -32,18 +32,18 @@ Adafruit_INA219 ina219(0x40);
 /*
  * Enhanced Packet Protocol Structure:
  * -----------------------------------------------------
- * |Byte| Description        | Size  | Value            |
+ * |Byte| Description       | Size  | Value            |
  * |----+-------------------+-------+------------------|
  * | 1  | START marker      | 1     | 0xAA            |
  * | 2-3| Packet Size       | 2     | High + Low byte |
  * | 4  | MODE1             | 1     | User defined    |
  * | 5  | MODE2             | 1     | User defined    |
  * | 6  | Command (CMD)     | 1     | Command type    |
- * | 7  | Sequence (SEQ)    | 1     | 0-255 cycle    |
- * | 8+ | Payload (Value)   | N     | User data      |
- * | -3 | Length Check      | 1     | Payload length |
- * | -2 | Checksum         | 1     | XOR of all bytes|
- * | -1 | END marker       | 1     | 0xFF           |
+ * | 7  | Sequence (SEQ)    | 1     | 0-255 cycle     |
+ * | 8+ | Payload (Value)   | N     | User data       |
+ * | -3 | Length Check      | 1     | Payload length  |
+ * | -2 | Checksum          | 1     | XOR of all bytes|
+ * | -1 | END marker        | 1     | 0xFF            |
  * -----------------------------------------------------
  */
 EnhancedPacketHandler packetHandler;
@@ -226,22 +226,23 @@ void loop() {
   // manageSerial1();
 
   uint32_t currentTime = millis();
+  
   if (currentTime - lastTime > 1000) {
-    // secondTick();
+    secondTick();
 
-    uint8_t data[] = { 0x01, 0x02, 0x03, 0x04 };
-    EnhancedPacketHandler::PacketData sendPacket = {
-      .mode1 = 0x01,
-      .mode2 = 0x02,
-      .command = CMD_DATA,
-      .sequence = 0,  // Will be auto-incremented
-      .value = data,
-      .valueSize = sizeof(data)
-    };
+    // uint8_t data[] = { 0x01, 0x02, 0x03, 0x04 };
+    // EnhancedPacketHandler::PacketData sendPacket = {
+    //   .mode1 = 0x01,
+    //   .mode2 = 0x02,
+    //   .command = CMD_DATA,
+    //   .sequence = 0,  // Will be auto-incremented
+    //   .value = data,
+    //   .valueSize = sizeof(data)
+    // };
 
-    if(packetHandler.sendPacket(sendPacket)) {
-      Serial.println("Packet sent");
-    }
+    // if(packetHandler.sendPacket(sendPacket)) {
+    //   Serial.println("Packet sent loop");
+    // }
 
     lastTime = currentTime;
   } else if (currentTime < lastTime) {
@@ -260,21 +261,54 @@ void loop() {
     buzzerPass.total = 4;
   }
 }
+
+struct SensorData {
+    float busvoltage;
+    float current_mA;
+} __attribute__((packed));
+
+
 void secondTick() {
   float busvoltage = ina219.getBusVoltage_V();
   float current_mA = ina219.getCurrent_mA();
-  Serial.print("Bus Voltage:   ");
-  Serial.print(busvoltage);
-  Serial.println(" V");
-  Serial.print("Current:       ");
-  Serial.print(current_mA);
-  Serial.println(" mA");
 
-  Serial1.print("$INA_DATA:");
-  Serial1.print(busvoltage);
-  Serial1.print(",");
-  Serial1.print(current_mA);
-  Serial1.println("#");
+  SensorData data = {
+    .busvoltage = busvoltage,
+    .current_mA = current_mA
+  };
+
+    EnhancedPacketHandler::PacketData sendPacket = {
+      .mode1 = 0x01,
+      .mode2 = 0x02,
+      .command = CMD_DATA,
+      .sequence = 0,  // Will be auto-incremented
+      .value = (uint8_t*)&data, // Cast to uint8_t pointer to send raw data
+      .valueSize = sizeof(data)
+    };
+
+    if(packetHandler.sendPacket(sendPacket)) {
+      Serial.print("==> ");
+      Serial.print("Bus Voltage: "); 
+      Serial.print(busvoltage); 
+      Serial.print(" V");
+      Serial.print("Current: "); 
+      Serial.print(current_mA); 
+      Serial.println(" mA");
+    }
+
+
+  // Serial.print("Bus Voltage:   ");
+  // Serial.print(busvoltage);
+  // Serial.println(" V");
+  // Serial.print("Current:       ");
+  // Serial.print(current_mA);
+  // Serial.println(" mA");
+
+  // Serial1.print("$INA_DATA:");
+  // Serial1.print(busvoltage);
+  // Serial1.print(",");
+  // Serial1.print(current_mA);
+  // Serial1.println("#");
 }
 
 void manageSerial0() {
