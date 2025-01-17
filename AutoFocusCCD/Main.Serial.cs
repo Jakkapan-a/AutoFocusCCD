@@ -7,11 +7,14 @@ namespace AutoFocusCCD
     partial class Main
     {
         private EnhancedPacketHandler enhancedPacketHandler = null;
+        public DeviceControl deviceControl;
         private void InitializeSerial()
         {
             enhancedPacketHandler = new EnhancedPacketHandler();
             enhancedPacketHandler.OnSerialError += EnhancedPacketHandler_OnSerialError;
             enhancedPacketHandler.OnPacketReceived += EnhancedPacketHandler_OnPacketReceivedHandler;
+
+            deviceControl = new DeviceControl(enhancedPacketHandler);
         }
 
         private void EnhancedPacketHandler_OnSerialError(object sender, SerialErrorEventArgs e)
@@ -141,5 +144,7 @@ namespace AutoFocusCCD
                 Console.WriteLine($"Error sending text: {ex.Message}");
             }
         }
+
+
     }
 }

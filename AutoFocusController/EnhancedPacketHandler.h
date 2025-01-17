@@ -40,6 +40,30 @@ enum CommandType {
     CMD_RESPONSE = 0x05
 };
 
+enum Mode1Type {
+    MODE1_NONE = 0x00,
+    MODE1_SEND = 0x01,
+    MODE1_RESPONSE = 0x02,
+    MODE1_ERROR_MODE = 0x03
+};
+
+enum Mode2Type {
+    MODE2_NONE = 0x00,
+    MODE2_INIT_LOADED = 0x01,
+    MODE2_INA219 = 0x02,
+    MODE2_RELAY = 0x03,
+    MODE2_UNUSED = 0x04,
+    MODE2_KEYBOARD = 0x05,
+    MODE2_SENSOR_STD = 0x06,
+    MODE2_LED_RED = 0x07,
+    MODE2_LED_GREEN = 0x08,
+    MODE2_LED_BLUE = 0x09,
+    MODE2_LED_OFF_ALL = 0x10,
+    MODE2_6V_NOT_PWM = 0x11,
+    MODE2_4V6_PWM = 0x12,
+    MODE2_OFF_PWM_AND_NOT = 0x13
+};
+
 class EnhancedPacketHandler {
 public:
     // Structure to hold packet data

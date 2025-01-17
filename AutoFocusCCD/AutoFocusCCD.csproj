@@ -220,6 +220,7 @@
     <Compile Include="SQLite\Product.cs" />
     <Compile Include="SQLite\SQLiteBase.cs" />
     <Compile Include="SQLite\SQliteDataAccess.cs" />
+    <Compile Include="Utilities\DeviceControl.cs" />
     <Compile Include="Utilities\EnhancedPacketHandler.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\FileManagementResponse.cs" />
