@@ -128,6 +128,11 @@ namespace AutoFocusCCD.Utilities
                 DtrEnable = true,
                 RtsEnable = true
             };
+            buffer = new byte[PacketConstants.MAX_PACKET_SIZE];
+            writeIndex = 0;
+            isReceiving = false;
+            sequenceNumber = 0;
+
             serialPort.Open();
             serialPort.DataReceived += SerialPort_DataReceived;
         }
@@ -235,6 +240,7 @@ namespace AutoFocusCCD.Utilities
         /// </summary>
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            if (serialPort == null) return;
             try
             {
                 while (serialPort.BytesToRead > 0)
@@ -382,18 +388,30 @@ namespace AutoFocusCCD.Utilities
 
         public void Close()
         {
+            if (serialPort == null) return;
+
+            var port = serialPort;
+            serialPort = null; // ยกเลิกการอ้างอิงก่อนเพื่อป้องกัน event handler
+
             try
             {
-                if (serialPort?.IsOpen == true)
+                if (port.IsOpen)
                 {
-                    serialPort.Close();
-                    serialPort.Dispose();
+                    port.DataReceived -= SerialPort_DataReceived;
+                    Thread.Sleep(100); // รอให้ event handler ปัจจุบันทำงานเสร็จ
+                    port.Close();
                 }
+                port.Dispose();
             }
             catch (Exception ex)
             {
                 LogSerialError(ex);
                 OnSerialError?.Invoke(this, new SerialErrorEventArgs(ex));
+            }
+            finally
+            {
+                ResetReceiver();
+                buffer = null;
             }
         }
     }

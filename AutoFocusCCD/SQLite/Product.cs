@@ -10,7 +10,7 @@ namespace AutoFocusCCD.SQLite
     public class Product : SQLiteBase, ISqliteEntity
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } // Name of the product
         public int Type { get; set; } // 0 = NONE, 1 = PVM
         public int Voltage_min { get; set; }
         public int Voltage_max { get; set; }
@@ -43,7 +43,7 @@ namespace AutoFocusCCD.SQLite
         {
             var parameters = new DynamicParameters();
             parameters.Add("Id", Id);
-            parameters.Add("Name", Name);
+            parameters.Add("Name", Name); 
             parameters.Add("Type", Type);
             parameters.Add("Voltage_min", Voltage_min);
             parameters.Add("Voltage_max", Voltage_max);
@@ -66,6 +66,13 @@ namespace AutoFocusCCD.SQLite
             string sql = "SELECT * FROM ProductCcdPvm WHERE Id = @Id";
             var parameters = new DynamicParameters();
             parameters.Add("Id", Id);
+            return SQLite.SQliteDataAccess.Query<Product>(sql, parameters).FirstOrDefault();
+        }
+        public static Product Get(string name)
+        {
+            string sql = "SELECT * FROM ProductCcdPvm WHERE Name = @Name";
+            var parameters = new DynamicParameters();
+            parameters.Add("Name", name);
             return SQLite.SQliteDataAccess.Query<Product>(sql, parameters).FirstOrDefault();
         }
 

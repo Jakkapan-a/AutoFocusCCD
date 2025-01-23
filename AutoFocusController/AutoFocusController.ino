@@ -339,8 +339,8 @@ void sensorEvent(bool state) {
     RELAY2_PVM.off();
     RELAY3_PVM.off();
     buzzerPass.total = 0;
-
   }
+  
   isSensorOn = state;
   // mode 1 = 0x01 , mode 2 = 0x06
   EnhancedPacketHandler::PacketData sendPacket = {

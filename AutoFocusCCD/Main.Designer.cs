@@ -69,11 +69,11 @@
             this.lbCurrent = new System.Windows.Forms.Label();
             this.lbVoltage = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelSensor = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
             this.pictureBoxCamera = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
-            this.toolStripStatusLabelSensor = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerOutSerial = new System.Windows.Forms.Timer(this.components);
             this.timerOnStartProcess = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
@@ -178,13 +178,13 @@
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.hasToolStripMenuItem.Text = "Has";
             // 
             // iToolStripMenuItem
             // 
             this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.iToolStripMenuItem.Text = "I/O";
             this.iToolStripMenuItem.Click += new System.EventHandler(this.iToolStripMenuItem_Click);
             // 
@@ -461,6 +461,13 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripStatusLabelSensor
+            // 
+            this.toolStripStatusLabelSensor.Name = "toolStripStatusLabelSensor";
+            this.toolStripStatusLabelSensor.Size = new System.Drawing.Size(12, 17);
+            this.toolStripStatusLabelSensor.Text = "-";
+            this.toolStripStatusLabelSensor.TextChanged += new System.EventHandler(this.toolStripStatusLabelSensor_TextChanged);
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -505,13 +512,6 @@
             // 
             this.progressDialog1.Text = "progressDialog1";
             // 
-            // toolStripStatusLabelSensor
-            // 
-            this.toolStripStatusLabelSensor.Name = "toolStripStatusLabelSensor";
-            this.toolStripStatusLabelSensor.Size = new System.Drawing.Size(12, 17);
-            this.toolStripStatusLabelSensor.Text = "-";
-            this.toolStripStatusLabelSensor.TextChanged += new System.EventHandler(this.toolStripStatusLabelSensor_TextChanged);
-            // 
             // timerOutSerial
             // 
             this.timerOutSerial.Interval = 1000;
@@ -519,6 +519,7 @@
             // 
             // timerOnStartProcess
             // 
+            this.timerOnStartProcess.Interval = 700;
             this.timerOnStartProcess.Tick += new System.EventHandler(this.timerOnStartProcess_Tick);
             // 
             // Main

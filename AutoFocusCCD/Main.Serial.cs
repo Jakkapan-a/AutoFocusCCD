@@ -1,5 +1,6 @@
 ﻿using AutoFocusCCD.Utilities;
 using System;
+using System.Drawing;
 using System.Text;
 
 namespace AutoFocusCCD
@@ -42,17 +43,14 @@ namespace AutoFocusCCD
                     else if (e.PacketData.Mode1 == 0x01 && e.PacketData.Mode2 == 0x06)
                     {
                         bool isActive = e.PacketData.Value[0] == 0x01;
-
-                        this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
-                        this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
-                        
-                        if (isActive)
+                        this.isSensorActive = isActive;
+                        if (InvokeRequired)
                         {
-                            
+                            Invoke(new Action(() => UpdateSensorStatus(isActive)));
                         }
                         else
                         {
-                            
+                            UpdateSensorStatus(isActive);
                         }
                     }
                     break;
@@ -72,13 +70,50 @@ namespace AutoFocusCCD
                     {
                         bool isActive = e.PacketData.Value[0] == 0x01;
                         this.isSensorActive = isActive;
-                        this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
-                        this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+                        if(InvokeRequired)
+                        {
+                            Invoke(new Action(() => UpdateSensorStatus(isActive)));
+                        }
+                        else
+                        {
+                            UpdateSensorStatus(isActive);
+                        }
                     }
                     break;
                 default:
                     break;
             }
+        }
+
+        private void UpdateSensorStatus(bool isActive)
+        {
+            this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
+            this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+
+            if (toolStripStatusLabelSensor.Text == "Sensor: Active")
+            {
+                if (this.lbTitle.Text != "Waiting for start..." || this._product == null)
+                {
+                    return;
+                }
+                this.countStart = 3;
+                this.lbTitle.Text = $"Start process in {this.countStart} seconds";
+                this.lbTitle.BackColor = Color.Orange;
+                this.lbTitle.ForeColor = Color.Black;
+                this.timerOnStartProcess.Start();
+            }
+            else
+            {
+                timerOnStartProcess.Stop();
+                // Clear data
+                lbTitle.Text = "Please scan QR code";
+                lbTitle.BackColor = Color.Yellow;
+                lbTitle.ForeColor = Color.Black;
+                this.countStart = 0;
+                this._product = null;
+                this.pictureBoxPredict.Visible = false;
+            }
+
         }
 
         private void UpdateCurrentVoltage(byte[] data)

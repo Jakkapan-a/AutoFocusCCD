@@ -219,9 +219,40 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 }
 
                 // get model and send controls relay
+                processValidate();
             }
         }
 
+        private SQLite.Product _product = null;
+        private void processValidate()
+        {           
+
+            string qr = txtQr.Text.Substring(0, 7);
+            
+
+            if (qr.Length < 7)
+            {
+                MessageBox.Show("QR code is invalid.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            this.lbTitle.Text = "Loading...";
+            this.lbTitle.BackColor = Color.Yellow;
+            this.lbTitle.ForeColor = Color.Black;
+            _product = SQLite.Product.Get(qr);
+
+            if (_product == null)
+            {
+                this.lbTitle.Text = "Model not found";
+                this.lbTitle.BackColor = Color.Red;
+                this.lbTitle.ForeColor = Color.White;
+                return;
+            }
+
+            this.lbTitle.Text = "Waiting for start...";
+            this.lbTitle.BackColor = Color.Yellow;
+            this.lbTitle.ForeColor = Color.Black;
+        }
 
         private void modelsCCDToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -270,8 +301,6 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             Button btn = (Button)sender;
             try
             {
-            
-
                 if(btn.Text == "Connect")
                 {
                     if (cmbDevices.SelectedIndex < 0)
@@ -307,7 +336,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 else
                 {
                     this.Stop();
-                    this.enhancedPacketHandler?.Close();
+                    this.enhancedPacketHandler.Close();
                     btn.Text = "Connect";
                 }
             }
@@ -407,22 +436,8 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 return;
             }
 
-            if (toolStripStatusLabelSensor.Text == "Sensor: Active")
-            {
-                this.countStart = 3;
-                this.lbTitle.Text = $"Start process in {this.countStart} seconds";
-                this.lbTitle.BackColor = Color.Orange;
-                this.lbTitle.ForeColor = Color.Black;
-                this.timerOnStartProcess.Start();
-            }
-            else
-            {
-                timerOnStartProcess.Stop();
-                // Clear data
-                lbTitle.Text = "Waiting for start";
-                lbTitle.BackColor = Color.Yellow;
-                lbTitle.ForeColor = Color.Black;
-            }
+            
+
         }
 
         public int countStart = 0;
