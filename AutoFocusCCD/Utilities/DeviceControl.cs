@@ -111,5 +111,23 @@ namespace AutoFocusCCD.Utilities
             }
             return false;
         }
+
+        public bool Command(byte mode1, byte mode2, CommandType command, byte[] value = null)
+        {
+            var packet = new PacketData
+            {
+                Mode1 = mode1,
+                Mode2 = mode2,
+                Command = (byte)command,
+                Value = value ?? new byte[] { 0x00 }
+            };
+
+            if (enhancedPacketHandler?.SendPacket(packet) == true)
+            {
+                Console.WriteLine($"Command {command} sent");
+                return true;
+            }
+            return false;
+        }
     }
 }

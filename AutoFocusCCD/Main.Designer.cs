@@ -42,6 +42,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbTitle = new System.Windows.Forms.Label();
@@ -70,16 +71,19 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBoxPredict = new System.Windows.Forms.PictureBox();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.pictureBoxCamera = new System.Windows.Forms.PictureBox();
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
-            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripStatusLabelSensor = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerOutSerial = new System.Windows.Forms.Timer(this.components);
+            this.timerOnStartProcess = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -176,6 +180,13 @@
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
             this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hasToolStripMenuItem.Text = "Has";
+            // 
+            // iToolStripMenuItem
+            // 
+            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Text = "I/O";
+            this.iToolStripMenuItem.Click += new System.EventHandler(this.iToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -442,6 +453,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelSensor});
             this.statusStrip1.Location = new System.Drawing.Point(0, 731);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1341, 22);
@@ -454,7 +467,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.pictureBoxPredict);
-            this.panel2.Controls.Add(this.pictureBox);
+            this.panel2.Controls.Add(this.pictureBoxCamera);
             this.panel2.Controls.Add(this.lbTitle);
             this.panel2.Location = new System.Drawing.Point(12, 27);
             this.panel2.Name = "panel2";
@@ -475,29 +488,38 @@
             this.pictureBoxPredict.TabStop = false;
             this.pictureBoxPredict.Visible = false;
             // 
-            // pictureBox
+            // pictureBoxCamera
             // 
-            this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pictureBoxCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox.BackColor = System.Drawing.Color.Black;
-            this.pictureBox.Location = new System.Drawing.Point(3, 55);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(1069, 643);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox.TabIndex = 2;
-            this.pictureBox.TabStop = false;
+            this.pictureBoxCamera.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxCamera.Location = new System.Drawing.Point(3, 55);
+            this.pictureBoxCamera.Name = "pictureBoxCamera";
+            this.pictureBoxCamera.Size = new System.Drawing.Size(1069, 643);
+            this.pictureBoxCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxCamera.TabIndex = 2;
+            this.pictureBoxCamera.TabStop = false;
             // 
             // progressDialog1
             // 
             this.progressDialog1.Text = "progressDialog1";
             // 
-            // iToolStripMenuItem
+            // toolStripStatusLabelSensor
             // 
-            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.iToolStripMenuItem.Text = "I/O";
-            this.iToolStripMenuItem.Click += new System.EventHandler(this.iToolStripMenuItem_Click);
+            this.toolStripStatusLabelSensor.Name = "toolStripStatusLabelSensor";
+            this.toolStripStatusLabelSensor.Size = new System.Drawing.Size(12, 17);
+            this.toolStripStatusLabelSensor.Text = "-";
+            this.toolStripStatusLabelSensor.TextChanged += new System.EventHandler(this.toolStripStatusLabelSensor_TextChanged);
+            // 
+            // timerOutSerial
+            // 
+            this.timerOutSerial.Interval = 1000;
+            this.timerOutSerial.Tick += new System.EventHandler(this.timerOutSerial_Tick);
+            // 
+            // timerOnStartProcess
+            // 
+            this.timerOnStartProcess.Tick += new System.EventHandler(this.timerOnStartProcess_Tick);
             // 
             // Main
             // 
@@ -524,9 +546,11 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPredict)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -542,7 +566,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.PictureBox pictureBoxCamera;
         private System.Windows.Forms.Label lbCurrent;
         private System.Windows.Forms.Label lbVoltage;
         private System.Windows.Forms.Label lbDateTime;
@@ -577,6 +601,9 @@
         private System.Windows.Forms.ToolStripMenuItem workspecToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBoxPredict;
         private System.Windows.Forms.ToolStripMenuItem iToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSensor;
+        private System.Windows.Forms.Timer timerOutSerial;
+        private System.Windows.Forms.Timer timerOnStartProcess;
     }
 }
 

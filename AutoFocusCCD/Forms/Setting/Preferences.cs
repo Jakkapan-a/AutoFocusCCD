@@ -43,7 +43,8 @@ namespace AutoFocusCCD.Forms.Setting
             txtKeySendDescription.Text = preferencesConfig.OptionNG.Description;
 
             nThreshold.Value = preferencesConfig.Processing.Threshold;
-
+            cbType.SelectedIndex = preferencesConfig.Processing.Type;
+            nTimeStart.Value = preferencesConfig.Processing.TimeStart;
 
             nDeleteFileAfterDays.Value = preferencesConfig.FileSystem.DeleteFileAfterDays;
             txtPath.Text = preferencesConfig.FileSystem.Path;
@@ -64,6 +65,8 @@ namespace AutoFocusCCD.Forms.Setting
             preferencesConfig.OptionNG.Message = txtMessageSendNG.Text;
             preferencesConfig.OptionNG.Description = txtKeySendDescription.Text;
             preferencesConfig.Processing.Threshold = (int)nThreshold.Value;
+            preferencesConfig.Processing.TimeStart = (int)nTimeStart.Value;
+            preferencesConfig.Processing.Type = cbType.SelectedIndex;
             preferencesConfig.FileSystem.DeleteFileAfterDays = (int)nDeleteFileAfterDays.Value;
             preferencesConfig.FileSystem.Path = txtPath.Text;
 
@@ -127,7 +130,7 @@ namespace AutoFocusCCD.Forms.Setting
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             timerUpdate.Stop();
-          updatePreferences();
+            updatePreferences();
         }
 
 
@@ -184,6 +187,12 @@ namespace AutoFocusCCD.Forms.Setting
         }
 
         private void txtKeySendDescription_TextChanged(object sender, EventArgs e)
+        {
+            timerUpdate.Stop();
+            timerUpdate.Start();
+        }
+
+        private void cbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             timerUpdate.Stop();
             timerUpdate.Start();

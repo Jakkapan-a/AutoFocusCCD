@@ -22,6 +22,7 @@ namespace AutoFocusCCD
             Logger.Info("Serial error: " + e.Error);
         }
 
+        public bool isSensorActive = false;
         private void EnhancedPacketHandler_OnPacketReceivedHandler(object sender, PacketDataEventArgs e)
         {
             if (e.PacketData.ValueSize == 0)
@@ -41,13 +42,17 @@ namespace AutoFocusCCD
                     else if (e.PacketData.Mode1 == 0x01 && e.PacketData.Mode2 == 0x06)
                     {
                         bool isActive = e.PacketData.Value[0] == 0x01;
+
+                        this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
+                        this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+                        
                         if (isActive)
                         {
-                            Console.WriteLine("Received data packet with active status.");
+                            
                         }
                         else
                         {
-                            Console.WriteLine("Received data packet with inactive status.");
+                            
                         }
                     }
                     break;
@@ -63,6 +68,13 @@ namespace AutoFocusCCD
                     break;
                 case (byte)CommandType.Response:
                     Console.WriteLine("Received Response packet.");
+                    if(e.PacketData.Mode1 == 0x01 && e.PacketData.Mode2 == 0x06)
+                    {
+                        bool isActive = e.PacketData.Value[0] == 0x01;
+                        this.isSensorActive = isActive;
+                        this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
+                        this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+                    }
                     break;
                 default:
                     break;
@@ -145,6 +157,6 @@ namespace AutoFocusCCD
             }
         }
 
-
+  
     }
 }

@@ -25,6 +25,8 @@ namespace AutoFocusCCD.Config
         public class ProcessingConfig
         {
             public int Threshold { get; set; }
+            public int Type { get; set; }
+            public int TimeStart { get; set; }
         }
 
         public class ClearMesConfig
@@ -89,7 +91,9 @@ namespace AutoFocusCCD.Config
                 },
                 Processing = new PreferencesConfig.ProcessingConfig
                 {
-                    Threshold = 50
+                    Threshold = 50,
+                    Type = 0,
+                    TimeStart = 3
                 },
                 ClearMes = new PreferencesConfig.ClearMesConfig
                 {

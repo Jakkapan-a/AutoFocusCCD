@@ -57,8 +57,8 @@ namespace AutoFocusCCD
             var format = formats[formatIndex];
             camera = new UsbCamera(index, format);
 
-            camera.SetPreviewControl(pictureBox.Handle, pictureBox.ClientSize);
-            pictureBox.Resize += (s, ev) => camera.SetPreviewSize(pictureBox.ClientSize); // support resize.
+            camera.SetPreviewControl(pictureBoxCamera.Handle, pictureBoxCamera.ClientSize);
+            pictureBoxCamera.Resize += (s, ev) => camera.SetPreviewSize(pictureBoxCamera.ClientSize); // support resize.
 
             // start.
             camera.Start();

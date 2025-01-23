@@ -78,6 +78,7 @@ TcPINOUT RELAY3_PVM(RELAY3_PVM_PIN, false);
 
 uint8_t RESULT = 0;
 uint32_t lastTime = 0;
+bool isSensorOn = false;
 
 void setup() {
   Serial.begin(9600);
@@ -125,7 +126,6 @@ void setup() {
 void loop() {
   sensor.update();
   buzzerPass.update();
-
 
   uint32_t currentTime = millis();
 
@@ -194,6 +194,26 @@ void handlePacket(EnhancedPacketHandler::PacketData& packet) {
         switch (packet.command) {
             case CMD_REQUEST:
                 Serial.println("Request received");
+               if(packet.mode1 == 0x01 && packet.mode2 == 0x06) {
+                  delay(10);
+                  byte data[] = { 0x00 };
+                  if (isSensorOn) {
+                    data[0] = 0x01;
+                  }
+                  EnhancedPacketHandler::PacketData sendPacket = {
+                    .mode1 = 0x01,
+                    .mode2 = 0x06,
+                    .command = CMD_RESPONSE,
+                    .sequence = packet.sequence,  // Will be auto-incremented
+                    .value = data,
+                    .valueSize = 1
+                  };
+
+                  // Send response
+                  if (packetHandler.sendPacket(sendPacket)) {
+                    Serial.println("ACK sent");
+                  }
+               }
                 break;
             case CMD_ACK:
                 Serial.println("ACK received");
@@ -321,6 +341,7 @@ void sensorEvent(bool state) {
     buzzerPass.total = 0;
 
   }
+  isSensorOn = state;
   // mode 1 = 0x01 , mode 2 = 0x06
   EnhancedPacketHandler::PacketData sendPacket = {
     .mode1 = 0x01,
@@ -334,5 +355,20 @@ void sensorEvent(bool state) {
   if (packetHandler.sendPacket(sendPacket)) {
     Serial.print("Packet sent: ");
     Serial.println(state ? "ON" : "OFF");
+  }
+}
+
+void ResponsePacket(EnhancedPacketHandler::PacketData& packet) {
+  EnhancedPacketHandler::PacketData sendPacket = {
+    .mode1 = 0x01,
+    .mode2 = 0x02,
+    .command = CMD_RESPONSE,
+    .sequence = packet.sequence,  // Will be auto-incremented
+    .value = packet.value,
+    .valueSize = packet.valueSize
+  };
+
+  if (packetHandler.sendPacket(sendPacket)) {
+    Serial.println("Packet sent");
   }
 }

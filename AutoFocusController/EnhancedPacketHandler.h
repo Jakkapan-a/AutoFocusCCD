@@ -7,17 +7,17 @@
  * Enhanced Packet Protocol Structure:
  * -----------------------------------------------------
  * |Byte| Description        | Size  | Value            |
- * |----+-------------------+-------+------------------|
- * | 1  | START marker      | 1     | 0xAA            |
- * | 2-3| Packet Size       | 2     | High + Low byte |
- * | 4  | MODE1             | 1     | User defined    |
- * | 5  | MODE2             | 1     | User defined    |
- * | 6  | Command (CMD)     | 1     | Command type    |
- * | 7  | Sequence (SEQ)    | 1     | 0-255 cycle    |
- * | 8+ | Payload (Value)   | N     | User data      |
- * | -3 | Length Check      | 1     | Payload length |
- * | -2 | Checksum         | 1     | XOR of all bytes|
- * | -1 | END marker       | 1     | 0xFF           |
+ * |----+-------------------+-------+-------------------|
+ * | 1  | START marker      | 1     | 0xAA              |
+ * | 2-3| Packet Size       | 2     | High + Low byte   |
+ * | 4  | MODE1             | 1     | User defined      |
+ * | 5  | MODE2             | 1     | User defined      |
+ * | 6  | Command (CMD)     | 1     | Command type      |
+ * | 7  | Sequence (SEQ)    | 1     | 0-255 cycle       |
+ * | 8+ | Payload (Value)   | N     | User data         |
+ * | -3 | Length Check      | 1     | Payload length    |
+ * | -2 | Checksum          | 1     | XOR of all bytes  |
+ * | -1 | END marker        | 1     | 0xFF              |
  * -----------------------------------------------------
  */
 

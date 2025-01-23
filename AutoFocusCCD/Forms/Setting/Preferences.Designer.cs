@@ -73,6 +73,10 @@
             this._taskDialogButtonOK = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this._taskDialogButtonCancel = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.label13 = new System.Windows.Forms.Label();
+            this.nTimeStart = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cbType = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nClearDelay)).BeginInit();
@@ -83,6 +87,7 @@
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -348,18 +353,22 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.cbType);
+            this.groupBox4.Controls.Add(this.nTimeStart);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Controls.Add(this.label13);
             this.groupBox4.Controls.Add(this.nThreshold);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Location = new System.Drawing.Point(349, 20);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(327, 78);
+            this.groupBox4.Size = new System.Drawing.Size(327, 98);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Processing";
             // 
             // nThreshold
             // 
-            this.nThreshold.Location = new System.Drawing.Point(71, 31);
+            this.nThreshold.Location = new System.Drawing.Point(71, 19);
             this.nThreshold.Name = "nThreshold";
             this.nThreshold.Size = new System.Drawing.Size(244, 20);
             this.nThreshold.TabIndex = 5;
@@ -373,7 +382,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 33);
+            this.label9.Location = new System.Drawing.Point(15, 21);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(54, 13);
             this.label9.TabIndex = 1;
@@ -477,9 +486,9 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Location = new System.Drawing.Point(349, 294);
+            this.groupBox6.Location = new System.Drawing.Point(349, 335);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(327, 206);
+            this.groupBox6.Size = new System.Drawing.Size(327, 165);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "----";
@@ -519,6 +528,54 @@
             this.timerUpdate.Interval = 200;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(15, 75);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(55, 13);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Time Start";
+            // 
+            // nTimeStart
+            // 
+            this.nTimeStart.Location = new System.Drawing.Point(71, 72);
+            this.nTimeStart.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nTimeStart.Name = "nTimeStart";
+            this.nTimeStart.Size = new System.Drawing.Size(244, 20);
+            this.nTimeStart.TabIndex = 5;
+            this.nTimeStart.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.nTimeStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(32, 46);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Type";
+            // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "CLS",
+            "DETECT"});
+            this.cbType.Location = new System.Drawing.Point(71, 43);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(121, 21);
+            this.cbType.TabIndex = 6;
+            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -554,6 +611,7 @@
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).EndInit();
             this.contextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -604,5 +662,9 @@
         private Ookii.Dialogs.WinForms.TaskDialogButton _taskDialogButtonOK;
         private Ookii.Dialogs.WinForms.TaskDialogButton _taskDialogButtonCancel;
         private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.NumericUpDown nTimeStart;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cbType;
     }
 }

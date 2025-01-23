@@ -218,6 +218,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                     return;
                 }
 
+                // get model and send controls relay
             }
         }
 
@@ -261,6 +262,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Stop();
+            this.enhancedPacketHandler?.Close();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -268,43 +270,44 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             Button btn = (Button)sender;
             try
             {
-                if(cmbDevices.SelectedIndex < 0)
-                {
-                    throw new Exception("Please select a device first.");
-                }
-
-                if(cmbFormats.SelectedIndex < 0)
-                {
-                    throw new Exception("Please select a format first.");
-                }
-
-                if (cmbCOMPort.SelectedIndex < 0)
-                {
-                    throw new Exception("Please select COM port.");
-                }
-
-                if (cmbBaud.SelectedIndex < 0)
-                {
-                    throw new Exception("Please select baud rate.");
-                }
+            
 
                 if(btn.Text == "Connect")
                 {
+                    if (cmbDevices.SelectedIndex < 0)
+                    {
+                        throw new Exception("Please select a device first.");
+                    }
+
+                    if (cmbFormats.SelectedIndex < 0)
+                    {
+                        throw new Exception("Please select a format first.");
+                    }
+
+                    if (cmbCOMPort.SelectedIndex < 0)
+                    {
+                        throw new Exception("Please select COM port.");
+                    }
+
+                    if (cmbBaud.SelectedIndex < 0)
+                    {
+                        throw new Exception("Please select baud rate.");
+                    }
 
                     this.ConnectCamera();
-                    btn.Text = "Disconnect";
-                    
-
 
                     string port = cmbCOMPort.SelectedItem.ToString();
                     int baud = int.Parse(cmbBaud.SelectedItem.ToString());
 
                     this.enhancedPacketHandler?.Begin(port, baud);
+                    timerOutSerial.Start();
+
+                    btn.Text = "Disconnect";
                 }
                 else
                 {
                     this.Stop();
-                    this.enhancedPacketHandler.Close();
+                    this.enhancedPacketHandler?.Close();
                     btn.Text = "Connect";
                 }
             }
@@ -388,6 +391,59 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             {
                 io.BringToFront();
             }
+        }
+
+        private void timerOutSerial_Tick(object sender, EventArgs e)
+        {
+            timerOutSerial.Stop();
+            this.deviceControl?.Command(0x01,0x06, Utilities.CommandType.Request, new byte[] { 0x00 });
+        }
+
+        private void toolStripStatusLabelSensor_TextChanged(object sender, EventArgs e)
+        {
+            // Check io simulate is open to return
+            if(io != null && !io.IsDisposed)
+            {
+                return;
+            }
+
+            if (toolStripStatusLabelSensor.Text == "Sensor: Active")
+            {
+                this.countStart = 3;
+                this.lbTitle.Text = $"Start process in {this.countStart} seconds";
+                this.lbTitle.BackColor = Color.Orange;
+                this.lbTitle.ForeColor = Color.Black;
+                this.timerOnStartProcess.Start();
+            }
+            else
+            {
+                timerOnStartProcess.Stop();
+                // Clear data
+                lbTitle.Text = "Waiting for start";
+                lbTitle.BackColor = Color.Yellow;
+                lbTitle.ForeColor = Color.Black;
+            }
+        }
+
+        public int countStart = 0;
+        public const int MAX_START = 3;
+        private void timerOnStartProcess_Tick(object sender, EventArgs e)
+        {
+            if(countStart > 0)
+            {
+                this.lbTitle.Text = $"Start process in {this.countStart} seconds";
+                this.lbTitle.BackColor = Color.Orange;
+                this.lbTitle.ForeColor = Color.Black;
+                countStart--;
+                return;
+            }
+
+            timerOnStartProcess.Stop();
+            // Start process
+
+            this.StartProcess();
+
+
         }
     }
 }
