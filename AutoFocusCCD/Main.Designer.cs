@@ -519,7 +519,7 @@
             // 
             // timerOnStartProcess
             // 
-            this.timerOnStartProcess.Interval = 700;
+            this.timerOnStartProcess.Interval = 500;
             this.timerOnStartProcess.Tick += new System.EventHandler(this.timerOnStartProcess_Tick);
             // 
             // Main

@@ -112,6 +112,8 @@ namespace AutoFocusCCD
                 this.countStart = 0;
                 this._product = null;
                 this.pictureBoxPredict.Visible = false;
+                this.txtQr.Text = "";
+                this.txtQr.Focus();
             }
 
         }
