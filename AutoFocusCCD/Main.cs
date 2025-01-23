@@ -227,15 +227,13 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
         private void processValidate()
         {           
 
-            string qr = txtQr.Text.Substring(0, 7);
-            
-
-            if (qr.Length < 7)
+            if(txtQr.Text.Length < 7)
             {
                 MessageBox.Show("QR code is invalid.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
+            string qr = txtQr.Text.Substring(0, 7);
+            
             this.lbTitle.Text = "Loading...";
             this.lbTitle.BackColor = Color.Yellow;
             this.lbTitle.ForeColor = Color.Black;

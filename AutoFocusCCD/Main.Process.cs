@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoFocusCCD.Config;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -36,25 +37,38 @@ namespace AutoFocusCCD
                 // Process
                 await Task.Delay(100);
                 bool result = true;
-                using(var img = camera.GetBitmap())
+                using (var img = camera.GetBitmap())
+                using (var displayImage = new Bitmap(img))
                 {
                     // Init process
                     string date = DateTime.Now.ToString("dd-MMM-yyyy");
-                    string path = Path.Combine(Preferences().FileSystem.Path,_product.Name,date,this.txtQr.Text);
-                    this.pictureBoxPredict.Image?.Dispose();
-                    this.pictureBoxPredict.Image = null;
-                    this.pictureBoxPredict.Image = new Bitmap(img);
-                    if(!Directory.Exists(path))
+                    string pathSys = Preferences().FileSystem.Path;
+                    string path = "";
+
+                    string pathDefult = PreferencesConfigLoader.LoadDefault().FileSystem.Path;
+                    if (pathDefult == pathSys)
+                    {
+                        path = Path.Combine(pathSys, "system", "images", _product.Name, date, this.txtQr.Text);
+                    }
+                    else
+                    {
+                        path = Path.Combine(pathSys, _product.Name, date, this.txtQr.Text);
+                    }
+
+                    if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
-                    }else
+                    } else
                     {
-                        path = Path.Combine(path,DateTime.Now.ToString("HH-mm-ss"));
+                        path = Path.Combine(path, DateTime.Now.ToString("HH-mm-ss"));
                         Directory.CreateDirectory(path);
                     }
                     // Save image
-                    string imgPath = Path.Combine(path,"ORG_"+Guid.NewGuid().ToString() + ".jpg");
+                    string imgPath = Path.Combine(path, $"ORG_${Guid.NewGuid().ToString().Substring(0, 5)}.jpg");
                     img.Save(imgPath);
+
+                    this.pictureBoxPredict.Image?.Dispose();
+                    this.pictureBoxPredict.Image = new Bitmap(displayImage);
 
                     List<SQLite.Boxes> boxes = SQLite.Boxes.GetByProductId(_product.Id);
                     
@@ -65,15 +79,25 @@ namespace AutoFocusCCD
                     }
 
                     // Main process
-                    using (Graphics g = Graphics.FromImage(img))
+                    using (var font = new Font("Arial", 30))
+                    using (Graphics g = Graphics.FromImage(displayImage))
                     {
                         foreach (var box in boxes)
                         {
                             // Crop image
                             string name = box.Name;
                             Rectangle boxCut = new Rectangle(box.X, box.Y, box.Width, box.Hight);
-                            // Call API
+                            // Cut image
+                            using (Bitmap imgBox = CropBitmap(img, boxCut.X, boxCut.Y, boxCut.Width, boxCut.Height))
+                            {
+                                string filename = $"P{box.Id}{box.Name}_{Guid.NewGuid().ToString().Substring(0, 5)}.jpg";
+                                imgBox.Save(System.IO.Path.Combine(path, filename));
 
+                                // Process detect
+
+
+                                // Draw box and result
+                            }
                             // Draw box
                             await Task.Delay(10);
                             Color backgroundColor = result ? Color.Green : Color.Red;
@@ -84,10 +108,11 @@ namespace AutoFocusCCD
                             {
                                 int w = name?.Length > 1 ? name.Length * 32 : 64;
                                 g.FillRectangle(result ? Brushes.Green : Brushes.Red, box.X, box.Y - 40, w, 40);
-                                g.DrawString(name, new Font("Arial", 30), Brushes.White, box.X, box.Y - 40);
+                                g.DrawString(name, font, Brushes.White, box.X, box.Y - 40);
                             }
+                            var newImage = new Bitmap(displayImage);
                             this.pictureBoxPredict.Image?.Dispose();
-                            this.pictureBoxPredict.Image = new Bitmap(img);
+                            this.pictureBoxPredict.Image = newImage;
 
                             await Task.Delay(10);
                         }
@@ -103,11 +128,26 @@ namespace AutoFocusCCD
             catch (Exception ex)
             {
                 Logger.Error(ex.Message);
+                Console.WriteLine("Error processing : " +ex.Message);
             }
             finally
             {
-                // this.pictureBoxPredict.Visible = false;
+                //if (this.pictureBoxPredict.Image != null)
+                //{
+                //    this.pictureBoxPredict.Image.Dispose();
+                //    this.pictureBoxPredict.Image = null;
+                //}
             }
+        }
+
+        private Bitmap CropBitmap(Bitmap source, int x, int y, int width, int height)
+        {
+            var crop = new Bitmap(width, height);
+            using (var g = Graphics.FromImage(crop))
+            {
+                g.DrawImage(source, -x, -y);
+            }
+            return crop;
         }
     }
 }
