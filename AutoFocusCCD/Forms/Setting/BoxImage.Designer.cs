@@ -50,6 +50,7 @@
             this.btnSelectModel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.scrollablePictureBox1 = new AutoFocusCCD.Components.ScrollablePictureBox(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnReload = new System.Windows.Forms.Button();
             this.btnCapture = new System.Windows.Forms.Button();
@@ -57,12 +58,11 @@
             this.cmbDevices = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.scrollablePictureBox1 = new AutoFocusCCD.Components.ScrollablePictureBox(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBoxes)).BeginInit();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scrollablePictureBox1)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -250,6 +250,7 @@
             this.btnSelectModel.TabIndex = 6;
             this.btnSelectModel.Text = "...";
             this.btnSelectModel.UseVisualStyleBackColor = true;
+            this.btnSelectModel.Click += new System.EventHandler(this.btnSelectModel_Click);
             // 
             // btnSave
             // 
@@ -274,6 +275,21 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Images";
+            // 
+            // scrollablePictureBox1
+            // 
+            this.scrollablePictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scrollablePictureBox1.BackColor = System.Drawing.Color.Black;
+            this.scrollablePictureBox1.Location = new System.Drawing.Point(6, 25);
+            this.scrollablePictureBox1.Name = "scrollablePictureBox1";
+            this.scrollablePictureBox1.SegmentedRegions = null;
+            this.scrollablePictureBox1.Size = new System.Drawing.Size(892, 636);
+            this.scrollablePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.scrollablePictureBox1.TabIndex = 0;
+            this.scrollablePictureBox1.TabStop = false;
+            this.scrollablePictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.scrollablePictureBox1_Paint);
             // 
             // groupBox3
             // 
@@ -348,21 +364,6 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Device:";
             // 
-            // scrollablePictureBox1
-            // 
-            this.scrollablePictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scrollablePictureBox1.BackColor = System.Drawing.Color.Black;
-            this.scrollablePictureBox1.Location = new System.Drawing.Point(6, 25);
-            this.scrollablePictureBox1.Name = "scrollablePictureBox1";
-            this.scrollablePictureBox1.SegmentedRegions = null;
-            this.scrollablePictureBox1.Size = new System.Drawing.Size(892, 636);
-            this.scrollablePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.scrollablePictureBox1.TabIndex = 0;
-            this.scrollablePictureBox1.TabStop = false;
-            this.scrollablePictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.scrollablePictureBox1_Paint);
-            // 
             // BoxImage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -382,9 +383,9 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBoxes)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scrollablePictureBox1)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scrollablePictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

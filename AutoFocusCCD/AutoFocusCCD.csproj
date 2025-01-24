@@ -176,6 +176,12 @@
       <DependentUpon>ScrollablePictureBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\PreferencesConfig.cs" />
+    <Compile Include="Forms\SelectModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SelectModel.Designer.cs">
+      <DependentUpon>SelectModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Setting\BoxImage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,12 +233,16 @@
     <Compile Include="SQLite\Product.cs" />
     <Compile Include="SQLite\SQLiteBase.cs" />
     <Compile Include="SQLite\SQliteDataAccess.cs" />
+    <Compile Include="Utilities\DetectionResult.cs" />
     <Compile Include="Utilities\DeviceControl.cs" />
     <Compile Include="Utilities\EnhancedPacketHandler.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\FileManagementResponse.cs" />
     <Compile Include="Utilities\LineEndings.cs" />
     <Compile Include="Utilities\UsbCamera.cs" />
+    <EmbeddedResource Include="Forms\SelectModel.resx">
+      <DependentUpon>SelectModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Setting\BoxImage.resx">
       <DependentUpon>BoxImage.cs</DependentUpon>
     </EmbeddedResource>

@@ -132,6 +132,7 @@ namespace AutoFocusCCD.Forms.Setting
                 }
             }
         }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             btnSave.Enabled = false;

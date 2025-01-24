@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO.Ports;
 using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace AutoFocusCCD.Utilities
@@ -101,9 +103,16 @@ namespace AutoFocusCCD.Utilities
         private SerialPort serialPort;
         public event EventHandler<PacketDataEventArgs> OnPacketReceived;
 
+        private BlockingCollection<byte> dataBuffer;
+        private CancellationTokenSource cts;
+        private Task processTask;
+        private const int BUFFER_SIZE = 64 * 1024; // 64KB
+
         public EnhancedPacketHandler()
         {
             buffer = new byte[PacketConstants.MAX_PACKET_SIZE];
+            dataBuffer = new BlockingCollection<byte>(BUFFER_SIZE);
+
             writeIndex = 0;
             isReceiving = false;
             sequenceNumber = 0;
@@ -121,18 +130,22 @@ namespace AutoFocusCCD.Utilities
                 serialPort.Close();
                 serialPort.Dispose();
             }
-
             // Initialize serial port
             serialPort = new SerialPort(portName, baudRate)
             {
                 DtrEnable = true,
                 RtsEnable = true
             };
+
+            // Reset state
             buffer = new byte[PacketConstants.MAX_PACKET_SIZE];
             writeIndex = 0;
             isReceiving = false;
             sequenceNumber = 0;
 
+            cts = new CancellationTokenSource();
+            processTask = Task.Run(ProcessDataLoop, cts.Token);
+     
             serialPort.Open();
             serialPort.DataReceived += SerialPort_DataReceived;
         }
@@ -188,6 +201,10 @@ namespace AutoFocusCCD.Utilities
                 return false;
 
             int currentIndex = 0;
+            if(buffer == null)
+            {
+                return false;
+            }
 
             // Header
             buffer[currentIndex++] = PacketConstants.START_BYTE;
@@ -241,17 +258,61 @@ namespace AutoFocusCCD.Utilities
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             if (serialPort == null) return;
+            /*
             try
             {
                 while (serialPort.BytesToRead > 0)
                 {
                     byte inByte = (byte)serialPort.ReadByte();
-                    ProcessByte(inByte);
+                    //ProcessByte(inByte);
                 }
             }
             catch (Exception)
             {
                 ResetReceiver();
+            }
+            */
+
+            try
+            {
+                byte[] tempBuffer = new byte[serialPort.BytesToRead];
+                serialPort.Read(tempBuffer, 0, tempBuffer.Length);
+
+                foreach (byte b in tempBuffer)
+                {
+                    if (!dataBuffer.TryAdd(b, 100)) // 100ms timeout
+                    {
+                        OnSerialError?.Invoke(this, new SerialErrorEventArgs(
+                            new Exception("Buffer overflow")));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSerialError(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Handle serial port data received event
+        /// </summary>
+        /// <returns></returns>
+        private async Task ProcessDataLoop()
+        {
+            while (!cts.Token.IsCancellationRequested)
+            {
+                try
+                {
+                    byte inByte = dataBuffer.Take(cts.Token);
+                    ProcessByte(inByte);
+                }
+                catch (OperationCanceledException) { break; }
+                catch (Exception ex)
+                {
+                    LogSerialError(ex);
+                    await Task.Delay(100, cts.Token);
+                }
             }
         }
 
@@ -395,6 +456,9 @@ namespace AutoFocusCCD.Utilities
 
             try
             {
+                cts?.Cancel();
+                processTask?.Wait(1000);
+     
                 if (port.IsOpen)
                 {
                     port.DataReceived -= SerialPort_DataReceived;
@@ -412,6 +476,8 @@ namespace AutoFocusCCD.Utilities
             {
                 ResetReceiver();
                 buffer = null;
+                cts?.Dispose();
+                processTask?.Dispose();
             }
         }
     }

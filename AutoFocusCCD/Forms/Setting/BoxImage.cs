@@ -263,7 +263,7 @@ namespace AutoFocusCCD.Forms.Setting
             dgvBoxes.Columns["No"].Width = 25;
 
         }
-        private int yoloModelId = -1;
+        private int yoloModelId = 0;
         private void btnNew_Click(object sender, EventArgs e)
         {
 
@@ -278,7 +278,7 @@ namespace AutoFocusCCD.Forms.Setting
 
             btnSave.Text = "Save";
 
-            this.yoloModelId = -1;
+            this.yoloModelId = 0;
             this.txtYoloModelName.Text = "";
 
             scrollablePictureBox1.Deselect();
@@ -466,6 +466,23 @@ namespace AutoFocusCCD.Forms.Setting
                 btnDelete.Enabled = false;
             }
             this.DrawingBoxesImage();
+        }
+
+        private SelectModel selectModelForm = null;
+        private void btnSelectModel_Click(object sender, EventArgs e)
+        {
+            selectModelForm?.Close();
+            selectModelForm?.Dispose();
+
+            selectModelForm = new SelectModel();
+            selectModelForm.OnSelect += SelectModelForm_OnSelect;
+            selectModelForm.Show();
+        }
+
+        private void SelectModelForm_OnSelect(int id, string name)
+        {
+            txtYoloModelName.Text = name;
+            this.yoloModelId = id;
         }
     }
 }

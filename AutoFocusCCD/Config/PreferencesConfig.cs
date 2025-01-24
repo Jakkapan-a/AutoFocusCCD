@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,8 +16,8 @@ namespace AutoFocusCCD.Config
         public ProcessingConfig Processing { get; set; }
         public ClearMesConfig ClearMes { get; set; }
         public FileSystemConfig FileSystem { get; set; }
-        public OptionNGConfig OptionNG { get; set; }
-
+        public OptionConfig OptionNG { get; set; }
+        public OtherConfig Other { get; set; }
         public class NetworkConfig
         {
             public string URL { get; set; }
@@ -27,6 +28,7 @@ namespace AutoFocusCCD.Config
             public int Threshold { get; set; }
             public int Type { get; set; }
             public int TimeStart { get; set; }
+            public int Interval { get; set; }
         }
 
         public class ClearMesConfig
@@ -42,18 +44,26 @@ namespace AutoFocusCCD.Config
             public string Path { get; set; }
         }
 
-        public class OptionNGConfig
+        public class OptionConfig
         {
             public bool AllowSendNG { get; set; }
             public string Key { get; set; }
             public int Delay { get; set; }
             public string Message { get; set; }
             public string Description { get; set; }
+
+
+        }
+
+        public class OtherConfig
+        {
+            public bool Rectangle { get; set; }
         }
     }
 
-    // Load config from file
-    public class PreferencesConfigLoader
+
+        // Load config from file
+        public class PreferencesConfigLoader
     {
         public static PreferencesConfig Load(string path)
         {
@@ -93,7 +103,8 @@ namespace AutoFocusCCD.Config
                 {
                     Threshold = 50,
                     Type = 0,
-                    TimeStart = 3
+                    TimeStart = 3,
+                    Interval = 500
                 },
                 ClearMes = new PreferencesConfig.ClearMesConfig
                 {
@@ -106,13 +117,17 @@ namespace AutoFocusCCD.Config
                     DeleteFileAfterDays = 10,
                     Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name)
                 },
-                OptionNG = new PreferencesConfig.OptionNGConfig
+                OptionNG = new PreferencesConfig.OptionConfig
                 {
                     AllowSendNG = true,
                     Key = "006D",
                     Delay = 500,
                     Message = "NG",
                     Description = "Send NG to MES"
+                },
+                Other = new PreferencesConfig.OtherConfig
+                {
+                    Rectangle = false,
                 }
             };
         }        

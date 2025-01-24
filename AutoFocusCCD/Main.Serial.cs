@@ -9,6 +9,7 @@ namespace AutoFocusCCD
     {
         private EnhancedPacketHandler enhancedPacketHandler = null;
         public DeviceControl deviceControl;
+
         private void InitializeSerial()
         {
             enhancedPacketHandler = new EnhancedPacketHandler();
@@ -100,6 +101,7 @@ namespace AutoFocusCCD
                 this.lbTitle.Text = $"Start process in {this.countStart} seconds";
                 this.lbTitle.BackColor = Color.Orange;
                 this.lbTitle.ForeColor = Color.Black;
+                this.timerOnStartProcess.Interval = Preferences().Processing.Interval;
                 this.timerOnStartProcess.Start();
             }
             else
@@ -194,6 +196,5 @@ namespace AutoFocusCCD
             }
         }
 
-  
     }
 }

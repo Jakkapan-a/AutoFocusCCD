@@ -18,6 +18,13 @@ namespace AutoFocusCCD.Utilities
         public List<Item> items { get; set; }
         public Pagination pagination { get; set; }
     }
+    
+    public class FileApiResponseId
+    {
+        public Item data { get; set; }
+        public string message { get; set; }
+        public string status { get; set; }
+    }
 
     public class Item
     {

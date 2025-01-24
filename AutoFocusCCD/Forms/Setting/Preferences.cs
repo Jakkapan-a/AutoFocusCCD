@@ -45,9 +45,12 @@ namespace AutoFocusCCD.Forms.Setting
             nThreshold.Value = preferencesConfig.Processing.Threshold;
             cbType.SelectedIndex = preferencesConfig.Processing.Type;
             nTimeStart.Value = preferencesConfig.Processing.TimeStart;
+            nIntervalStart.Value = preferencesConfig.Processing.Interval;
 
             nDeleteFileAfterDays.Value = preferencesConfig.FileSystem.DeleteFileAfterDays;
             txtPath.Text = preferencesConfig.FileSystem.Path;
+
+            cbRectangle.Checked = preferencesConfig.Other.Rectangle;
 
         }
 
@@ -66,9 +69,11 @@ namespace AutoFocusCCD.Forms.Setting
             preferencesConfig.OptionNG.Description = txtKeySendDescription.Text;
             preferencesConfig.Processing.Threshold = (int)nThreshold.Value;
             preferencesConfig.Processing.TimeStart = (int)nTimeStart.Value;
+            preferencesConfig.Processing.Interval = (int)nIntervalStart.Value;
             preferencesConfig.Processing.Type = cbType.SelectedIndex;
             preferencesConfig.FileSystem.DeleteFileAfterDays = (int)nDeleteFileAfterDays.Value;
             preferencesConfig.FileSystem.Path = txtPath.Text;
+            preferencesConfig.Other.Rectangle = cbRectangle.Checked;
 
             // Save and update 
             PreferencesConfigLoader.Save(Main.PreferencesPath(), preferencesConfig);
@@ -193,6 +198,12 @@ namespace AutoFocusCCD.Forms.Setting
         }
 
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            timerUpdate.Stop();
+            timerUpdate.Start();
+        }
+
+        private void cbRectangle_CheckedChanged(object sender, EventArgs e)
         {
             timerUpdate.Stop();
             timerUpdate.Start();

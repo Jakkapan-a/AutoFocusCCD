@@ -55,6 +55,10 @@
             this.txtKeySendNG = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.nTimeStart = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.nThreshold = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -73,21 +77,21 @@
             this._taskDialogButtonOK = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this._taskDialogButtonCancel = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.label13 = new System.Windows.Forms.Label();
-            this.nTimeStart = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
-            this.cbType = new System.Windows.Forms.ComboBox();
+            this.cbRectangle = new System.Windows.Forms.CheckBox();
+            this.nIntervalStart = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nClearDelay)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nKeySendDelay)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -354,6 +358,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.cbType);
+            this.groupBox4.Controls.Add(this.nIntervalStart);
             this.groupBox4.Controls.Add(this.nTimeStart);
             this.groupBox4.Controls.Add(this.label14);
             this.groupBox4.Controls.Add(this.label13);
@@ -365,6 +370,56 @@
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Processing";
+            // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "CLS",
+            "DETECT"});
+            this.cbType.Location = new System.Drawing.Point(71, 43);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(121, 21);
+            this.cbType.TabIndex = 6;
+            this.cbType.Visible = false;
+            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            // 
+            // nTimeStart
+            // 
+            this.nTimeStart.Location = new System.Drawing.Point(71, 70);
+            this.nTimeStart.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nTimeStart.Name = "nTimeStart";
+            this.nTimeStart.Size = new System.Drawing.Size(121, 20);
+            this.nTimeStart.TabIndex = 5;
+            this.nTimeStart.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.nTimeStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(32, 46);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Type";
+            this.label14.Visible = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(15, 73);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(55, 13);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Time Start";
             // 
             // nThreshold
             // 
@@ -486,12 +541,13 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Location = new System.Drawing.Point(349, 335);
+            this.groupBox6.Controls.Add(this.cbRectangle);
+            this.groupBox6.Location = new System.Drawing.Point(349, 294);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(327, 165);
+            this.groupBox6.Size = new System.Drawing.Size(327, 206);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "----";
+            this.groupBox6.Text = "Other";
             // 
             // contextMenuStrip
             // 
@@ -528,53 +584,34 @@
             this.timerUpdate.Interval = 200;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
-            // label13
+            // cbRectangle
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 75);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(55, 13);
-            this.label13.TabIndex = 1;
-            this.label13.Text = "Time Start";
+            this.cbRectangle.AutoSize = true;
+            this.cbRectangle.Location = new System.Drawing.Point(18, 30);
+            this.cbRectangle.Name = "cbRectangle";
+            this.cbRectangle.Size = new System.Drawing.Size(105, 17);
+            this.cbRectangle.TabIndex = 0;
+            this.cbRectangle.Text = "Show Rectangle";
+            this.cbRectangle.UseVisualStyleBackColor = true;
+            this.cbRectangle.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
             // 
-            // nTimeStart
+            // nIntervalStart
             // 
-            this.nTimeStart.Location = new System.Drawing.Point(71, 72);
-            this.nTimeStart.Maximum = new decimal(new int[] {
-            10,
+            this.nIntervalStart.Location = new System.Drawing.Point(206, 71);
+            this.nIntervalStart.Maximum = new decimal(new int[] {
+            5000,
             0,
             0,
             0});
-            this.nTimeStart.Name = "nTimeStart";
-            this.nTimeStart.Size = new System.Drawing.Size(244, 20);
-            this.nTimeStart.TabIndex = 5;
-            this.nTimeStart.Value = new decimal(new int[] {
-            3,
+            this.nIntervalStart.Name = "nIntervalStart";
+            this.nIntervalStart.Size = new System.Drawing.Size(109, 20);
+            this.nIntervalStart.TabIndex = 5;
+            this.nIntervalStart.Value = new decimal(new int[] {
+            500,
             0,
             0,
             0});
-            this.nTimeStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(32, 46);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(31, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Type";
-            // 
-            // cbType
-            // 
-            this.cbType.FormattingEnabled = true;
-            this.cbType.Items.AddRange(new object[] {
-            "CLS",
-            "DETECT"});
-            this.cbType.Location = new System.Drawing.Point(71, 43);
-            this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(121, 21);
-            this.cbType.TabIndex = 6;
-            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            this.nIntervalStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
             // 
             // Preferences
             // 
@@ -606,12 +643,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.nKeySendDelay)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.contextMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -666,5 +706,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox cbType;
+        private System.Windows.Forms.CheckBox cbRectangle;
+        private System.Windows.Forms.NumericUpDown nIntervalStart;
     }
 }
