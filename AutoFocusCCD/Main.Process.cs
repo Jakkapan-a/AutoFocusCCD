@@ -30,6 +30,10 @@ namespace AutoFocusCCD
             try
             {
                 this.lbTitle.Text = "Processing...";
+                LogAppendText("", true);
+
+                LogAppendText("Processing...");
+                
                 this.lbTitle.ForeColor = Color.Black;
                 this.lbTitle.BackColor = Color.DarkOrange;
                 if (this._product == null)
@@ -90,6 +94,7 @@ namespace AutoFocusCCD
                     {
                         foreach (var box in boxes)
                         {
+                            this.lbTitle.Text = $"{box.Name}...";
                             bool testRelult = true;
                             // Crop image
                             string name = box.Name;
@@ -98,9 +103,7 @@ namespace AutoFocusCCD
                             using (Bitmap imgBox = CropBitmap(img, boxCut.X, boxCut.Y, boxCut.Width, boxCut.Height))
                             {
                                 string filename = $"P{box.Id}{box.Name}_{Guid.NewGuid().ToString().Substring(0, 5)}.jpg";
-
-                                imgBox.Save(System.IO.Path.Combine(path, filename));
-
+                                imgBox.Save(System.IO.Path.Combine(path, filename));                            
                                 // Process detect
                                 if (box.YoloModelId != 0)
                                 {
@@ -108,21 +111,19 @@ namespace AutoFocusCCD
                                     // call api
                                     string fileNamePath = Path.Combine(path, filename);
                                     DetectionResult res = await Predict(fileNamePath, box);
-
                                     if (res != null)
                                     {
                                         Color bg = Color.Blue;
-                                        //g.DrawRectangle(new Pen(bg, 3), box.X, box.Y, box.Width, box.Hight);
                                         var topDetections = res.Result.OrderByDescending(d => d.Confidence).Take(1);
                                         foreach (var item in topDetections)
                                         {
                                             RectangleF rect = new RectangleF(boxCut.X + item.X, boxCut.Y + item.Y, item.Width, item.Height);
-
+                                            item.Name = item.Name + "_NG";
                                             string txtStr = item.Name.Replace("_OK", "").Replace("_ok", "").Replace("_NG", "").Replace("_ng", "");
-
                                             // Check result is OK or NG
-                                            testRelult = txtStr.Contains("OK") || txtStr.Contains("ok");
-
+                                            testRelult = IsKey("OK", item.Name);
+                                            string resultStr = $"{box.Name} - {(testRelult ? "OK" : "NG")} {item.Confidence:F2}"; ;
+                                            LogAppendText(resultStr);
                                             txtStr = $"{txtStr} - {item.Confidence:F2}";
                                             int w = txtStr?.Length > 1 ? txtStr.Length * 32 : 64;
 
@@ -137,31 +138,35 @@ namespace AutoFocusCCD
                                         testRelult = false;
                                         LogAppendText("Service not response.");
                                     }
-
                                 }
                                 else
                                 {
                                     testRelult = false;
                                 }
-                                // Draw box and result
+
+                                if (testRelult == false && summaryResult == true)
+                                {
+                                    summaryResult = false;
+                                }
                             }
                             // Draw box
                             await Task.Delay(10);
 
-
-                            // Box fill
-                            Color backgroundColor = testRelult ? Color.Green : Color.Red;
-                            Color foregroundColor = Color.Black;
-                            g.DrawRectangle(new Pen(backgroundColor, 3), box.X, box.Y, box.Width, box.Hight);
-
-                            if (name != null)
+                            if (config.Other.Rectangle)
                             {
-                                int w = name?.Length > 1 ? name.Length * 32 : 64;
-                                g.FillRectangle(testRelult ? Brushes.Green : Brushes.Red, box.X, box.Y - 40, w, 40);
-                                g.DrawString(name, font, Brushes.White, box.X, box.Y - 40);
-                            }
-                            // End box
+                                // Box fill
+                                Color backgroundColor = testRelult ? Color.Green : Color.Red;
+                                Color foregroundColor = Color.Black;
+                                g.DrawRectangle(new Pen(backgroundColor, 3), box.X, box.Y, box.Width, box.Hight);
 
+                                if (name != null)
+                                {
+                                    int w = name?.Length > 1 ? name.Length * 32 : 64;
+                                    g.FillRectangle(testRelult ? Brushes.Green : Brushes.Red, box.X, box.Y - 40, w, 40);
+                                    g.DrawString(name, font, Brushes.White, box.X, box.Y - 40);
+                                }
+                                // End box
+                            }
                             if (testRelult == false && summaryResult == true) 
                             {
                                 summaryResult = false;
@@ -170,7 +175,6 @@ namespace AutoFocusCCD
                             var newImage = new Bitmap(displayImage);
                             this.pictureBoxPredict.Image?.Dispose();
                             this.pictureBoxPredict.Image = newImage;
-
                             await Task.Delay(10);
                         }
                     }
@@ -178,6 +182,19 @@ namespace AutoFocusCCD
                     // End process
                 }
                 // Update UI
+
+                if(summaryResult)
+                {
+                    this.lbTitle.Text = "OK";
+                    this.lbTitle.BackColor = Color.Green;
+                    this.lbTitle.ForeColor = Color.White;
+                }
+                else
+                {
+                    this.lbTitle.Text = "NG";
+                    this.lbTitle.BackColor = Color.Red;
+                    this.lbTitle.ForeColor = Color.White;
+                }
 
                 //
                 Console.WriteLine("Complate...");
@@ -194,7 +211,12 @@ namespace AutoFocusCCD
             }
         }
 
-        private void LogAppendText(string txt)
+        private bool IsKey(string key , string text)
+        {
+            return text.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void LogAppendText(string txt , bool reset = false)
         {
             if(InvokeRequired)
             {
@@ -203,6 +225,11 @@ namespace AutoFocusCCD
             }
 
             txtLog.AppendText($"{txt}{Environment.NewLine}");
+
+            if(reset)
+            {
+                txtLog.Text = txt;
+            }
         }
 
         private async Task<DetectionResult> Predict(string filePath, SQLite.Boxes boxes)

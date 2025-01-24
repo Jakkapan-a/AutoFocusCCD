@@ -67,7 +67,8 @@ namespace AutoFocusCCD
                 db.CreateTable();
 #endif
             }
-            using (Boxes db = new Boxes())
+
+            using (var db = new Boxes())
             {
 #if DEBUG
                 db.SyncTable();
@@ -76,7 +77,17 @@ namespace AutoFocusCCD
 #endif
 
             }
-           
+
+            using (var db = new SQLite.History())
+            {
+#if DEBUG
+                db.SyncTable();
+#else
+                db.CreateTable();
+#endif
+
+            }
+
             /**
              * init Device
              */
@@ -85,6 +96,7 @@ namespace AutoFocusCCD
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name);
             //preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
             Logger.Info("Application started");
+            ClearFileServer();
         }
 
         private void btnReload_Click(object sender, EventArgs e)
@@ -153,7 +165,6 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 Logger.Error(ex, "Can't save default NLog configuration to file: " + path);
             }
         }
-
 
         private void LoadDevices()
         {
@@ -305,12 +316,12 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             this.enhancedPacketHandler?.Close();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private async void btnConnect_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
             try
             {
-                if(btn.Text == "Connect")
+                if (btn.Text == "Connect")
                 {
                     if (cmbDevices.SelectedIndex < 0)
                     {
@@ -331,22 +342,43 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                     {
                         throw new Exception("Please select baud rate.");
                     }
+                    
+                    btn.Text = "Conneing...";
+                    btn.Enabled = false;
+                    await Task.Delay(100);
+     
+                    await Task.Run(() =>
+                    {
+                        if(InvokeRequired)
+                        {
+                            Invoke(new Action(() =>
+                            {
+                                string port = cmbCOMPort.SelectedItem.ToString();
+                                int baud = int.Parse(cmbBaud.SelectedItem.ToString());
 
-                    this.ConnectCamera();
+                                this.ConnectCamera();
+                                this.enhancedPacketHandler?.Begin(port, baud);
+                            }));
+                        }
 
-                    string port = cmbCOMPort.SelectedItem.ToString();
-                    int baud = int.Parse(cmbBaud.SelectedItem.ToString());
+                    });
 
-                    this.enhancedPacketHandler?.Begin(port, baud);
                     timerOutSerial.Start();
-
                     btn.Text = "Disconnect";
+                    btn.Enabled = true;
                 }
                 else
                 {
-                    this.Stop();
-                    this.enhancedPacketHandler.Close();
+                    btn.Enabled = false;
+                    btn.Text = "Disconn...";
+                    await Task.Run(() =>
+                    {
+                        this.Stop();
+                        this.enhancedPacketHandler.Close();
+                    });
+
                     btn.Text = "Connect";
+                    btn.Enabled = true;
                 }
             }
             catch (Exception ex)
@@ -361,6 +393,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 Console.WriteLine("open and close ... :");
                 this.lbVoltage.Text = "0.00V";
                 this.lbCurrent.Text = "0.00mA";
+                btn.Enabled = true;
             }
         }
 
@@ -475,6 +508,39 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
         }
 
-       
+        private void ClearFileServer()
+        {
+            string url = Preferences().Network.URL + "/api/v1/filemanager/clear-file";
+
+            try
+            {
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    // post method
+                    var res = client.PostAsync(url, null).Result;
+
+                    if (res.IsSuccessStatusCode)
+                    {
+                        Logger.Info("Clear file server successful");
+                    }
+                    else
+                    {
+                        Logger.Error("Clear file server failed");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error clear file server: " + ex.Message);
+            }
+        }
+
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using(var history = new Forms.Setting.Historys())
+            {
+                history.ShowDialog();
+            }
+        }
     }
 }

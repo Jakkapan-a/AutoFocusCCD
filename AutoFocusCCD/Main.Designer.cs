@@ -117,14 +117,14 @@
             this.configToolStripMenuItem,
             this.workspecToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // configToolStripMenuItem
             // 
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
             this.configToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.configToolStripMenuItem.Text = "Config";
+            this.configToolStripMenuItem.Text = "File";
             // 
             // workspecToolStripMenuItem
             // 
@@ -135,34 +135,35 @@
             // modelsCCDToolStripMenuItem
             // 
             this.modelsCCDToolStripMenuItem.Name = "modelsCCDToolStripMenuItem";
-            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.modelsCCDToolStripMenuItem.Text = "CCD PVM";
             this.modelsCCDToolStripMenuItem.Click += new System.EventHandler(this.modelsCCDToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.historyToolStripMenuItem.Text = "History";
+            this.historyToolStripMenuItem.Click += new System.EventHandler(this.historyToolStripMenuItem_Click);
             // 
             // manageModelToolStripMenuItem
             // 
             this.manageModelToolStripMenuItem.Name = "manageModelToolStripMenuItem";
-            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.manageModelToolStripMenuItem.Text = "File Management";
             this.manageModelToolStripMenuItem.Click += new System.EventHandler(this.manageModelToolStripMenuItem_Click);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
