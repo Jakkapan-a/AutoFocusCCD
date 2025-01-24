@@ -87,6 +87,10 @@ namespace AutoFocusCCD
             Logger.Info("Application started");
         }
 
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            LoadDevices();
+        }
         private void CheckCreateFolder()
         {
             //if (preferences == null) return;
@@ -254,14 +258,21 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
         private void modelsCCDToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool isConnect = false;
             if(btnConnect.Text == "Disconnect")
             {
+                isConnect = true;
                 btnConnect.PerformClick();
             }
 
             using (var product = new Forms.Setting.Product())
             {
                 product.ShowDialog();
+            }
+
+            if (btnConnect.Text == "Connect" && isConnect == true)
+            {
+                btnConnect.PerformClick();
             }
 
         }
@@ -344,6 +355,12 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 Logger.Error(ex, "Error connecting camera: " + ex.Message);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btn.Text = "Connect";
+            }
+            finally
+            {
+                Console.WriteLine("open and close ... :");
+                this.lbVoltage.Text = "0.00V";
+                this.lbCurrent.Text = "0.00mA";
             }
         }
 
@@ -457,5 +474,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             this.StartProcess();
 
         }
+
+       
     }
 }

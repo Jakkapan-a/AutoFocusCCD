@@ -28,6 +28,7 @@ namespace AutoFocusCCD.Utilities
         public string image_name { get; set; }
         public string name { get; set; }
         public string updated_at { get; set; }
+        public string file_type { get; set; }
     }
 
     public class Pagination

@@ -55,11 +55,14 @@ namespace AutoFocusCCD.Forms.Setting
             dtFiles.Columns.Add("filename", typeof(string));
             dtFiles.Columns.Add("image_name", typeof(string));
             dtFiles.Columns.Add("description", typeof(string));
+            dtFiles.Columns.Add("file_type", typeof(string));
             dtFiles.Columns.Add("created_at", typeof(string));
             dtFiles.Columns.Add("updated_at", typeof(string));
 
             _ = RenderDGVFile();
-            
+
+            cbType.SelectedIndex = Properties.Settings.Default.File_type;
+            current_type = Properties.Settings.Default.File_type;
         }
 
         private async Task RenderDGVFile()
@@ -92,6 +95,7 @@ namespace AutoFocusCCD.Forms.Setting
                             row["filename"] = item.filename;
                             row["image_name"] = item.image_name;
                             row["description"] = item.description;
+                            row["file_type"] = item.file_type;
                             row["created_at"] = item.created_at;
                             row["updated_at"] = item.updated_at;
                             dtFiles.Rows.Add(row);
@@ -258,7 +262,7 @@ namespace AutoFocusCCD.Forms.Setting
         private string filePath = "";
         private string name = "";
         private string description = "";
-
+        private int current_type = 0;
         private void progressDialog1_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.Sleep(1000);
@@ -302,7 +306,10 @@ namespace AutoFocusCCD.Forms.Setting
                             form.Add(new StringContent(chunkNumber.ToString()), "chunk_number");
                             form.Add(new StringContent(totalChunks.ToString()), "total_chunks");
                             form.Add(new StringContent(new_filename), "filename");
-                            form.Add(new StringContent("cls"), "file_type");
+                            
+                            string type = current_type == 0 ? "cls": "detect";
+
+                            form.Add(new StringContent(type), "file_type");
                             if (id > 0)
                             {
                                 form.Add(new StringContent(id.ToString()), "id");
@@ -338,7 +345,10 @@ namespace AutoFocusCCD.Forms.Setting
                     var form = new MultipartFormDataContent();
                     form.Add(new StringContent(name), "name");
                     form.Add(new StringContent(description), "description");
-                    form.Add(new StringContent("cls"), "file_type");
+
+                    string type = current_type == 0 ? "cls" : "detect";
+
+                    form.Add(new StringContent(type), "file_type");
                     form.Add(new StringContent(id.ToString()), "id");
                     
                     HttpResponseMessage response = client.PostAsync(url, form).Result;
@@ -384,6 +394,8 @@ namespace AutoFocusCCD.Forms.Setting
                 id = Convert.ToInt32(row.Cells["id"].Value);
                 txtName.Text = row.Cells["name"].Value.ToString();
                 txtDescription.Text = row.Cells["description"].Value.ToString();
+                cbType.SelectedIndex = row.Cells["file_type"].Value.ToString() == "cls" ? 0 : 1;
+                current_type = cbType.SelectedIndex;
                 txtPath.Text = row.Cells["filename"].Value.ToString();
                 btnSave.Text = "Update";
                 btnDelete.Enabled = true;
@@ -514,6 +526,13 @@ namespace AutoFocusCCD.Forms.Setting
                 Logger.Error(ex, "Error when deleting file");
                 MessageBox.Show("Error when deleting file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void cbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.File_type = cbType.SelectedIndex;
+            current_type = cbType.SelectedIndex;
+            Properties.Settings.Default.Save();
         }
     }
 }

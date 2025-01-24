@@ -51,6 +51,8 @@
             this.progressDialog = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
             this.vistaOpenFileDialog1 = new Ookii.Dialogs.WinForms.VistaOpenFileDialog();
             this.timerValidName = new System.Windows.Forms.Timer(this.components);
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFile)).BeginInit();
@@ -77,6 +79,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.cbType);
             this.groupBox1.Controls.Add(this.btnPrevious);
             this.groupBox1.Controls.Add(this.btnNext);
             this.groupBox1.Controls.Add(this.txtDescription);
@@ -86,6 +89,7 @@
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtPath);
@@ -123,7 +127,7 @@
             // 
             this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDescription.Location = new System.Drawing.Point(69, 87);
+            this.txtDescription.Location = new System.Drawing.Point(69, 114);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(296, 63);
             this.txtDescription.TabIndex = 7;
@@ -134,7 +138,7 @@
             // 
             this.btnDelete.BackgroundImage = global::AutoFocusCCD.Properties.Resources.delete_32;
             this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnDelete.Location = new System.Drawing.Point(6, 156);
+            this.btnDelete.Location = new System.Drawing.Point(6, 183);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(25, 23);
             this.btnDelete.TabIndex = 6;
@@ -144,7 +148,7 @@
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(209, 156);
+            this.btnNew.Location = new System.Drawing.Point(209, 183);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 5;
@@ -166,7 +170,7 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(290, 156);
+            this.btnSave.Location = new System.Drawing.Point(290, 183);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 5;
@@ -186,7 +190,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 199);
+            this.label4.Location = new System.Drawing.Point(6, 215);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 13);
             this.label4.TabIndex = 3;
@@ -195,7 +199,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 87);
+            this.label3.Location = new System.Drawing.Point(3, 114);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 3;
@@ -230,18 +234,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFile.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvFile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFile.Location = new System.Drawing.Point(6, 219);
+            this.dgvFile.Location = new System.Drawing.Point(6, 238);
             this.dgvFile.Name = "dgvFile";
             this.dgvFile.ReadOnly = true;
             this.dgvFile.RowHeadersVisible = false;
             this.dgvFile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFile.Size = new System.Drawing.Size(359, 409);
+            this.dgvFile.Size = new System.Drawing.Size(359, 390);
             this.dgvFile.TabIndex = 1;
             this.dgvFile.SelectionChanged += new System.EventHandler(this.dgvFile_SelectionChanged);
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(53, 196);
+            this.txtSearch.Location = new System.Drawing.Point(53, 212);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(195, 20);
             this.txtSearch.TabIndex = 0;
@@ -274,6 +278,27 @@
             // 
             this.timerValidName.Interval = 500;
             this.timerValidName.Tick += new System.EventHandler(this.timerValidName_Tick);
+            // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "CLS",
+            "DETECT"});
+            this.cbType.Location = new System.Drawing.Point(69, 87);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(140, 21);
+            this.cbType.TabIndex = 9;
+            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(28, 90);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Type";
             // 
             // FileManagement
             // 
@@ -321,5 +346,7 @@
         private Ookii.Dialogs.WinForms.ProgressDialog progressDialog;
         private Ookii.Dialogs.WinForms.VistaOpenFileDialog vistaOpenFileDialog1;
         private System.Windows.Forms.Timer timerValidName;
+        private System.Windows.Forms.ComboBox cbType;
+        private System.Windows.Forms.Label label5;
     }
 }

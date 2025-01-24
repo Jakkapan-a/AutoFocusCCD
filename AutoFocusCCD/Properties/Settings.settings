@@ -26,5 +26,8 @@
     <Setting Name="PATH_IMAGE_TSET" Type="System.String" Scope="User">
       <Value Profile="(Default)">./predict</Value>
     </Setting>
+    <Setting Name="File_type" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

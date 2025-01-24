@@ -144,7 +144,7 @@ namespace AutoFocusCCD
             sensorData.current_mA = BitConverter.ToSingle(currentBytes, 0);
             // Update the UI
             lbVoltage.Text = $"{sensorData.voltage_V:F2} V";
-            lbCurrent.Text = $"{(sensorData.current_mA < 0 ? 0 : sensorData.current_mA):F2}";
+            lbCurrent.Text = $"{(sensorData.current_mA < 0 ? 0 : sensorData.current_mA):F2} mA";
         }
 
         public void SendText(string data)

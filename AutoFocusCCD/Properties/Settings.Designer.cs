@@ -118,5 +118,17 @@ namespace AutoFocusCCD.Properties {
                 this["PATH_IMAGE_TSET"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int File_type {
+            get {
+                return ((int)(this["File_type"]));
+            }
+            set {
+                this["File_type"] = value;
+            }
+        }
     }
 }

@@ -274,6 +274,7 @@
             this.btnReload.TabIndex = 4;
             this.btnReload.Text = "-";
             this.btnReload.UseVisualStyleBackColor = true;
+            this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
             // btnConnect
             // 
