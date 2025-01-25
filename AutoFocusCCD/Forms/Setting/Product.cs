@@ -108,10 +108,10 @@ namespace AutoFocusCCD.Forms.Setting
                     {
                         p.Name = txtName.Text;
                         p.Type = cmbType.SelectedIndex;
-                        p.Voltage_min = Convert.ToInt32(nmuMinVoltage.Value);
-                        p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value);
-                        p.Current_min = Convert.ToInt32(nmuMinCurrent.Value);
-                        p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value);
+                        p.Voltage_min = Convert.ToInt32(nmuMinVoltage.Value * 1000);
+                        p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value * 1000);
+                        p.Current_min = Convert.ToInt32(nmuMinCurrent.Value * 1000);
+                        p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value * 1000);
                         p.Save();
                     }
 
@@ -134,10 +134,10 @@ namespace AutoFocusCCD.Forms.Setting
                     {
                         p.Name = txtName.Text;
                         p.Type = cmbType.SelectedIndex;
-                        p.Voltage_min = Convert.ToInt32(nmuMinVoltage.Value);
-                        p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value);
-                        p.Current_min = Convert.ToInt32(nmuMinCurrent.Value);
-                        p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value);
+                        p.Voltage_min = Convert.ToInt32(nmuMinVoltage.Value * 1000);
+                        p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value * 1000);
+                        p.Current_min = Convert.ToInt32(nmuMinCurrent.Value * 1000);
+                        p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value * 1000);
                         p.Update();
                     }
                 }
@@ -162,10 +162,10 @@ namespace AutoFocusCCD.Forms.Setting
         {
             txtName.Text = "";
             // cmbType.SelectedIndex = 0;
-            nmuMinVoltage.Value = 0;
-            nmuMaxVoltage.Value = 8;
-            nmuMinCurrent.Value = 0;
-            nmuMaxCurrent.Value = 3;
+            //nmuMinVoltage.Value = 0;
+            //nmuMaxVoltage.Value = 8;
+            //nmuMinCurrent.Value = 0;
+            //nmuMaxCurrent.Value = 3;
             productSeleted = null;
 
             dgvProduct.ClearSelection();
@@ -244,10 +244,10 @@ namespace AutoFocusCCD.Forms.Setting
 
             txtName.Text = productSeleted.Name;
             cmbType.SelectedIndex = productSeleted.Type;
-            nmuMinVoltage.Value = productSeleted.Voltage_min;
-            nmuMaxVoltage.Value = productSeleted.Voltage_max;
-            nmuMinCurrent.Value = productSeleted.Current_min;
-            nmuMaxCurrent.Value = productSeleted.Current_max;
+            nmuMinVoltage.Value = productSeleted.Voltage_min / 1000;
+            nmuMaxVoltage.Value = productSeleted.Voltage_max / 1000;
+            nmuMinCurrent.Value = productSeleted.Current_min / 1000;
+            nmuMaxCurrent.Value = productSeleted.Current_max / 1000;
             btnSave.Text = "Update";
 
             toolStripStatusMessage.Text = "Product selected.";

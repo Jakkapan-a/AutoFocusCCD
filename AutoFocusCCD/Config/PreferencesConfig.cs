@@ -21,6 +21,7 @@ namespace AutoFocusCCD.Config
         public class NetworkConfig
         {
             public string URL { get; set; }
+            public string URL2 { get; set; }
         }
 
         public class ProcessingConfig
@@ -58,6 +59,7 @@ namespace AutoFocusCCD.Config
         public class OtherConfig
         {
             public bool Rectangle { get; set; }
+            public bool ByPass { get; set; }
         }
     }
 
@@ -97,7 +99,8 @@ namespace AutoFocusCCD.Config
             {
                 Network = new PreferencesConfig.NetworkConfig
                 {
-                    URL = "http://127.0.0.1:10010"
+                    URL = "http://127.0.0.1:10011",
+                    URL2 = "http://127.0.0.1:10011"
                 },
                 Processing = new PreferencesConfig.ProcessingConfig
                 {
@@ -114,7 +117,7 @@ namespace AutoFocusCCD.Config
                 },
                 FileSystem = new PreferencesConfig.FileSystemConfig
                 {
-                    DeleteFileAfterDays = 10,
+                    DeleteFileAfterDays = 30,
                     Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name)
                 },
                 OptionNG = new PreferencesConfig.OptionConfig
@@ -128,6 +131,7 @@ namespace AutoFocusCCD.Config
                 Other = new PreferencesConfig.OtherConfig
                 {
                     Rectangle = false,
+                    ByPass = false
                 }
             };
         }        

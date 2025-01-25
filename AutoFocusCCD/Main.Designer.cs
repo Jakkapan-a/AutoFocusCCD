@@ -47,6 +47,8 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbTitle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnConfirmNG = new System.Windows.Forms.Button();
+            this.btnConfirmOK = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnReload = new System.Windows.Forms.Button();
@@ -76,6 +78,7 @@
             this.progressDialog1 = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
             this.timerOutSerial = new System.Windows.Forms.Timer(this.components);
             this.timerOnStartProcess = new System.Windows.Forms.Timer(this.components);
+            this.timerDateTime = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -117,53 +120,55 @@
             this.configToolStripMenuItem,
             this.workspecToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // configToolStripMenuItem
             // 
             this.configToolStripMenuItem.Name = "configToolStripMenuItem";
             this.configToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.configToolStripMenuItem.Text = "File";
+            this.configToolStripMenuItem.Text = "Folder";
+            this.configToolStripMenuItem.Click += new System.EventHandler(this.configToolStripMenuItem_Click);
             // 
             // workspecToolStripMenuItem
             // 
             this.workspecToolStripMenuItem.Name = "workspecToolStripMenuItem";
             this.workspecToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.workspecToolStripMenuItem.Text = "History File";
+            this.workspecToolStripMenuItem.Click += new System.EventHandler(this.workspecToolStripMenuItem_Click);
             // 
             // modelsCCDToolStripMenuItem
             // 
             this.modelsCCDToolStripMenuItem.Name = "modelsCCDToolStripMenuItem";
-            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modelsCCDToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.modelsCCDToolStripMenuItem.Text = "CCD PVM";
             this.modelsCCDToolStripMenuItem.Click += new System.EventHandler(this.modelsCCDToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.historyToolStripMenuItem.Text = "History";
             this.historyToolStripMenuItem.Click += new System.EventHandler(this.historyToolStripMenuItem_Click);
             // 
             // manageModelToolStripMenuItem
             // 
             this.manageModelToolStripMenuItem.Name = "manageModelToolStripMenuItem";
-            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageModelToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.manageModelToolStripMenuItem.Text = "File Management";
             this.manageModelToolStripMenuItem.Click += new System.EventHandler(this.manageModelToolStripMenuItem_Click);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -223,6 +228,8 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.btnConfirmNG);
+            this.panel1.Controls.Add(this.btnConfirmOK);
             this.panel1.Controls.Add(this.txtLog);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.btnClearMes);
@@ -235,6 +242,32 @@
             this.panel1.Size = new System.Drawing.Size(248, 701);
             this.panel1.TabIndex = 2;
             // 
+            // btnConfirmNG
+            // 
+            this.btnConfirmNG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConfirmNG.BackColor = System.Drawing.Color.Tomato;
+            this.btnConfirmNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnConfirmNG.Location = new System.Drawing.Point(7, 654);
+            this.btnConfirmNG.Name = "btnConfirmNG";
+            this.btnConfirmNG.Size = new System.Drawing.Size(75, 47);
+            this.btnConfirmNG.TabIndex = 5;
+            this.btnConfirmNG.Text = "NG";
+            this.btnConfirmNG.UseVisualStyleBackColor = false;
+            this.btnConfirmNG.Click += new System.EventHandler(this.btnConfirmNG_Click);
+            // 
+            // btnConfirmOK
+            // 
+            this.btnConfirmOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConfirmOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnConfirmOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnConfirmOK.Location = new System.Drawing.Point(161, 654);
+            this.btnConfirmOK.Name = "btnConfirmOK";
+            this.btnConfirmOK.Size = new System.Drawing.Size(75, 47);
+            this.btnConfirmOK.TabIndex = 5;
+            this.btnConfirmOK.Text = "OK";
+            this.btnConfirmOK.UseVisualStyleBackColor = false;
+            this.btnConfirmOK.Click += new System.EventHandler(this.btnConfirmOK_Click);
+            // 
             // txtLog
             // 
             this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -242,7 +275,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLog.Location = new System.Drawing.Point(7, 458);
             this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(229, 240);
+            this.txtLog.Size = new System.Drawing.Size(229, 187);
             this.txtLog.TabIndex = 0;
             this.txtLog.Text = "";
             // 
@@ -366,6 +399,7 @@
             this.btnClearMes.TabIndex = 3;
             this.btnClearMes.Text = "Clear MES";
             this.btnClearMes.UseVisualStyleBackColor = false;
+            this.btnClearMes.Click += new System.EventHandler(this.btnClearMes_Click);
             // 
             // groupBox1
             // 
@@ -524,6 +558,11 @@
             this.timerOnStartProcess.Interval = 500;
             this.timerOnStartProcess.Tick += new System.EventHandler(this.timerOnStartProcess_Tick);
             // 
+            // timerDateTime
+            // 
+            this.timerDateTime.Interval = 1000;
+            this.timerDateTime.Tick += new System.EventHandler(this.timerDateTime_Tick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -607,6 +646,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSensor;
         private System.Windows.Forms.Timer timerOutSerial;
         private System.Windows.Forms.Timer timerOnStartProcess;
+        private System.Windows.Forms.Button btnConfirmOK;
+        private System.Windows.Forms.Button btnConfirmNG;
+        private System.Windows.Forms.Timer timerDateTime;
     }
 }
 

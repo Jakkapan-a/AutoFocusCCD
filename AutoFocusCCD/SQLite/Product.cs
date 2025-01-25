@@ -11,7 +11,7 @@ namespace AutoFocusCCD.SQLite
     {
         public int Id { get; set; }
         public string Name { get; set; } // Name of the product
-        public int Type { get; set; } // 0 = NONE, 1 = PVM
+        public int Type { get; set; } // 0 = NONE(6V), 1 = PVM(4.7V)
         public int Voltage_min { get; set; }
         public int Voltage_max { get; set; }
         public int Current_min { get; set; }

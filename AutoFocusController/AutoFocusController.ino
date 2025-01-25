@@ -103,7 +103,6 @@ void setup() {
   // INA219
   if (!ina219.begin()) {
     Serial.println("Failed to find INA219 chip");
-    // Serial1.println("$INA219:FAIL#");
     uint8_t data[] = { 0x00, 0x01, 0x01, 0x01 };
     EnhancedPacketHandler::PacketData sendPacket = {
       .mode1 = 0x03,
@@ -114,13 +113,13 @@ void setup() {
       .valueSize = sizeof(data)
     };
     while (!ina219.begin()) {
-      // Serial1.println("$INA219:FAIL#");
       if (packetHandler.sendPacket(sendPacket)) {
         Serial.println("Packet sent");
       }
       delay(1000);
     }
   }
+  buzzerPass.total = 2;
 }
 
 void loop() {
@@ -235,13 +234,20 @@ void handlePacket(EnhancedPacketHandler::PacketData& packet) {
             break;
 
         case MODE2_LED_RED:
+            if(packet.value[0] == 0x01) {
+                buzzerPass.total = 2;
+                RESULT = 2;
+            }
+
             handleLED(packet.value[0], LED_RED, LED_GREEN, LED_BLUE, 2);
             break;
 
         case MODE2_LED_GREEN:
             if (packet.value[0] == 0x01) {
                 buzzerPass.total = 2;
+                RESULT = 1;
             }
+            
             handleLED(packet.value[0], LED_GREEN, LED_RED, LED_BLUE, 1);
             break;
 
@@ -250,14 +256,13 @@ void handlePacket(EnhancedPacketHandler::PacketData& packet) {
             break;
 
         case MODE2_LED_OFF_ALL:
-            LED_RED.off();
-            LED_GREEN.off();
-            LED_BLUE.off();
+            turnOffAllLEDs();
+            RESULT = 0;
             break;
 
         case MODE2_6V_NOT_PWM:
             handleRelay(packet.value[0], RELAY1_NOT, RELAY3_PVM, RELAY3_PVM);
-            handleRelay(packet.value[0], RELAY2_PVM, RELAY3_PVM, RELAY3_PVM);
+            // handleRelay(packet.value[0], RELAY2_PVM, RELAY3_PVM, RELAY3_PVM);
             break;
 
         case MODE2_4V6_PWM:

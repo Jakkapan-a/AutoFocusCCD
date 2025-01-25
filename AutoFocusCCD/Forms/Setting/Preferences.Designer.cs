@@ -56,6 +56,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cbType = new System.Windows.Forms.ComboBox();
+            this.nIntervalStart = new System.Windows.Forms.NumericUpDown();
             this.nTimeStart = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -71,44 +72,48 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbRectangle = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.factoryResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskDialog1 = new Ookii.Dialogs.WinForms.TaskDialog(this.components);
             this._taskDialogButtonOK = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this._taskDialogButtonCancel = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.cbRectangle = new System.Windows.Forms.CheckBox();
-            this.nIntervalStart = new System.Windows.Forms.NumericUpDown();
+            this.cbByPass = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtURL2 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nClearDelay)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nKeySendDelay)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nDeleteFileAfterDays)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnTestNetwork);
+            this.groupBox1.Controls.Add(this.txtURL2);
+            this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.txtURL);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(321, 92);
+            this.groupBox1.Size = new System.Drawing.Size(321, 106);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Network";
             // 
             // btnTestNetwork
             // 
-            this.btnTestNetwork.Location = new System.Drawing.Point(240, 63);
+            this.btnTestNetwork.Location = new System.Drawing.Point(240, 76);
             this.btnTestNetwork.Name = "btnTestNetwork";
             this.btnTestNetwork.Size = new System.Drawing.Size(75, 23);
             this.btnTestNetwork.TabIndex = 4;
@@ -118,7 +123,7 @@
             // 
             // txtURL
             // 
-            this.txtURL.Location = new System.Drawing.Point(42, 37);
+            this.txtURL.Location = new System.Drawing.Point(42, 26);
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(273, 20);
             this.txtURL.TabIndex = 2;
@@ -128,7 +133,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 40);
+            this.label1.Location = new System.Drawing.Point(6, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 1;
@@ -384,6 +389,24 @@
             this.cbType.Visible = false;
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
             // 
+            // nIntervalStart
+            // 
+            this.nIntervalStart.Location = new System.Drawing.Point(206, 71);
+            this.nIntervalStart.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.nIntervalStart.Name = "nIntervalStart";
+            this.nIntervalStart.Size = new System.Drawing.Size(109, 20);
+            this.nIntervalStart.TabIndex = 5;
+            this.nIntervalStart.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nIntervalStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
+            // 
             // nTimeStart
             // 
             this.nTimeStart.Location = new System.Drawing.Point(71, 70);
@@ -541,6 +564,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.cbByPass);
             this.groupBox6.Controls.Add(this.cbRectangle);
             this.groupBox6.Location = new System.Drawing.Point(349, 294);
             this.groupBox6.Name = "groupBox6";
@@ -548,6 +572,17 @@
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Other";
+            // 
+            // cbRectangle
+            // 
+            this.cbRectangle.AutoSize = true;
+            this.cbRectangle.Location = new System.Drawing.Point(18, 30);
+            this.cbRectangle.Name = "cbRectangle";
+            this.cbRectangle.Size = new System.Drawing.Size(105, 17);
+            this.cbRectangle.TabIndex = 0;
+            this.cbRectangle.Text = "Show Rectangle";
+            this.cbRectangle.UseVisualStyleBackColor = true;
+            this.cbRectangle.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
             // 
             // contextMenuStrip
             // 
@@ -584,34 +619,37 @@
             this.timerUpdate.Interval = 200;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
-            // cbRectangle
+            // cbByPass
             // 
-            this.cbRectangle.AutoSize = true;
-            this.cbRectangle.Location = new System.Drawing.Point(18, 30);
-            this.cbRectangle.Name = "cbRectangle";
-            this.cbRectangle.Size = new System.Drawing.Size(105, 17);
-            this.cbRectangle.TabIndex = 0;
-            this.cbRectangle.Text = "Show Rectangle";
-            this.cbRectangle.UseVisualStyleBackColor = true;
-            this.cbRectangle.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
+            this.cbByPass.AutoSize = true;
+            this.cbByPass.ForeColor = System.Drawing.Color.Red;
+            this.cbByPass.Location = new System.Drawing.Point(17, 177);
+            this.cbByPass.Name = "cbByPass";
+            this.cbByPass.Size = new System.Drawing.Size(71, 17);
+            this.cbByPass.TabIndex = 0;
+            this.cbByPass.Text = "BY PASS";
+            this.cbByPass.UseVisualStyleBackColor = true;
+            this.cbByPass.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
             // 
-            // nIntervalStart
+            // label15
             // 
-            this.nIntervalStart.Location = new System.Drawing.Point(206, 71);
-            this.nIntervalStart.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.nIntervalStart.Name = "nIntervalStart";
-            this.nIntervalStart.Size = new System.Drawing.Size(109, 20);
-            this.nIntervalStart.TabIndex = 5;
-            this.nIntervalStart.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.nIntervalStart.ValueChanged += new System.EventHandler(this.nInput_ValueChanged);
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 57);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 13);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "URL2";
+            this.label15.Visible = false;
+            // 
+            // txtURL2
+            // 
+            this.txtURL2.Location = new System.Drawing.Point(42, 54);
+            this.txtURL2.Name = "txtURL2";
+            this.txtURL2.Size = new System.Drawing.Size(273, 20);
+            this.txtURL2.TabIndex = 2;
+            this.txtURL2.Text = "http://127.0.0.1:10010";
+            this.txtURL2.Visible = false;
+            this.txtURL2.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // Preferences
             // 
@@ -643,6 +681,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nKeySendDelay)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nTimeStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nThreshold)).EndInit();
             this.groupBox5.ResumeLayout(false);
@@ -651,7 +690,6 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.contextMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nIntervalStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -708,5 +746,8 @@
         private System.Windows.Forms.ComboBox cbType;
         private System.Windows.Forms.CheckBox cbRectangle;
         private System.Windows.Forms.NumericUpDown nIntervalStart;
+        private System.Windows.Forms.CheckBox cbByPass;
+        private System.Windows.Forms.TextBox txtURL2;
+        private System.Windows.Forms.Label label15;
     }
 }

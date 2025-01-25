@@ -23,7 +23,7 @@ namespace AutoFocusCCD.SQLite
         public int current_max { get; set; }
         public int current { get; set; }
         public string result { get; set; }
-        public string re_judgment { get; set; }
+        public string re_judgment { get; set; } = "None";
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
         public string TableName => "History";
@@ -112,6 +112,12 @@ namespace AutoFocusCCD.SQLite
             parameters.Add("result", $"%{result}%");
             parameters.Add("date", $"%{date}%");
             return SQliteDataAccess.Query<int>(sql, parameters).FirstOrDefault();
+        }
+
+        public static History GetLast()
+        {
+            string sql = $"SELECT * FROM History ORDER BY Id DESC LIMIT 1";
+            return SQliteDataAccess.Query<History>(sql).FirstOrDefault();
         }
     }
 }

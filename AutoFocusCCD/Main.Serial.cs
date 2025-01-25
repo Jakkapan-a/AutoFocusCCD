@@ -97,12 +97,23 @@ namespace AutoFocusCCD
                 {
                     return;
                 }
+
+                if(txtEmp.Text.Length <= 0)
+                {
+                    this.lbTitle.Text = "Please scan employee card";
+                    this.lbTitle.BackColor = Color.Yellow;
+                    this.lbTitle.ForeColor = Color.Black;
+                    this.txtEmp.Focus();
+                    return;
+                }
+
                 this.countStart = 3;
                 this.lbTitle.Text = $"Start process in {this.countStart} seconds";
                 this.lbTitle.BackColor = Color.Orange;
                 this.lbTitle.ForeColor = Color.Black;
                 this.timerOnStartProcess.Interval = Preferences().Processing.Interval;
                 this.timerOnStartProcess.Start();
+                this.deviceControl.SetLED(DeviceControl.Mode2Type.LED_BLUE,true);
             }
             else
             {
@@ -112,13 +123,23 @@ namespace AutoFocusCCD
                 lbTitle.BackColor = Color.Yellow;
                 lbTitle.ForeColor = Color.Black;
                 this.countStart = 0;
-                this._product = null;
+                //this._product = null;
                 this.pictureBoxPredict.Visible = false;
                 this.txtQr.Text = "";
                 this.txtQr.Focus();
+                if(this.lbTitle.Text == "Please scan employee card")
+                {
+                    this.txtEmp.Focus();
+                }
+
+                    this.deviceControl.TurnOffAllRelays();
+                this.deviceControl.TurnOffAllLEDs();
+
             }
 
         }
+
+        private SensorData sensorData1 = new SensorData();
 
         private void UpdateCurrentVoltage(byte[] data)
         {
@@ -147,6 +168,8 @@ namespace AutoFocusCCD
             // Update the UI
             lbVoltage.Text = $"{sensorData.voltage_V:F2} V";
             lbCurrent.Text = $"{(sensorData.current_mA < 0 ? 0 : sensorData.current_mA):F2} mA";
+
+            sensorData1 = sensorData;
         }
 
         public void SendText(string data)

@@ -2,6 +2,7 @@
 using AutoFocusCCD.Forms.Setting;
 using AutoFocusCCD.Forms.Tools;
 using AutoFocusCCD.SQLite;
+using AutoFocusCCD.Utilities;
 using GitHub.secile.Video;
 using NLog;
 using NLog.Config;
@@ -46,6 +47,8 @@ namespace AutoFocusCCD
                 SetDefaultNLogConfiguration(path);
                 Logger.Error("Not found configuration file, set default configuration");
             }
+
+            timerDateTime.Start();
         }
 
         public string[] baudList = { "9600", "19200", "38400", "57600", "115200" };
@@ -97,6 +100,24 @@ namespace AutoFocusCCD
             //preferences = PreferencesConfigLoader.Load(Path.Combine(path, "preferences.json"));
             Logger.Info("Application started");
             ClearFileServer();
+
+            string pathSys = Preferences().FileSystem.Path;
+            string pathDefult = PreferencesConfigLoader.LoadDefault().FileSystem.Path;
+            if (pathDefult == pathSys)
+            {
+                path = Path.Combine(pathSys, "system", "images");
+            }
+            else
+            {
+                path = Path.Combine(pathSys, "images");
+            }
+
+
+            // chack and remove old file history
+            /**
+             * path: image/model/--folder--(delete) 
+             *      
+             */
         }
 
         private void btnReload_Click(object sender, EventArgs e)
@@ -172,7 +193,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             if (devices.Length == 0) return;
 
             this.RefreshComboBoxWithList(cmbDevices, devices);
-            this.RefreshComboBoxWithList(cmbCOMPort, SerialPort.GetPortNames(), false);
+            this.RefreshComboBoxWithList(cmbCOMPort, SerialPort.GetPortNames(), true);
             this.RefreshComboBoxWithList(cmbBaud, baudList);
         }
 
@@ -235,6 +256,9 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
                 // get model and send controls relay
                 processValidate();
+
+
+
             }
         }
 
@@ -265,6 +289,14 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             this.lbTitle.Text = "Waiting for start...";
             this.lbTitle.BackColor = Color.Yellow;
             this.lbTitle.ForeColor = Color.Black;
+            if(_product.Type == 0)
+            {
+                this.deviceControl.SetRelay(Utilities.DeviceControl.Mode2Type.RELAY_6V_NOT_PWM, true);
+            }
+            else
+            {
+                this.deviceControl.SetRelay(Utilities.DeviceControl.Mode2Type.RELAY_4V6_PWM, true);
+            }
         }
 
         private void modelsCCDToolStripMenuItem_Click(object sender, EventArgs e)
@@ -419,9 +451,16 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 #if DEBUG
             version = Assembly.GetExecutingAssembly().GetName().Version.ToString() + " (Debug)";
 #else
+            try
+            {
              version = ApplicationDeployment.CurrentDeployment.CurrentVersion == null ? Assembly.GetExecutingAssembly().GetName().Version.ToString() : ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+
+            }
+            catch
+            {
+                version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
             // version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
-            // version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 #endif
 
             var taskDialog = new TaskDialog
@@ -484,12 +523,10 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                 return;
             }
 
-            
-
         }
 
         public int countStart = 0;
-        public const int MAX_START = 3;
+        //public const int MAX_START = 3;
         private void timerOnStartProcess_Tick(object sender, EventArgs e)
         {
             if(countStart > 0)
@@ -541,6 +578,84 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
             {
                 history.ShowDialog();
             }
+        }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = PreferencesConfigLoader.LoadDefault().FileSystem.Path;
+            try
+            {
+                // Open windows explorer
+                System.Diagnostics.Process.Start("explorer.exe", path);
+            }
+            catch (Exception ex)
+            {
+                Main.Logger.Error("Error opening path: " + ex.Message);
+            }
+        }
+
+        private void workspecToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Preferences().FileSystem.Path;
+            try
+            {
+                // Open windows explorer
+                System.Diagnostics.Process.Start("explorer.exe", path);
+            }
+            catch (Exception ex)
+            {
+                Main.Logger.Error("Error opening path: " + ex.Message);
+            }
+        }
+
+        private async void btnClearMes_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btnClearMes.Enabled = false;
+                this.SendText(Preferences().ClearMes.Message1);
+                await Task.Delay(Preferences().ClearMes.Delay);
+                this.SendText(txtEmp.Text);
+            }
+            catch (Exception ex) {
+                Logger.Error("Clear MES :"+ ex.Message);
+            }
+            finally
+            {
+                btnClearMes.Enabled = true;
+                this.txtQr.Focus();
+            }
+        }
+
+        private void btnConfirmOK_Click(object sender, EventArgs e)
+        {
+            using(var db = SQLite.History.GetLast())
+            {
+                if (db != null)
+                {
+                    db.re_judgment = "OK";
+                    db.UpdatedAt = SQliteDataAccess.GetDateTimeNow();
+                    db.Update();
+                }
+            }
+        }
+
+        private void btnConfirmNG_Click(object sender, EventArgs e)
+        {
+            using (var db = SQLite.History.GetLast())
+            {
+                if (db != null)
+                {
+                    db.re_judgment = "NG";
+                    db.UpdatedAt = SQliteDataAccess.GetDateTimeNow();
+                    db.Update();
+                }
+            }
+        }
+
+        private void timerDateTime_Tick(object sender, EventArgs e)
+        {
+            lbDateTime.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
     }
 }

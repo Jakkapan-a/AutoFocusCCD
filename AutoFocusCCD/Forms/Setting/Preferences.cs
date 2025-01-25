@@ -32,6 +32,8 @@ namespace AutoFocusCCD.Forms.Setting
             if (preferencesConfig == null) return;
             
             txtURL.Text = preferencesConfig.Network.URL;
+            txtURL2.Text = preferencesConfig.Network.URL;
+
             txtClearMessage1.Text = preferencesConfig.ClearMes.Message1;
             nClearDelay.Value = preferencesConfig.ClearMes.Delay;
             txtClearMessage2.Text = preferencesConfig.ClearMes.Message2;
@@ -51,6 +53,7 @@ namespace AutoFocusCCD.Forms.Setting
             txtPath.Text = preferencesConfig.FileSystem.Path;
 
             cbRectangle.Checked = preferencesConfig.Other.Rectangle;
+            cbByPass.Checked = preferencesConfig.Other.ByPass;
 
         }
 
@@ -59,6 +62,8 @@ namespace AutoFocusCCD.Forms.Setting
             if (preferencesConfig == null) return;
 
             preferencesConfig.Network.URL = txtURL.Text;
+            preferencesConfig.Network.URL2 = txtURL2.Text;
+
             preferencesConfig.ClearMes.Message1 = txtClearMessage1.Text;
             preferencesConfig.ClearMes.Delay = (int)nClearDelay.Value;
             preferencesConfig.ClearMes.Message2 = txtClearMessage2.Text;
@@ -74,6 +79,7 @@ namespace AutoFocusCCD.Forms.Setting
             preferencesConfig.FileSystem.DeleteFileAfterDays = (int)nDeleteFileAfterDays.Value;
             preferencesConfig.FileSystem.Path = txtPath.Text;
             preferencesConfig.Other.Rectangle = cbRectangle.Checked;
+            preferencesConfig.Other.ByPass = cbByPass.Checked;
 
             // Save and update 
             PreferencesConfigLoader.Save(Main.PreferencesPath(), preferencesConfig);
@@ -102,8 +108,17 @@ namespace AutoFocusCCD.Forms.Setting
                 using (var client = new System.Net.WebClient())
                 {
                     client.DownloadString(txtURL.Text);
-                    Main.Logger.Info("Network test successful", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    MessageBox.Show("Connection successful", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Main.Logger.Info("Network test successful 1", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Connection successful 1", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                if (txtURL2.Visible)
+                {
+                    using (var client = new System.Net.WebClient())
+                    {
+                        client.DownloadString(txtURL2.Text);
+                        Main.Logger.Info("Network test successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Connection successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             catch(Exception ex)
@@ -128,6 +143,20 @@ namespace AutoFocusCCD.Forms.Setting
                     return;
                 }
             }
+
+            if (textBox != null && textBox == txtURL2 && txtURL2.Visible)
+            {
+                if (Extensions.IsValidURL(txtURL2.Text))
+                {
+                    txtURL.ForeColor = Color.Black;
+                }
+                else
+                {
+                    txtURL.ForeColor = Color.Red;
+                    return;
+                }
+            }
+
             timerUpdate.Stop();
             timerUpdate.Start();
         }

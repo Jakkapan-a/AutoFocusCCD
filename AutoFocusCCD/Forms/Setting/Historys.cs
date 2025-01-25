@@ -1,4 +1,5 @@
-﻿using Multi_Camera_MINI_AOI_V3.Utilities;
+﻿using AutoFocusCCD.Config;
+using Multi_Camera_MINI_AOI_V3.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,26 +51,26 @@ namespace AutoFocusCCD.Forms.Setting
 
             dtHistory.Rows.Clear();
 
-            var histories = SQLite.History.GetList(this.txtEmp.Text, this.txtQrCode.Text, date, this.txtResult.Text, pageSizeHistory, currentPageHistory);
+            var histories = SQLite.History.GetList(this.txtEmp.Text, this.txtQrCode.Text, date, this.txtResult.Text, currentPageHistory, pageSizeHistory);
 
-            if(histories.Count > 0)
+            if (histories == null || histories.Count == 0) return;
+
+            int slectedRow = Extensions.GetSelectedRowIndex(dgvHistory);
+            noDtHistory = (currentPageHistory - 1) * pageSizeHistory + 1;
+            foreach (var history in histories)
             {
-                int slectedRow = Extensions.GetSelectedRowIndex(dgvHistory);
-                noDtHistory = (currentPageHistory - 1) * pageSizeHistory + 1;
-                foreach (var history in histories)
-                {
-                    dtHistory.Rows.Add(history.Id, noDtHistory, history.employee, history.qr_code, history.product_name, history.path_folder, history.result, history.CreatedAt, history.UpdatedAt);
-                    noDtHistory++;
-                }
-
-                Extensions.SetDataSourceAndUpdateSelection(dgvHistory, dtHistory, new string[] { "Id" , "UpdatedAt" });
-                Extensions.SelectedRow(dgvHistory, slectedRow);
-
-                toolStripStatusLabel1.Text = $"Total: {totalDataHistory} records, Page: {currentPageHistory}/{totalPagesHistory}";
-
-                btnPrevious.Enabled = currentPageHistory > 1;
-                btnNext.Enabled = currentPageHistory < totalPagesHistory;
+                dtHistory.Rows.Add(history.Id, noDtHistory, history.employee, history.qr_code, history.product_name, history.path_folder, history.result, history.CreatedAt, history.UpdatedAt);
+                noDtHistory++;
             }
+
+            Extensions.SetDataSourceAndUpdateSelection(dgvHistory, dtHistory, new string[] { "Id" , "UpdatedAt" });
+            Extensions.SelectedRow(dgvHistory, slectedRow);
+
+            toolStripStatusLabel1.Text = $"Total: {totalDataHistory} records, Page: {currentPageHistory}/{totalPagesHistory}";
+
+            btnPrevious.Enabled = currentPageHistory > 1;
+            btnNext.Enabled = currentPageHistory < totalPagesHistory;
+            
         }
 
         private void btnPrevious_Click(object sender, EventArgs e)
@@ -113,6 +114,23 @@ namespace AutoFocusCCD.Forms.Setting
         {
             timerSearch.Stop();
             timerSearch.Start();
+        }
+
+        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvHistory.SelectedRows.Count > 0)
+            {
+                string path = dgvHistory.SelectedRows[0].Cells["Folder"].Value.ToString();
+                try
+                {
+                    // Open windows explorer
+                    System.Diagnostics.Process.Start("explorer.exe", path);
+                }
+                catch (Exception ex)
+                {
+                    Main.Logger.Error("Error opening path: " + ex.Message);
+                }
+            }
         }
     }
 }

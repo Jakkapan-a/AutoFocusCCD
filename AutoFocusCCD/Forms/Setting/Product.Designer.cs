@@ -158,7 +158,13 @@
             // 
             // nmuMaxCurrent
             // 
+            this.nmuMaxCurrent.DecimalPlaces = 2;
             this.nmuMaxCurrent.Location = new System.Drawing.Point(19, 311);
+            this.nmuMaxCurrent.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
             this.nmuMaxCurrent.Name = "nmuMaxCurrent";
             this.nmuMaxCurrent.Size = new System.Drawing.Size(226, 20);
             this.nmuMaxCurrent.TabIndex = 0;
@@ -170,14 +176,26 @@
             // 
             // nmuMinCurrent
             // 
+            this.nmuMinCurrent.DecimalPlaces = 2;
             this.nmuMinCurrent.Location = new System.Drawing.Point(19, 260);
+            this.nmuMinCurrent.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.nmuMinCurrent.Name = "nmuMinCurrent";
             this.nmuMinCurrent.Size = new System.Drawing.Size(226, 20);
             this.nmuMinCurrent.TabIndex = 0;
             // 
             // nmuMaxVoltage
             // 
+            this.nmuMaxVoltage.DecimalPlaces = 2;
             this.nmuMaxVoltage.Location = new System.Drawing.Point(19, 193);
+            this.nmuMaxVoltage.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
             this.nmuMaxVoltage.Name = "nmuMaxVoltage";
             this.nmuMaxVoltage.Size = new System.Drawing.Size(226, 20);
             this.nmuMaxVoltage.TabIndex = 0;
@@ -189,7 +207,13 @@
             // 
             // nmuMinVoltage
             // 
+            this.nmuMinVoltage.DecimalPlaces = 2;
             this.nmuMinVoltage.Location = new System.Drawing.Point(19, 148);
+            this.nmuMinVoltage.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
             this.nmuMinVoltage.Name = "nmuMinVoltage";
             this.nmuMinVoltage.Size = new System.Drawing.Size(226, 20);
             this.nmuMinVoltage.TabIndex = 0;
@@ -211,9 +235,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(20, 295);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 13);
+            this.label7.Size = new System.Drawing.Size(88, 13);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Max Current (A)";
+            this.label7.Text = "Max Current (mA)";
             // 
             // txtName
             // 
@@ -237,9 +261,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(20, 244);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 13);
+            this.label6.Size = new System.Drawing.Size(85, 13);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Min Current (A)";
+            this.label6.Text = "Min Current (mA)";
             // 
             // label2
             // 
