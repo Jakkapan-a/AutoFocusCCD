@@ -173,7 +173,7 @@
             this.btnRPVM.Name = "btnRPVM";
             this.btnRPVM.Size = new System.Drawing.Size(75, 36);
             this.btnRPVM.TabIndex = 0;
-            this.btnRPVM.Text = "4.5V PVM";
+            this.btnRPVM.Text = "4.6V PVM";
             this.btnRPVM.UseVisualStyleBackColor = true;
             this.btnRPVM.Click += new System.EventHandler(this.btnR_Click);
             // 

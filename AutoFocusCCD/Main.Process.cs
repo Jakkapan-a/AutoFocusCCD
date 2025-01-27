@@ -70,7 +70,7 @@ namespace AutoFocusCCD
                 // Process
                 await Task.Delay(100);
                 bool summaryResult = true;
-                using (var img = camera.GetBitmap())
+                using (var img = GetBitmap())
                 using (var displayImage = new Bitmap(img))
                 {
                    

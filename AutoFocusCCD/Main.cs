@@ -33,6 +33,7 @@ namespace AutoFocusCCD
         {
             InitializeComponent();
             InitializeSerial();
+            InitializeCapture();
             ShowAppVersion();
 
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "NLog.config");
@@ -118,6 +119,74 @@ namespace AutoFocusCCD
              * path: image/model/--folder--(delete) 
              *      
              */
+
+            RemoveOldFiles();
+        }
+
+        private void RemoveOldFiles()
+        {
+            try
+            {
+                var deleteFileAfterDays= Preferences().FileSystem.DeleteFileAfterDays;
+                var path = Preferences().FileSystem.Path;
+
+                string pathDefult = PreferencesConfigLoader.LoadDefault().FileSystem.Path;
+                if (pathDefult == path)
+                {
+                    path = Path.Combine(path, "system", "images");
+                }
+                else
+                {
+                    path = Path.Combine(path, "images");
+                }
+
+                /* -----------------
+                |   productName -> datefolder(delete it )
+                |
+                */
+                if (System.IO.Directory.Exists(path))
+                {
+                    Task.Run(() => 
+                    {
+                            //
+                            var productDirectories = Directory.GetDirectories(path);
+                            foreach (var pDir in productDirectories)
+                            {
+                                Logger.Info("************************************");
+
+                                var productName = Path.GetFileName(pDir);
+                                var dateDirectories = Directory.GetDirectories(pDir);
+                                Logger.Info("Product name: " + productName);
+                                foreach (var dDir in dateDirectories)
+                                {
+                                    var date = Path.GetFileName(dDir);
+                                    var info = new DirectoryInfo(dDir);
+                                    var createFolder = info.CreationTime;
+                                    Console.WriteLine("Create folder: " + createFolder);
+                                    Console.WriteLine("Total : " + DateTime.Now.Subtract(createFolder).TotalDays);
+                                    Logger.Info("Date folder: " + date + ", " + DateTime.Now.Subtract(createFolder).TotalDays);
+                                    if (DateTime.Now.Subtract(createFolder).TotalDays > deleteFileAfterDays)
+                                    {
+                                        try
+                                        {
+                                            Directory.Delete(dDir, true);
+                                            Logger.Info("Remove old files: " + dDir);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Logger.Error("Error remove old files: " + ex.Message);
+                                        }
+                                    }
+                                }
+                            }
+                    });
+                  
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error remove old files: " + ex.Message);
+            }
         }
 
         private void btnReload_Click(object sender, EventArgs e)
@@ -346,6 +415,7 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
         {
             this.Stop();
             this.enhancedPacketHandler?.Close();
+            this.camera?.Release();
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
