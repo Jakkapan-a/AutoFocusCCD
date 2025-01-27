@@ -15,13 +15,17 @@ namespace AutoFocusCCD
 {
     partial class Main
     {
+        private readonly Stopwatch _stopwatch;
+
         private void InitializeProcess()
         {
-
+            this._stopwatch = new Stopwatch();
         }
 
         private async void StartProcess()
         {
+            this._stopwatch.Restart();
+
             var config = Preferences();
             this.pictureBoxPredict.Visible = true;
             this.pictureBoxPredict.Image?.Dispose();
@@ -265,6 +269,9 @@ namespace AutoFocusCCD
                         LogAppendText("***** BY PASS *****");
                         summaryResult = true;
                     }
+
+                    this._stopwatch.Stop();
+                    LogAppendText($"Time elapsed: {_stopwatch.ElapsedMilliseconds} ms");
 
                     if (summaryResult)
                     {

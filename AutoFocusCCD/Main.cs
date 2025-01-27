@@ -34,6 +34,7 @@ namespace AutoFocusCCD
             InitializeComponent();
             InitializeSerial();
             InitializeCapture();
+            InitializeProcess();
             ShowAppVersion();
 
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Assembly.GetExecutingAssembly().GetName().Name, "NLog.config");
