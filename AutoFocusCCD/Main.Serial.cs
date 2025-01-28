@@ -15,8 +15,63 @@ namespace AutoFocusCCD
             enhancedPacketHandler = new EnhancedPacketHandler();
             enhancedPacketHandler.OnSerialError += EnhancedPacketHandler_OnSerialError;
             enhancedPacketHandler.OnPacketReceived += EnhancedPacketHandler_OnPacketReceivedHandler;
-
+            enhancedPacketHandler.OnPacketReceivedAscii += EnhancedPacketHandler_OnPacketReceivedAscii;
             deviceControl = new DeviceControl(enhancedPacketHandler);
+        }
+
+        private void EnhancedPacketHandler_OnPacketReceivedAscii(object sender, PacketAcsiiEventArgs e)
+        {
+            if (e.PacketData.Length == 0)
+            {
+                Console.WriteLine("Received packet with no data.");
+                return;
+            }
+            //Console.WriteLine("Received ASCII packet:");
+            //Console.WriteLine($"Text: {e.PacketData}");
+            //Console.WriteLine($"Length: {e.PacketData.Length} bytes");
+
+            // $INA_DATA: 1.04,-0.50#
+            // $SENSOR1:ON#
+            // $SENSOR1:OFF#
+
+
+            // Remove $ #
+            string package = e.PacketData.Substring(1, e.PacketData.Length - 2);
+            if (package.Contains("INA_DATA"))
+            {
+                string[] parts = package.Split(':');
+                if (parts.Length == 2)
+                {
+                    string[] values = parts[1].Split(',');
+                    if (values.Length == 2)
+                    {
+                        float voltage = float.Parse(values[0]);
+                        float current = float.Parse(values[1]);
+                        SensorData sensorData = new SensorData
+                        {
+                            voltage_V = voltage,
+                            current_mA = current
+                        };
+
+                        Console.WriteLine($"Voltage: {sensorData.voltage_V:F2} V");
+                        Console.WriteLine($"Current: {sensorData.current_mA:F2} mA");
+
+                        byte[] bytes = new byte[8];
+                        byte[] voltageBytes = BitConverter.GetBytes(sensorData.voltage_V);
+                        byte[] currentBytes = BitConverter.GetBytes(sensorData.current_mA);
+
+                        Array.Copy(voltageBytes, 0, bytes, 0, 4);
+                        Array.Copy(currentBytes, 0, bytes, 4, 4);
+
+                        UpdateCurrentVoltage(bytes);
+                    }
+                }
+            }
+            else if (package.Contains("SENSOR1"))
+            {
+                bool state = package.Contains("ON");
+                UpdateSensorStatus(state);
+            }
         }
 
         private void EnhancedPacketHandler_OnSerialError(object sender, SerialErrorEventArgs e)
@@ -88,6 +143,12 @@ namespace AutoFocusCCD
 
         private void UpdateSensorStatus(bool isActive)
         {
+            if(InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateSensorStatus(isActive)));
+                return;
+            }
+
             this.toolStripStatusLabelSensor.Text = isActive ? "Sensor: Active" : "Sensor: Inactive";
             this.toolStripStatusLabelSensor.ForeColor = isActive ? System.Drawing.Color.Green : System.Drawing.Color.Red;
 
@@ -132,7 +193,7 @@ namespace AutoFocusCCD
                     this.txtEmp.Focus();
                 }
 
-                    this.deviceControl.TurnOffAllRelays();
+                this.deviceControl.TurnOffAllRelays();
                 this.deviceControl.TurnOffAllLEDs();
 
             }
