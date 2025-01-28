@@ -72,7 +72,7 @@ namespace AutoFocusCCD
                 db.CreateTable();
 #endif
             }
-
+            Console.WriteLine($"==> :{ DateTime.Now.ToString("dd-MMMM-yyyy")}");
             using (var db = new Boxes())
             {
 #if DEBUG
@@ -194,6 +194,7 @@ namespace AutoFocusCCD
         {
             LoadDevices();
         }
+        
         private void CheckCreateFolder()
         {
             //if (preferences == null) return;

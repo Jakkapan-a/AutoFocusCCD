@@ -3,6 +3,7 @@ using AutoFocusCCD.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,12 +16,10 @@ namespace AutoFocusCCD
 {
     partial class Main
     {
-        private readonly Stopwatch _stopwatch;
+        private readonly Stopwatch _stopwatch = new Stopwatch();
 
         private void InitializeProcess()
-        {
-            this._stopwatch = new Stopwatch();
-        }
+        { }
 
         private async void StartProcess()
         {

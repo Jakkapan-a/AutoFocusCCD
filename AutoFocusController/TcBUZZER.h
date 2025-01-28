@@ -9,7 +9,6 @@ class TcBUZZER
 	uint8_t pin = 0;
     bool active = 1;
     bool state = false;
-    // uint32_t previousMillis;
     uint32_t previousMillisDuty;
     uint32_t toneTime = 500; // 500ms by default
     uint8_t dutyCycle = 50; // 50% duty cycle by default

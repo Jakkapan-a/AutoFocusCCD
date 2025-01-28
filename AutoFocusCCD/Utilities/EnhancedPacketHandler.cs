@@ -21,12 +21,17 @@ namespace AutoFocusCCD.Utilities
     /// </summary>
     public static class PacketConstants
     {
+        // --------- Packet Structure ---------
         public const byte START_BYTE = 0xAA;
         public const byte END_BYTE = 0xFF;
         public const int MAX_PACKET_SIZE = 512;
         public const int HEADER_SIZE = 7;     // START + SIZE(2) + MODE1 + MODE2 + CMD + SEQ
         public const int FOOTER_SIZE = 3;     // LENGTH + CHECKSUM + END
         public const int MIN_PACKET_SIZE = HEADER_SIZE + FOOTER_SIZE;
+
+        // --------- Acsii Mode ---------
+        public const string ASCII_START = "$";
+        public const string ASCII_END = "#";
     }
 
     /// <summary>
@@ -72,6 +77,17 @@ namespace AutoFocusCCD.Utilities
         }
     }
 
+    public class PacketAcsiiEventArgs : EventArgs
+    {
+        public string PacketData { get; }
+        public DateTime Timestamp { get; }
+        public PacketAcsiiEventArgs(string packetData)
+        {
+            PacketData = packetData;
+            Timestamp = DateTime.Now;
+        }
+    }
+
     public class SerialErrorEventArgs : EventArgs
     {
         public Exception Error { get; }
@@ -97,11 +113,19 @@ namespace AutoFocusCCD.Utilities
         private readonly object serialLock = new object();
         private bool isDisposed = false;
         private byte[] buffer;
+        private string[] bufferStrAscii;
+
         private int writeIndex;
+        private int writeIndexAcii;
+
         private bool isReceiving;
+        private bool isReceivingAscii;
+
         private byte sequenceNumber;
         private SerialPort serialPort;
         public event EventHandler<PacketDataEventArgs> OnPacketReceived;
+
+        public event EventHandler<PacketAcsiiEventArgs> OnPacketReceivedAscii;
 
         private BlockingCollection<byte> dataBuffer;
         private CancellationTokenSource cts;
@@ -111,11 +135,16 @@ namespace AutoFocusCCD.Utilities
         public EnhancedPacketHandler()
         {
             buffer = new byte[PacketConstants.MAX_PACKET_SIZE];
+            bufferStrAscii = new string[PacketConstants.MAX_PACKET_SIZE];
             dataBuffer = new BlockingCollection<byte>(BUFFER_SIZE);
 
             writeIndex = 0;
             isReceiving = false;
-            sequenceNumber = 0;
+            sequenceNumber = 0;            
+
+            // ------ ASCII Mode ------
+            writeIndexAcii = 0;
+            isReceivingAscii = false;
         }
 
         /// <summary>
@@ -170,6 +199,13 @@ namespace AutoFocusCCD.Utilities
         {
             isReceiving = false;
             writeIndex = 0;
+        }
+
+
+        private void ResetReceiverAscii()
+        {
+            isReceivingAscii = false;
+            writeIndexAcii = 0;
         }
 
         /// <summary>
@@ -258,21 +294,6 @@ namespace AutoFocusCCD.Utilities
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             if (serialPort == null) return;
-            /*
-            try
-            {
-                while (serialPort.BytesToRead > 0)
-                {
-                    byte inByte = (byte)serialPort.ReadByte();
-                    //ProcessByte(inByte);
-                }
-            }
-            catch (Exception)
-            {
-                ResetReceiver();
-            }
-            */
-
             try
             {
                 byte[] tempBuffer = new byte[serialPort.BytesToRead];
@@ -321,6 +342,9 @@ namespace AutoFocusCCD.Utilities
         /// </summary>
         private void ProcessByte(byte inByte)
         {
+            // ------ ASCII Mode ------
+            ProcessAssci(inByte);
+            // ------ Packet Structure ------
             if (!isReceiving)
             {
                 if (inByte == PacketConstants.START_BYTE)
@@ -378,6 +402,45 @@ namespace AutoFocusCCD.Utilities
             }
         }
 
+        private void ProcessAssci(byte inByte)
+        {
+            if (!isReceivingAscii)
+            {
+                if (inByte == PacketConstants.ASCII_START[0])
+                {
+                    isReceivingAscii = true;
+                    writeIndexAcii = 0;
+                    bufferStrAscii[writeIndexAcii++] = ((char)inByte).ToString();
+                }
+            }
+            else
+            {
+                // ---- Check if we have the size bytes ----
+                if (inByte == PacketConstants.ASCII_END[0])
+                {
+                    isReceivingAscii = false;
+                    bufferStrAscii[writeIndexAcii++] = ((char)inByte).ToString();
+                    
+                    // Raise event if there are any subscribers
+                    OnPacketReceivedAscii?.Invoke(this, new PacketAcsiiEventArgs(string.Join("", bufferStrAscii)));
+
+                    ResetReceiverAscii();
+                }
+                else
+                {
+                    // check if buffer is full
+                    if (writeIndexAcii >= PacketConstants.MAX_PACKET_SIZE)
+                    {
+                        isReceivingAscii = false;
+                        writeIndexAcii = 0;
+                        return;
+                    }
+                    // copy payload
+                    bufferStrAscii[writeIndexAcii++] = ((char)inByte).ToString();
+                }
+
+            }
+        }
         /// <summary>
         /// Close serial port connection
         /// </summary>
@@ -480,5 +543,6 @@ namespace AutoFocusCCD.Utilities
                 processTask?.Dispose();
             }
         }
+
     }
 }

@@ -49,6 +49,22 @@ namespace AutoFocusCCD.Utilities
                 Console.WriteLine("Invalid LED type");
                 return false;
             }
+            string str = "";
+            switch (ledType)
+            {
+                case Mode2Type.LED_RED:
+                    str = $"$LED:{(turnOn ? "R" : "0")}#";
+                    break;
+                case Mode2Type.LED_BLUE:
+                    str = $"$LED:{(turnOn ? "B" : "0")}#";
+                    break;
+                case Mode2Type.LED_GREEN:
+                    str = $"$LED:{(turnOn ? "G" : "0")}#";
+                    break;
+            }
+
+            SendAscii(str);
+
 
             var packet = new PacketData
             {
@@ -76,6 +92,9 @@ namespace AutoFocusCCD.Utilities
                 Value = new byte[] { 0x00 }
             };
 
+            string str = $"$LED:OFF#";
+            SendAscii(str);
+
             if (enhancedPacketHandler?.SendPacket(packet) == true)
             {
                 Console.WriteLine("All LEDs turned OFF");
@@ -93,6 +112,11 @@ namespace AutoFocusCCD.Utilities
                 return false;
             }
 
+            string str = $"$RAY:{(relayType == Mode2Type.RELAY_4V6_PWM ? "PVM" : "NOT")}{(turnOn ? "1" : "0")}#";
+
+            SendAscii(str);
+
+
             var packet = new PacketData
             {
                 Mode1 = 0x01,
@@ -100,6 +124,8 @@ namespace AutoFocusCCD.Utilities
                 Command = (byte)CommandType.Data,
                 Value = new byte[] { (byte)(turnOn ? 0x01 : 0x00) }
             };
+
+
 
             if (enhancedPacketHandler?.SendPacket(packet) == true)
             {
@@ -111,6 +137,10 @@ namespace AutoFocusCCD.Utilities
 
         public bool TurnOffAllRelays()
         {
+            string str = $"$RAY:RST#";
+            
+            SendAscii(str);
+
             var packet = new PacketData
             {
                 Mode1 = 0x01,
@@ -145,7 +175,7 @@ namespace AutoFocusCCD.Utilities
             return false;
         }
 
-        public bool SendAscci(string text)
+        public bool SendAscii(string text)
         {
             var packet = new PacketData
             {
