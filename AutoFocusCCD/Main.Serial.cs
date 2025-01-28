@@ -261,6 +261,9 @@ namespace AutoFocusCCD
                     Value = bytes
                 };
 
+                string str = $"$KBD:{data}#";
+                deviceControl.SendAscii(str);
+
                 // packet
                 if (enhancedPacketHandler?.SendPacket(packet) == true)
                 {
