@@ -281,6 +281,7 @@ namespace AutoFocusCCD
                         this.deviceControl.SetLED(DeviceControl.Mode2Type.LED_GREEN, true);
                         this.SendText(txtQr.Text);
                         history.result = "OK";
+
                     }
                     else
                     {
@@ -299,6 +300,13 @@ namespace AutoFocusCCD
                         history.result = "NG";
                     }
                     
+                    if (config.Other.ByPass)
+                    {
+                        this.lbTitle.Text = "Please visual check";
+                        this.lbTitle.BackColor = Color.BlueViolet;
+                        this.lbTitle.ForeColor = Color.White;
+                    }
+
                     await history.SaveSaync();
                 }
 

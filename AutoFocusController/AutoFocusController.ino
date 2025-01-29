@@ -337,13 +337,13 @@ void sensorEvent(bool state) {
   } else {
     data[0] = 0x00;
     // OFF ALL LED & RELAY & BUZZER
-    LED_RED.off();
-    LED_GREEN.off();
-    LED_BLUE.off();
-    RELAY1_NOT.off();
-    RELAY2_PVM.off();
-    RELAY3_PVM.off();
-    buzzerPass.total = 0;
+    // LED_RED.off();
+    // LED_GREEN.off();
+    // LED_BLUE.off();
+    // RELAY1_NOT.off();
+    // RELAY2_PVM.off();
+    // RELAY3_PVM.off();
+    // buzzerPass.total = 0;
   }
   
   isSensorOn = state;

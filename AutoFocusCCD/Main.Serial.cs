@@ -30,47 +30,54 @@ namespace AutoFocusCCD
             //Console.WriteLine($"Text: {e.PacketData}");
             //Console.WriteLine($"Length: {e.PacketData.Length} bytes");
 
-            // $INA_DATA: 1.04,-0.50#
-            // $SENSOR1:ON#
-            // $SENSOR1:OFF#
-
-
-            // Remove $ #
-            string package = e.PacketData.Substring(1, e.PacketData.Length - 2);
-            if (package.Contains("INA_DATA"))
+            // 1. $INA_DATA: 1.04,-0.50#
+            // 2. $SENSOR1:ON#
+            // 3. $SENSOR1:OFF#
+            try
             {
-                string[] parts = package.Split(':');
-                if (parts.Length == 2)
+
+                // Remove $ #
+                string package = e.PacketData.Replace('$', ' ').Replace('#', ' ').Trim();
+                if (package.Contains("INA_DATA"))
                 {
-                    string[] values = parts[1].Split(',');
-                    if (values.Length == 2)
+                    string[] parts = package.Split(':');
+                    if (parts.Length == 2)
                     {
-                        float voltage = float.Parse(values[0]);
-                        float current = float.Parse(values[1]);
-                        SensorData sensorData = new SensorData
+                        string[] values = parts[1].Split(',');
+                        if (values.Length == 2)
                         {
-                            voltage_V = voltage,
-                            current_mA = current
-                        };
+                            float voltage = float.Parse(values[0]);
+                            float current = float.Parse(values[1].Contains("-") ? "0" : values[1]);
 
-                        Console.WriteLine($"Voltage: {sensorData.voltage_V:F2} V");
-                        Console.WriteLine($"Current: {sensorData.current_mA:F2} mA");
+                            SensorData sensorData = new SensorData
+                            {
+                                voltage_V = voltage,
+                                current_mA = current
+                            };
 
-                        byte[] bytes = new byte[8];
-                        byte[] voltageBytes = BitConverter.GetBytes(sensorData.voltage_V);
-                        byte[] currentBytes = BitConverter.GetBytes(sensorData.current_mA);
+                            Console.WriteLine($"Voltage: {sensorData.voltage_V:F2} V");
+                            Console.WriteLine($"Current: {sensorData.current_mA:F2} mA");
 
-                        Array.Copy(voltageBytes, 0, bytes, 0, 4);
-                        Array.Copy(currentBytes, 0, bytes, 4, 4);
+                            byte[] bytes = new byte[8];
+                            byte[] voltageBytes = BitConverter.GetBytes(sensorData.voltage_V);
+                            byte[] currentBytes = BitConverter.GetBytes(sensorData.current_mA);
 
-                        UpdateCurrentVoltage(bytes);
+                            Array.Copy(voltageBytes, 0, bytes, 0, 4);
+                            Array.Copy(currentBytes, 0, bytes, 4, 4);
+
+                            UpdateCurrentVoltage(bytes);
+                        }
                     }
                 }
-            }
-            else if (package.Contains("SENSOR1"))
+                else if (package.Contains("SENSOR1"))
+                {
+                    bool state = package.Contains("ON");
+                    UpdateSensorStatus(state);
+                }
+            }catch(Exception ex)
             {
-                bool state = package.Contains("ON");
-                UpdateSensorStatus(state);
+                Logger.Error("Error on packet received ascii: " + ex.Message);
+                Logger.Error("Packet: " + e.PacketData);
             }
         }
 
