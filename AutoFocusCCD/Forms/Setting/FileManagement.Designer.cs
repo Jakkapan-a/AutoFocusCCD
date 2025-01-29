@@ -33,6 +33,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbType = new System.Windows.Forms.ComboBox();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.txtDescription = new System.Windows.Forms.RichTextBox();
@@ -42,6 +43,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
@@ -51,8 +53,7 @@
             this.progressDialog = new Ookii.Dialogs.WinForms.ProgressDialog(this.components);
             this.vistaOpenFileDialog1 = new Ookii.Dialogs.WinForms.VistaOpenFileDialog();
             this.timerValidName = new System.Windows.Forms.Timer(this.components);
-            this.cbType = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.timerSearch = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFile)).BeginInit();
@@ -64,7 +65,7 @@
             this.toolStripStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 678);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(395, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(879, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -98,15 +99,27 @@
             this.groupBox1.Controls.Add(this.txtName);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(371, 663);
+            this.groupBox1.Size = new System.Drawing.Size(855, 663);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File Manager";
             // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "CLS",
+            "DETECT"});
+            this.cbType.Location = new System.Drawing.Point(69, 87);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(140, 21);
+            this.cbType.TabIndex = 9;
+            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+            // 
             // btnPrevious
             // 
             this.btnPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrevious.Location = new System.Drawing.Point(205, 634);
+            this.btnPrevious.Location = new System.Drawing.Point(689, 634);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(75, 23);
             this.btnPrevious.TabIndex = 8;
@@ -116,7 +129,7 @@
             // btnNext
             // 
             this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNext.Location = new System.Drawing.Point(290, 634);
+            this.btnNext.Location = new System.Drawing.Point(774, 634);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(75, 23);
             this.btnNext.TabIndex = 8;
@@ -129,7 +142,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescription.Location = new System.Drawing.Point(69, 114);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(296, 63);
+            this.txtDescription.Size = new System.Drawing.Size(780, 63);
             this.txtDescription.TabIndex = 7;
             this.txtDescription.Text = "";
             this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
@@ -148,7 +161,7 @@
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(209, 183);
+            this.btnNew.Location = new System.Drawing.Point(693, 183);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 5;
@@ -159,7 +172,7 @@
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(324, 54);
+            this.btnBrowse.Location = new System.Drawing.Point(808, 54);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(37, 23);
             this.btnBrowse.TabIndex = 5;
@@ -170,7 +183,7 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(290, 183);
+            this.btnSave.Location = new System.Drawing.Point(774, 183);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 5;
@@ -195,6 +208,15 @@
             this.label4.Size = new System.Drawing.Size(41, 13);
             this.label4.TabIndex = 3;
             this.label4.Text = "Search";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(28, 90);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Type";
             // 
             // label3
             // 
@@ -221,7 +243,7 @@
             this.txtPath.Location = new System.Drawing.Point(69, 54);
             this.txtPath.Name = "txtPath";
             this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(249, 20);
+            this.txtPath.Size = new System.Drawing.Size(733, 20);
             this.txtPath.TabIndex = 2;
             this.txtPath.TextChanged += new System.EventHandler(this.txtPath_TextChanged);
             // 
@@ -239,7 +261,7 @@
             this.dgvFile.ReadOnly = true;
             this.dgvFile.RowHeadersVisible = false;
             this.dgvFile.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFile.Size = new System.Drawing.Size(359, 390);
+            this.dgvFile.Size = new System.Drawing.Size(843, 390);
             this.dgvFile.TabIndex = 1;
             this.dgvFile.SelectionChanged += new System.EventHandler(this.dgvFile_SelectionChanged);
             // 
@@ -249,6 +271,7 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(195, 20);
             this.txtSearch.TabIndex = 0;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // txtName
             // 
@@ -256,7 +279,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.Location = new System.Drawing.Point(69, 28);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(292, 20);
+            this.txtName.Size = new System.Drawing.Size(776, 20);
             this.txtName.TabIndex = 0;
             this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
@@ -279,32 +302,16 @@
             this.timerValidName.Interval = 500;
             this.timerValidName.Tick += new System.EventHandler(this.timerValidName_Tick);
             // 
-            // cbType
+            // timerSearch
             // 
-            this.cbType.FormattingEnabled = true;
-            this.cbType.Items.AddRange(new object[] {
-            "CLS",
-            "DETECT"});
-            this.cbType.Location = new System.Drawing.Point(69, 87);
-            this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(140, 21);
-            this.cbType.TabIndex = 9;
-            this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 90);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Type";
+            this.timerSearch.Interval = 150;
+            this.timerSearch.Tick += new System.EventHandler(this.timerSearch_Tick);
             // 
             // FileManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(395, 700);
+            this.ClientSize = new System.Drawing.Size(879, 700);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -348,5 +355,6 @@
         private System.Windows.Forms.Timer timerValidName;
         private System.Windows.Forms.ComboBox cbType;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Timer timerSearch;
     }
 }

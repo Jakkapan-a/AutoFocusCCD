@@ -535,5 +535,18 @@ namespace AutoFocusCCD.Forms.Setting
             current_type = cbType.SelectedIndex;
             Properties.Settings.Default.Save();
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            timerSearch.Stop();
+            timerSearch.Start();
+        }
+
+        private void timerSearch_Tick(object sender, EventArgs e)
+        {
+            timerSearch.Stop();
+            this.current_page = 1;
+            _ = RenderDGVFile();
+        }
     }
 }
