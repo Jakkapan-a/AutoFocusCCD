@@ -197,7 +197,7 @@ namespace Multi_Camera_MINI_AOI_V3.Utilities
             }
         }
 
-        public static void CutSaveImage(string path, Image image, Rectangle rect)
+        public static void CropSaveImage(string path, Image image, Rectangle rect)
         {
             if (rect.Width == 0 || rect.Height == 0)
             {
@@ -213,7 +213,7 @@ namespace Multi_Camera_MINI_AOI_V3.Utilities
             }
         }
 
-        public static void CutSaveImage(string path, Image image, int x, int y, int width, int height)
+        public static void CropSaveImage(string path, Image image, int x, int y, int width, int height)
         {
             if (width == 0 || height == 0)
             {

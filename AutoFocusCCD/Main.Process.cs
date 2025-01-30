@@ -382,7 +382,7 @@ namespace AutoFocusCCD
             }
         }
 
-        private Bitmap CropBitmap(Bitmap source, int x, int y, int width, int height)
+        public static Bitmap CropBitmap(Bitmap source, int x, int y, int width, int height)
         {
             var crop = new Bitmap(width, height);
             using (var g = Graphics.FromImage(crop))

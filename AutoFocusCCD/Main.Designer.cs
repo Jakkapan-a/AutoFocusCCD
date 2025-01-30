@@ -79,6 +79,7 @@
             this.timerOutSerial = new System.Windows.Forms.Timer(this.components);
             this.timerOnStartProcess = new System.Windows.Forms.Timer(this.components);
             this.timerDateTime = new System.Windows.Forms.Timer(this.components);
+            this.cropImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -176,7 +177,8 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hasToolStripMenuItem,
-            this.iToolStripMenuItem});
+            this.iToolStripMenuItem,
+            this.cropImageToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -184,13 +186,13 @@
             // hasToolStripMenuItem
             // 
             this.hasToolStripMenuItem.Name = "hasToolStripMenuItem";
-            this.hasToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.hasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hasToolStripMenuItem.Text = "Has";
             // 
             // iToolStripMenuItem
             // 
             this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.iToolStripMenuItem.Text = "I/O";
             this.iToolStripMenuItem.Click += new System.EventHandler(this.iToolStripMenuItem_Click);
             // 
@@ -563,6 +565,13 @@
             this.timerDateTime.Interval = 1000;
             this.timerDateTime.Tick += new System.EventHandler(this.timerDateTime_Tick);
             // 
+            // cropImageToolStripMenuItem
+            // 
+            this.cropImageToolStripMenuItem.Name = "cropImageToolStripMenuItem";
+            this.cropImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cropImageToolStripMenuItem.Text = "Crop Image";
+            this.cropImageToolStripMenuItem.Click += new System.EventHandler(this.cropImageToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -649,6 +658,7 @@
         private System.Windows.Forms.Button btnConfirmOK;
         private System.Windows.Forms.Button btnConfirmNG;
         private System.Windows.Forms.Timer timerDateTime;
+        private System.Windows.Forms.ToolStripMenuItem cropImageToolStripMenuItem;
     }
 }
 

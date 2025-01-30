@@ -729,5 +729,13 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
         {
             lbDateTime.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
+
+        private void cropImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using(var fm = new CropImage())
+            {
+                fm.ShowDialog();
+            }
+        }
     }
 }
