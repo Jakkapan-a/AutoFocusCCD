@@ -603,7 +603,6 @@
             this.cbByPass.TabIndex = 0;
             this.cbByPass.Text = "BY PASS";
             this.cbByPass.UseVisualStyleBackColor = true;
-            this.cbByPass.Visible = false;
             this.cbByPass.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
             // 
             // cbRectangle

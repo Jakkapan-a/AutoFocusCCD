@@ -295,7 +295,7 @@ namespace AutoFocusCCD
                     history.product_id = _product.Id;
                     history.product_name = _product.Name;
 
-                    if (_product.IsByPass == 1)
+                    if (_product.IsByPass == 1 || config.Other.ByPass)
                     {
                         LogAppendText("***** BY PASS *****");
                         summaryResult = true;
@@ -332,7 +332,7 @@ namespace AutoFocusCCD
                         history.result = "NG";
                     }
                     
-                    if (_product.IsByPass == 1)
+                    if (_product.IsByPass == 1 || config.Other.ByPass)
                     {
                         this.lbTitle.Text = "Please visual check";
                         this.lbTitle.BackColor = Color.BlueViolet;
