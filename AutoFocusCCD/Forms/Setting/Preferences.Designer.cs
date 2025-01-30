@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Preferences));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnTestNetwork = new System.Windows.Forms.Button();
+            this.txtURL2 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -72,6 +74,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbByPass = new System.Windows.Forms.CheckBox();
             this.cbRectangle = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.factoryResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,9 +82,6 @@
             this._taskDialogButtonOK = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this._taskDialogButtonCancel = new Ookii.Dialogs.WinForms.TaskDialogButton(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.cbByPass = new System.Windows.Forms.CheckBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtURL2 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nClearDelay)).BeginInit();
@@ -120,6 +120,26 @@
             this.btnTestNetwork.Text = "Test";
             this.btnTestNetwork.UseVisualStyleBackColor = true;
             this.btnTestNetwork.Click += new System.EventHandler(this.btnTestNetwork_Click);
+            // 
+            // txtURL2
+            // 
+            this.txtURL2.Location = new System.Drawing.Point(42, 54);
+            this.txtURL2.Name = "txtURL2";
+            this.txtURL2.Size = new System.Drawing.Size(273, 20);
+            this.txtURL2.TabIndex = 2;
+            this.txtURL2.Text = "http://127.0.0.1:10010";
+            this.txtURL2.Visible = false;
+            this.txtURL2.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 57);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(35, 13);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "URL2";
+            this.label15.Visible = false;
             // 
             // txtURL
             // 
@@ -573,6 +593,19 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Other";
             // 
+            // cbByPass
+            // 
+            this.cbByPass.AutoSize = true;
+            this.cbByPass.ForeColor = System.Drawing.Color.Red;
+            this.cbByPass.Location = new System.Drawing.Point(17, 177);
+            this.cbByPass.Name = "cbByPass";
+            this.cbByPass.Size = new System.Drawing.Size(71, 17);
+            this.cbByPass.TabIndex = 0;
+            this.cbByPass.Text = "BY PASS";
+            this.cbByPass.UseVisualStyleBackColor = true;
+            this.cbByPass.Visible = false;
+            this.cbByPass.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
+            // 
             // cbRectangle
             // 
             this.cbRectangle.AutoSize = true;
@@ -618,38 +651,6 @@
             // 
             this.timerUpdate.Interval = 200;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
-            // 
-            // cbByPass
-            // 
-            this.cbByPass.AutoSize = true;
-            this.cbByPass.ForeColor = System.Drawing.Color.Red;
-            this.cbByPass.Location = new System.Drawing.Point(17, 177);
-            this.cbByPass.Name = "cbByPass";
-            this.cbByPass.Size = new System.Drawing.Size(71, 17);
-            this.cbByPass.TabIndex = 0;
-            this.cbByPass.Text = "BY PASS";
-            this.cbByPass.UseVisualStyleBackColor = true;
-            this.cbByPass.CheckedChanged += new System.EventHandler(this.cbRectangle_CheckedChanged);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 57);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(35, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "URL2";
-            this.label15.Visible = false;
-            // 
-            // txtURL2
-            // 
-            this.txtURL2.Location = new System.Drawing.Point(42, 54);
-            this.txtURL2.Name = "txtURL2";
-            this.txtURL2.Size = new System.Drawing.Size(273, 20);
-            this.txtURL2.TabIndex = 2;
-            this.txtURL2.Text = "http://127.0.0.1:10010";
-            this.txtURL2.Visible = false;
-            this.txtURL2.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // Preferences
             // 

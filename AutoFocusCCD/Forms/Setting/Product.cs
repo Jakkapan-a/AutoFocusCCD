@@ -51,6 +51,7 @@ namespace AutoFocusCCD.Forms.Setting
             dt.Columns.Add("Voltage_max", typeof(int));
             dt.Columns.Add("Current_min", typeof(int));
             dt.Columns.Add("Current_max", typeof(int));
+            dt.Columns.Add("Status", typeof(string));
             dt.Columns.Add("Image", typeof(string));
             dt.Columns.Add("CreatedAt", typeof(string));
             dt.Columns.Add("UpdatedAt", typeof(string));
@@ -74,7 +75,7 @@ namespace AutoFocusCCD.Forms.Setting
 
             foreach (var item in product)
             {
-                dt.Rows.Add(item.Id, noDt, item.Name, item.Type == 1 ? "PVM(4.6V)" : "NONE(6V)", item.Voltage_min, item.Voltage_max, item.Current_min, item.Current_max, item.ImageFile, item.CreatedAt, item.UpdatedAt);
+                dt.Rows.Add(item.Id, noDt, item.Name, item.Type == 1 ? "PVM(4.6V)" : "NONE(6V)", item.Voltage_min, item.Voltage_max, item.Current_min, item.Current_max,(item.IsByPass == 1?"BY PASS":"-") , item.ImageFile, item.CreatedAt, item.UpdatedAt);
                 noDt++;
             }
 
@@ -112,6 +113,7 @@ namespace AutoFocusCCD.Forms.Setting
                         p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value * 1000);
                         p.Current_min = Convert.ToInt32(nmuMinCurrent.Value * 1000);
                         p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value * 1000);
+                        p.IsByPass = cbByPass.Checked ? 1 : 0;
                         p.Save();
                     }
 
@@ -138,6 +140,7 @@ namespace AutoFocusCCD.Forms.Setting
                         p.Voltage_max = Convert.ToInt32(nmuMaxVoltage.Value * 1000);
                         p.Current_min = Convert.ToInt32(nmuMinCurrent.Value * 1000);
                         p.Current_max = Convert.ToInt32(nmuMaxCurrent.Value * 1000);
+                        p.IsByPass = cbByPass.Checked ? 1 : 0;
                         p.Update();
                     }
                 }
@@ -151,10 +154,12 @@ namespace AutoFocusCCD.Forms.Setting
             {
                 productSeleted = null;
                 dgvProduct.ClearSelection();
-
+                
                 RenderDGV();
+
                 btnSave.Text = "Save";
                 btnNew.PerformClick();
+
             }
         }
 
@@ -248,6 +253,7 @@ namespace AutoFocusCCD.Forms.Setting
             nmuMaxVoltage.Value = productSeleted.Voltage_max / 1000;
             nmuMinCurrent.Value = productSeleted.Current_min / 1000;
             nmuMaxCurrent.Value = productSeleted.Current_max / 1000;
+            cbByPass.Checked = productSeleted.IsByPass == 1;
             btnSave.Text = "Update";
 
             toolStripStatusMessage.Text = "Product selected.";

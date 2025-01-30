@@ -16,6 +16,7 @@ namespace AutoFocusCCD.SQLite
         public int Voltage_max { get; set; }
         public int Current_min { get; set; }
         public int Current_max { get; set; }
+        public int IsByPass { get; set; } = 0;
         public string ImageFile { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
@@ -33,6 +34,7 @@ namespace AutoFocusCCD.SQLite
             Columns.Add("Voltage_max", "INTEGER NOT NULL");
             Columns.Add("Current_min", "INTEGER NOT NULL");
             Columns.Add("Current_max", "INTEGER NOT NULL");
+            Columns.Add("IsByPass", "INTEGER NOT NULL DEFAULT 0");
             Columns.Add("ImageFile", "TEXT NULL");
             Columns.Add("CreatedAt", "TEXT NOT NULL");
             Columns.Add("UpdatedAt", "TEXT NOT NULL");
@@ -49,6 +51,7 @@ namespace AutoFocusCCD.SQLite
             parameters.Add("Voltage_max", Voltage_max);
             parameters.Add("Current_min", Current_min);
             parameters.Add("Current_max", Current_max);
+            parameters.Add("IsByPass", IsByPass);
             parameters.Add("ImageFile", ImageFile);
             parameters.Add("CreatedAt", CreatedAt);
             parameters.Add("UpdatedAt", SQLite.SQliteDataAccess.GetDateTimeNow());

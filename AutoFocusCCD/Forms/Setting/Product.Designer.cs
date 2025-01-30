@@ -62,6 +62,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerSearch = new System.Windows.Forms.Timer(this.components);
+            this.cbByPass = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmuMaxCurrent)).BeginInit();
@@ -78,6 +79,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.cbByPass);
             this.groupBox1.Controls.Add(this.pictureBox1);
             this.groupBox1.Controls.Add(this.btnDelete);
             this.groupBox1.Controls.Add(this.btnNew);
@@ -431,6 +433,18 @@
             this.timerSearch.Interval = 1000;
             this.timerSearch.Tick += new System.EventHandler(this.timerSearch_Tick);
             // 
+            // cbByPass
+            // 
+            this.cbByPass.AutoSize = true;
+            this.cbByPass.BackColor = System.Drawing.SystemColors.Control;
+            this.cbByPass.ForeColor = System.Drawing.Color.Red;
+            this.cbByPass.Location = new System.Drawing.Point(19, 351);
+            this.cbByPass.Name = "cbByPass";
+            this.cbByPass.Size = new System.Drawing.Size(71, 17);
+            this.cbByPass.TabIndex = 4;
+            this.cbByPass.Text = "BY PASS";
+            this.cbByPass.UseVisualStyleBackColor = false;
+            // 
             // Product
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -497,5 +511,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.Timer timerSearch;
+        private System.Windows.Forms.CheckBox cbByPass;
     }
 }

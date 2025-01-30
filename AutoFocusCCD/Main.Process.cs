@@ -73,12 +73,45 @@ namespace AutoFocusCCD
                 // Process
                 await Task.Delay(100);
                 bool summaryResult = true;
+
+                // ------------------------ Check Current ------------------------- //
+                LogAppendText("Check Voltage...");
+                float voltage = sensorData1.voltage_V > 0 ? sensorData1.voltage_V : 0;
+                float voltage_min = (_product.Voltage_min / 1000);
+                float voltage_max = (_product.Voltage_max / 1000);
+                if (voltage < voltage_min || voltage > voltage_max)
+                {
+                    summaryResult = false;
+                    LogAppendText($"Voltage is out of range {voltage} ({voltage_min} - {voltage_max}) NG");
+                }
+                else
+                {
+                    LogAppendText($"Voltage is in range {voltage} ({voltage_min} - {voltage_max}) OK");
+                }
+                LogAppendText("Check Current...");
+
+                float current = sensorData1.current_mA > 0 ? sensorData1.current_mA : 0;
+                float currnet_min = (_product.Current_min / 1000);
+                float currnet_max = (_product.Current_max / 1000);
+
+                if (current < currnet_min || current > currnet_max)
+                {
+                    summaryResult = false;
+                    LogAppendText($"Current is out of range {current} ({currnet_min} - {currnet_max}) NG");
+                }
+                else
+                {
+                    LogAppendText($"Current is in range {current} ({currnet_min}  -  {currnet_max}) OK");
+                }
+
+                // -------------------------- Main process -------------------------- //
+
+
+
+
                 using (var img = GetBitmap())
                 using (var displayImage = new Bitmap(img))
-                {
-                   
-
-                  
+                {                  
                     // Save image
                     string imgPath = Path.Combine(path, $"ORG_${Guid.NewGuid().ToString().Substring(0, 5)}.jpg");
                     img.Save(imgPath);
@@ -87,7 +120,6 @@ namespace AutoFocusCCD
                     this.pictureBoxPredict.Image = new Bitmap(displayImage);
 
                     List<SQLite.Boxes> boxes = SQLite.Boxes.GetByProductId(_product.Id);
-
                     if (boxes == null)
                     {
                         Logger.Error("Box not found.");
@@ -222,34 +254,34 @@ namespace AutoFocusCCD
                 {
                     // double current = lbCurrent.Tex
                     // history.current = 
-                    LogAppendText("Check Voltage...");
-                    float voltage = sensorData1.voltage_V > 0 ? sensorData1.voltage_V : 0;
-                    float voltage_min = (_product.Voltage_min / 1000);
-                    float voltage_max = (_product.Voltage_max / 1000);
-                    if (voltage < voltage_min || voltage > voltage_max)
-                    {
-                        summaryResult = false;
-                        LogAppendText($"Voltage is out of range {voltage} ({voltage_min} - {voltage_max}) NG");
-                    }
-                    else
-                    {
-                        LogAppendText($"Voltage is in range {voltage} ({voltage_min} - {voltage_max}) OK");
-                    }
-                    LogAppendText("Check Current...");
+                    //LogAppendText("Check Voltage...");
+                    //float voltage = sensorData1.voltage_V > 0 ? sensorData1.voltage_V : 0;
+                    //float voltage_min = (_product.Voltage_min / 1000);
+                    //float voltage_max = (_product.Voltage_max / 1000);
+                    //if (voltage < voltage_min || voltage > voltage_max)
+                    //{
+                    //    summaryResult = false;
+                    //    LogAppendText($"Voltage is out of range {voltage} ({voltage_min} - {voltage_max}) NG");
+                    //}
+                    //else
+                    //{
+                    //    LogAppendText($"Voltage is in range {voltage} ({voltage_min} - {voltage_max}) OK");
+                    //}
+                    //LogAppendText("Check Current...");
 
-                    float current = sensorData1.current_mA > 0 ? sensorData1.current_mA : 0;
-                    float currnet_min = (_product.Current_min / 1000);
-                    float currnet_max = (_product.Current_max / 1000);
+                    //float current = sensorData1.current_mA > 0 ? sensorData1.current_mA : 0;
+                    //float currnet_min = (_product.Current_min / 1000);
+                    //float currnet_max = (_product.Current_max / 1000);
 
-                    if (current < currnet_min || current > currnet_max)
-                    {
-                        summaryResult = false;
-                        LogAppendText($"Current is out of range {current} ({currnet_min} - {currnet_max}) NG");
-                    }
-                    else
-                    {
-                        LogAppendText($"Current is in range {current} ({currnet_min}  -  {currnet_max}) OK");
-                    }
+                    //if (current < currnet_min || current > currnet_max)
+                    //{
+                    //    summaryResult = false;
+                    //    LogAppendText($"Current is out of range {current} ({currnet_min} - {currnet_max}) NG");
+                    //}
+                    //else
+                    //{
+                    //    LogAppendText($"Current is in range {current} ({currnet_min}  -  {currnet_max}) OK");
+                    //}
 
                     history.employee = txtEmp.Text;
                     history.qr_code = txtQr.Text;
@@ -263,7 +295,7 @@ namespace AutoFocusCCD
                     history.product_id = _product.Id;
                     history.product_name = _product.Name;
 
-                    if (config.Other.ByPass)
+                    if (_product.IsByPass == 1)
                     {
                         LogAppendText("***** BY PASS *****");
                         summaryResult = true;
@@ -300,7 +332,7 @@ namespace AutoFocusCCD
                         history.result = "NG";
                     }
                     
-                    if (config.Other.ByPass)
+                    if (_product.IsByPass == 1)
                     {
                         this.lbTitle.Text = "Please visual check";
                         this.lbTitle.BackColor = Color.BlueViolet;
