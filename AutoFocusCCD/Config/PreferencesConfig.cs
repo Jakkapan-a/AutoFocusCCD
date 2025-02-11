@@ -66,7 +66,7 @@ namespace AutoFocusCCD.Config
 
         // Load config from file
         public class PreferencesConfigLoader
-    {
+     {
         public static PreferencesConfig Load(string path)
         {
             try

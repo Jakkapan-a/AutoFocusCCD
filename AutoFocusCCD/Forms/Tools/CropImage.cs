@@ -102,6 +102,9 @@ namespace AutoFocusCCD.Forms.Tools
             {
                 selectedRow++;
                 Extensions.SelectedRow(dgvData, selectedRow);
+
+                // scroll to current
+                dgvData.FirstDisplayedScrollingRowIndex = selectedRow;   
             }
         }
 
@@ -173,6 +176,7 @@ namespace AutoFocusCCD.Forms.Tools
             finally
             {
                 btnSave.Enabled = true;
+                btnNext.PerformClick();
             }
         }
 

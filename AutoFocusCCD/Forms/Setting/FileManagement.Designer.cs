@@ -125,6 +125,7 @@
             this.btnPrevious.TabIndex = 8;
             this.btnPrevious.Text = "<<";
             this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
             // btnNext
             // 
@@ -135,6 +136,7 @@
             this.btnNext.TabIndex = 8;
             this.btnNext.Text = ">>";
             this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // txtDescription
             // 

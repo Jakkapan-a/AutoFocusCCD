@@ -548,5 +548,18 @@ namespace AutoFocusCCD.Forms.Setting
             this.current_page = 1;
             _ = RenderDGVFile();
         }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            this.current_page++;
+
+            _ = this.RenderDGVFile();
+        }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            this.current_page--;
+            _ = this.RenderDGVFile();
+        }
     }
 }
