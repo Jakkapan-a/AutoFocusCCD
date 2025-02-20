@@ -173,17 +173,16 @@ namespace AutoFocusCCD.Forms.Setting
             TextBox textBox = (TextBox)sender;
             if (textBox != null && textBox == txtURL)
             {
-                //if(Extensions.IsValidURL(txtURL.Text))
-                //{
-                //    txtURL.ForeColor = Color.Black;
-                //}
-                //else
-                //{
-                //    txtURL.ForeColor = Color.Red;
-                //    return;
-                //}
-
-                //if http?
+                // if(Extensions.IsValidURL(txtURL.Text))
+                // {
+                //     txtURL.ForeColor = Color.Black;
+                // }
+                // else
+                // {
+                //     txtURL.ForeColor = Color.Red;
+                //     return;
+                // }
+                // if http 
 
                 if (!txtURL.Text.StartsWith("http://") && !txtURL.Text.StartsWith("https://"))
                 {
