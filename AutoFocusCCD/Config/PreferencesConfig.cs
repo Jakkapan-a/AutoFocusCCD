@@ -53,7 +53,6 @@ namespace AutoFocusCCD.Config
             public string Message { get; set; }
             public string Description { get; set; }
 
-
         }
 
         public class OtherConfig
@@ -65,7 +64,7 @@ namespace AutoFocusCCD.Config
 
 
         // Load config from file
-        public class PreferencesConfigLoader
+     public class PreferencesConfigLoader
      {
         public static PreferencesConfig Load(string path)
         {

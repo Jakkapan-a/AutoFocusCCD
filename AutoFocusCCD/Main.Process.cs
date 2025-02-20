@@ -444,7 +444,7 @@ namespace AutoFocusCCD
                         summaryResult = results.All(r => r);
                     }
 
-                    UpdateeUI(displayImage);
+                    UpdateeUI(displayImage,"");
                     await Task.Delay(10);
 
                     SaveFinalImage(displayImage, path);
@@ -510,17 +510,19 @@ namespace AutoFocusCCD
             this.pictureBoxPredict.Image = Properties.Resources.Spinner_0_4s_800px;
         }
 
-        private void UpdateeUI(Bitmap bmp)
+        private void UpdateeUI(Bitmap bmp, string title)
         {
             if(InvokeRequired)
             {
-                Invoke(new Action(() => UpdateeUI(bmp)));
+                Invoke(new Action(() => UpdateeUI(bmp,title)));
                 return;
             }
 
             var newImage = new Bitmap(bmp);
             this.pictureBoxPredict.Image?.Dispose();
             this.pictureBoxPredict.Image = newImage;
+
+            this.lbTitle.Text = title;
         }
 
         private bool ValidateProduct()
@@ -643,7 +645,7 @@ namespace AutoFocusCCD
                             testResult = IsKey("OK", item.Name);
                             
                             LogAppendText($"{item.Name}: {item.Confidence:F2}");
-                            UpdateeUI(displayImage);
+                            UpdateeUI(displayImage, $"**** {box.Name} ****");
                         }
                     }
                     else
@@ -675,7 +677,14 @@ namespace AutoFocusCCD
                     if (response.IsSuccessStatusCode)
                     {
                         var responseString = await response.Content.ReadAsStringAsync();
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<DetectionResult>(responseString);
+                        try
+                        {
+                            return Newtonsoft.Json.JsonConvert.DeserializeObject<Utilities.DetectionResult>(responseString);
+                        }
+                        catch (JsonSerializationException ex)
+                        {
+                            return null;
+                        }
                     }
                     return null;
                 }

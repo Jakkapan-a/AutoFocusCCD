@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -102,29 +103,68 @@ namespace AutoFocusCCD.Forms.Setting
             }
         }
 
-        private void btnTestNetwork_Click(object sender, EventArgs e)
+        private async void btnTestNetwork_Click(object sender, EventArgs e)
         {
+
+            bool pass = false;
             try{
-                using (var client = new System.Net.WebClient())
+                btnTestNetwork.Enabled = false;
+
+                string txtURL1 = txtURL.Text;
+                string txtURL2 = this.txtURL2.Text;
+                bool txt2Visible = this.txtURL2.Visible;
+
+                await Task.Run(() =>
                 {
-                    client.DownloadString(txtURL.Text);
-                    Main.Logger.Info("Network test successful 1", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    MessageBox.Show("Connection successful 1", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                if (txtURL2.Visible)
-                {
-                    using (var client = new System.Net.WebClient())
+                    using (var client = new HttpClient())
                     {
-                        client.DownloadString(txtURL2.Text);
-                        Main.Logger.Info("Network test successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        MessageBox.Show("Connection successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // set time out client
+                        //client.
+                        client.Timeout  = new TimeSpan(0, 0, 2); // 3 seconds
+                        var res = client.GetAsync(txtURL1).Result;
+                        if (res.IsSuccessStatusCode)
+                        {
+                            Main.Logger.Info("Network test successful 1", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            pass = true;
+                        }
+                        else
+                        {
+                            throw new Exception("Connection failed 1");
+                        }
                     }
-                }
+                    /*
+                    if (txt2Visible)
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.Timeout = new TimeSpan(0, 0, 2); // 3 seconds
+                            var res = client.GetAsync(txtURL1).Result;
+                            if (res.IsSuccessStatusCode)
+                            {
+                                Main.Logger.Info("Network test successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Connection successful 2", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                throw new Exception("Connection failed 2");
+                            }
+                        }
+                    }*/
+                });
             }
             catch(Exception ex)
             {
+                pass = false;
                 Main.Logger.Error("Error testing network: " + ex.Message);
                 MessageBox.Show("Connection failed", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (pass)
+                {
+                    MessageBox.Show("Connection successful", "Test Network", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                btnTestNetwork.Enabled = true;
             }
         }
 
@@ -133,14 +173,21 @@ namespace AutoFocusCCD.Forms.Setting
             TextBox textBox = (TextBox)sender;
             if (textBox != null && textBox == txtURL)
             {
-                if(Extensions.IsValidURL(txtURL.Text))
+                //if(Extensions.IsValidURL(txtURL.Text))
+                //{
+                //    txtURL.ForeColor = Color.Black;
+                //}
+                //else
+                //{
+                //    txtURL.ForeColor = Color.Red;
+                //    return;
+                //}
+
+                //if http?
+
+                if (!txtURL.Text.StartsWith("http://") && !txtURL.Text.StartsWith("https://"))
                 {
-                    txtURL.ForeColor = Color.Black;
-                }
-                else
-                {
-                    txtURL.ForeColor = Color.Red;
-                    return;
+                    txtURL.Text = "http://" + txtURL.Text;
                 }
             }
 

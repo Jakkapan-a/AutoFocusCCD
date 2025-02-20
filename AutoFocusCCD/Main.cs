@@ -612,31 +612,31 @@ xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
 
             timerOnStartProcess.Stop();
             // Start process
-
             this.StartProcess();
-
         }
 
         private void ClearFileServer()
         {
-            string url = Preferences().Network.URL + "/api/v1/filemanager/clear-file";
 
+            string url = Preferences().Network.URL + "/api/v1/filemanager/clear-file";
             try
             {
-                using (var client = new System.Net.Http.HttpClient())
+                Task.Run(() =>
                 {
-                    // post method
-                    var res = client.PostAsync(url, null).Result;
-
-                    if (res.IsSuccessStatusCode)
+                    using (var client = new System.Net.Http.HttpClient())
                     {
-                        Logger.Info("Clear file server successful");
+                        // post method
+                        var res = client.PostAsync(url, null).Result;
+                        if (res.IsSuccessStatusCode)
+                        {
+                            Logger.Info("Clear file server successful");
+                        }
+                        else
+                        {
+                            Logger.Error("Clear file server failed");
+                        }
                     }
-                    else
-                    {
-                        Logger.Error("Clear file server failed");
-                    }
-                }
+                });
             }
             catch (Exception ex)
             {
