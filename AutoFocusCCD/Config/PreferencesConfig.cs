@@ -99,7 +99,7 @@ namespace AutoFocusCCD.Config
                 Network = new PreferencesConfig.NetworkConfig
                 {
                     URL = "http://127.0.0.1:10011",
-                    URL2 = "http://127.0.0.1:10011"
+                    URL2 = "http://127.0.0.1"
                 },
                 Processing = new PreferencesConfig.ProcessingConfig
                 {

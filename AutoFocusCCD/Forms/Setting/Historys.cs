@@ -63,7 +63,7 @@ namespace AutoFocusCCD.Forms.Setting
                 noDtHistory++;
             }
 
-            Extensions.SetDataSourceAndUpdateSelection(dgvHistory, dtHistory, new string[] { "Id" , "UpdatedAt" });
+            Extensions.SetDataSourceAndUpdateSelection(dgvHistory, dtHistory, new string[] { "Id", "UpdatedAt" });
             Extensions.SelectedRow(dgvHistory, slectedRow);
 
             toolStripStatusLabel1.Text = $"Total: {totalDataHistory} records, Page: {currentPageHistory}/{totalPagesHistory}";
@@ -93,6 +93,7 @@ namespace AutoFocusCCD.Forms.Setting
 
         private void timerSearch_Tick(object sender, EventArgs e)
         {
+            timerSearch.Stop();
             RenderDGVHistory();
         }
 

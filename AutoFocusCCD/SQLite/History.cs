@@ -90,7 +90,7 @@ namespace AutoFocusCCD.SQLite
 
         public static List<History> GetList(string search, string qr, string date , string result, int page = 1, int limit = 10)
         {
-            string sql = $"SELECT * FROM History WHERE employee LIKE @search OR qr_code LIKE @qr OR result LIKE @result OR CreatedAt LIKE @date ORDER BY Id DESC LIMIT @limit OFFSET @offset";
+            string sql = $"SELECT * FROM History WHERE employee LIKE @search AND qr_code LIKE @qr AND result LIKE @result AND CreatedAt LIKE @date ORDER BY Id DESC LIMIT @limit OFFSET @offset";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("search", $"%{search}%");
             parameters.Add("qr", $"%{qr}%");
@@ -105,7 +105,7 @@ namespace AutoFocusCCD.SQLite
 
         public static int Count(string search, string qr, string date, string result)
         {
-            string sql = $"SELECT COUNT(*) FROM History WHERE employee LIKE @search OR qr_code LIKE @qr OR result LIKE @result OR CreatedAt LIKE @date";
+            string sql = $"SELECT COUNT(*) FROM History WHERE employee LIKE @search AND qr_code LIKE @qr AND result LIKE @result AND CreatedAt LIKE @date";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("search", $"%{search}%");
             parameters.Add("qr", $"%{qr}%");
