@@ -59,6 +59,7 @@ namespace AutoFocusCCD.Config
         {
             public bool Rectangle { get; set; }
             public bool ByPass { get; set; }
+            public string Station { get; set; }
         }
     }
 
@@ -130,7 +131,8 @@ namespace AutoFocusCCD.Config
                 Other = new PreferencesConfig.OtherConfig
                 {
                     Rectangle = false,
-                    ByPass = false
+                    ByPass = false,
+                    Station = "Line - 0"
                 }
             };
         }        
